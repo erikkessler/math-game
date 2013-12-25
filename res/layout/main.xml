@@ -4,10 +4,139 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="vertical" >
+	
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/timer"
+		android:text="80" />
+	
+	<LinearLayout
+		android:orientation="horizontal" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center" >
+		
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Right: " />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="0" 
+			android:id="@+id/right" />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="  Wrong: " />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="0" 
+			android:id="@+id/wrong" />
+		
+	</LinearLayout>
 
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" 
+		android:id="@+id/problem" />
+	
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:text="" 
+		android:id="@+id/entry" />
+	
+	
+	<TableLayout
+		android:layout_width="match_parent"
+		android:layout_height="320dp" 
+		android:id="@+id/table" >
+		
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="20dp" >
+			
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="1"
+				android:id="@+id/b1" />
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="2"
+				android:id="@+id/b2" />
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="3"
+				android:id="@+id/b3" />
+			
+		</TableRow>
+		
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="30dp" >
 
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="4"
+				android:id="@+id/b4" />
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="5"
+				android:id="@+id/b5" />
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="6"
+				android:id="@+id/b6" />
+
+		</TableRow>
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="30dp" >
+
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="7"
+				android:id="@+id/b7" />
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="8"
+				android:id="@+id/b8" />
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="9"
+				android:id="@+id/b9" />
+
+		</TableRow>
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="30dp" 
+			android:paddingLeft="64dp" >
+
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="0"
+				android:id="@+id/b0" />
+			
+			<Button
+				android:layout_height="80dp" 
+				android:layout_width="80dp"
+				android:text="Delete"
+				android:id="@+id/b10" />
+
+		</TableRow>
+	</TableLayout>
 </LinearLayout>
