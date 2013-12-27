@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mycompany.myapp"
+    package="com.tcx.mathgame"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -13,7 +13,7 @@
         android:label="@string/app_name" >
         <activity
             android:label="@string/app_name"
-            android:name=".MainActivity"
+            android:name="com.tcx.mathgame.MainActivity"
 			android:theme="@android:style/Theme.Holo.Light" >
 			
             <intent-filter >
@@ -27,7 +27,7 @@
 		
 		 <activity
             android:label="Settings"
-            android:name=".Settings"
+            android:name="com.tcx.mathgame.Settings"
 			android:theme="@android:style/Theme.Holo.Light" />
 		
     </application>

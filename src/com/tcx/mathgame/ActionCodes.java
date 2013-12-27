@@ -1,4 +1,4 @@
-package com.mycompany.myapp;
+package com.tcx.mathgame;
 
 public class ActionCodes {
 

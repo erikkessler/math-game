@@ -1,4 +1,4 @@
-package com.mycompany.myapp;
+package com.tcx.mathgame;
 
 import android.app.*;
 import android.view.View.*;
@@ -6,6 +6,7 @@ import android.view.*;
 import android.os.*;
 import android.widget.*;
 import android.content.*;
+import com.tcx.mathgame.R;
 
 public class Settings extends Activity implements OnClickListener, CompoundButton.OnCheckedChangeListener
 {

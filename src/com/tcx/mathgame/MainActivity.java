@@ -1,4 +1,4 @@
-package com.mycompany.myapp;
+package com.tcx.mathgame;
 
 import android.app.*;
 import android.os.*;
@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import java.util.*;
 import org.apache.commons.logging.*;
 import android.content.*;
+import com.tcx.mathgame.R;
 
 public class MainActivity extends Activity implements OnClickListener
 {
@@ -28,41 +29,41 @@ public class MainActivity extends Activity implements OnClickListener
 	private int group1Id = 1;
 	private SharedPreferences prefs;
 
-	int homeId = Menu.FIRST;
-	int profileId = Menu.FIRST +1;
+	int newGameId = Menu.FIRST;
+	int settingsId = Menu.FIRST +1;
 	
 
    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-    menu.add(group1Id, homeId, homeId, "New Game");
-    menu.add(group1Id, profileId, profileId, "Settings");
-   
-
-    return super.onCreateOptionsMenu(menu); 
+	    menu.add(group1Id, newGameId, newGameId, "New Game");
+	    menu.add(group1Id, settingsId, settingsId, "Settings");
+	   
+	
+	    return super.onCreateOptionsMenu(menu); 
     }
 	
 	 @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-    switch (item.getItemId()) {
-
-	case 1:
-    	newGame();
-    	return true;
-
-	case 2:
-		endGame();
-    	Intent intent = new Intent( this , Settings.class );
-		startActivity( intent );
-    	return true;
-		
-	default:
-    	break;
-
-       }
-    	return super.onOptionsItemSelected(item);
-	}
+	    switch (item.getItemId()) {
+	
+		case 1:
+	    	newGame();
+	    	return true;
+	
+		case 2:
+			endGame();
+	    	Intent intent = new Intent( this , Settings.class );
+			startActivity( intent );
+	    	return true;
+			
+		default:
+	    	break;
+	
+	       }
+	    	return super.onOptionsItemSelected(item);
+		}
 
 	
     /** Called when the activity is first created. */
