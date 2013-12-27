@@ -7,6 +7,7 @@ import android.widget.*;
 import android.view.View.OnClickListener;
 import java.util.*;
 import org.apache.commons.logging.*;
+import android.content.*;
 
 public class MainActivity extends Activity implements OnClickListener
 {
@@ -19,11 +20,49 @@ public class MainActivity extends Activity implements OnClickListener
 	private TextView time;
 	private int answer;
 	private String type = "Subtraction";
-	private final int LENGTH = 80;
+	private int LENGTH = 10;
 	private int time_left = LENGTH;
 	private Runnable runnable;
 	private Handler handler;
 	private boolean gameOn;
+	private int group1Id = 1;
+	private SharedPreferences prefs;
+
+	int homeId = Menu.FIRST;
+	int profileId = Menu.FIRST +1;
+	
+
+   @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+    menu.add(group1Id, homeId, homeId, "New Game");
+    menu.add(group1Id, profileId, profileId, "Settings");
+   
+
+    return super.onCreateOptionsMenu(menu); 
+    }
+	
+	 @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+    switch (item.getItemId()) {
+
+	case 1:
+    	newGame();
+    	return true;
+
+	case 2:
+		endGame();
+    	Intent intent = new Intent( this , Settings.class );
+		startActivity( intent );
+    	return true;
+		
+	default:
+    	break;
+
+       }
+    	return super.onOptionsItemSelected(item);
+	}
 
 	
     /** Called when the activity is first created. */
@@ -33,6 +72,7 @@ public class MainActivity extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 		
+		prefs = getSharedPreferences("MyPrefsFile",0);
 		
 		entry = (TextView) findViewById(R.id.entry);
 		prob = (TextView) findViewById(R.id.problem);
@@ -46,7 +86,6 @@ public class MainActivity extends Activity implements OnClickListener
 			buttons[i].setOnClickListener( this );
 		}
 		
-		probGen();
 		
 		handler = new Handler();
 		runnable = new Runnable() {
@@ -65,8 +104,9 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		};
 		
-		newGame();
     }
+	
+	
 
 	@Override
 	public void onClick(View p1)
@@ -86,6 +126,8 @@ public class MainActivity extends Activity implements OnClickListener
 		}
 	}
 
+
+
 	private void check()
 	{
 		if( entry.getText().equals( answer + "" ) ) {
@@ -102,19 +144,42 @@ public class MainActivity extends Activity implements OnClickListener
 	}
 	
 	private void probGen() {
-		if( type.equals("Subtraction") ){
+		String gType = prefs.getString("gameType","Subtraction");
+		if( gType.equals("Subtraction") ){
 			Random rn = new Random();
 			int first = rn.nextInt(20) + 1;
 			int second = rn.nextInt(first + 1);
 			answer = first - second;
 			prob.setText(  first + " - " + second );
+		} else if ( gType.equals("Addition") ){
+			Random rn = new Random();
+			int first = rn.nextInt(20) + 1;
+			int second = rn.nextInt(20)+ 1;
+			answer = first + second;
+			prob.setText(  first + " + " + second );
+		} else if ( gType.equals("Multiplication") ){
+			Random rn = new Random();
+			int first = rn.nextInt(12) + 1;
+			int second = rn.nextInt(12) + 1;
+			answer = first * second;
+			prob.setText(  first + " × " + second );
+		 }else if ( gType.equals("Division") ){
+			 Random rn = new Random();
+			 int first = rn.nextInt(12) + 1;
+			 int second = rn.nextInt(12) + 1;
+			 answer = first / second;
+			 prob.setText(  first + " ÷ " + second );
 		}
-		
 	}
 	
 	private void newGame() {
+		endGame();
 		gameOn = true;
-		time_left = LENGTH;
+		probGen();
+		right.setText("0");
+		wrong.setText("0");
+		time_left = Integer.parseInt( prefs.getString("gameLength", "80"));
+		time.setText( time_left + "" );
 		handler.postDelayed(runnable,1000);
 		
 		}
@@ -123,8 +188,22 @@ public class MainActivity extends Activity implements OnClickListener
 
 	private void endGame()
 	{
-		gameOn = false;
-		Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right!", Toast.LENGTH_LONG).show();
+		if( gameOn ) {
+			handler.removeCallbacks( runnable );
+			gameOn = false;
+			Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right!", Toast.LENGTH_LONG).show();
+			int numNeed = Integer.parseInt(prefs.getString("correctNeeded", "25"));
+			String timeE = prefs.getString("earnedTime","15");
+
+			if ( Integer.parseInt( right.getText().toString() ) >= numNeed && prefs.getBoolean("restrictedMode", true)) {
+				TaskerIntent i = new TaskerIntent("SET_VARS");
+				i.addAction(ActionCodes.SET_VARIABLE).addArg("%GAME").addArg(timeE).addArg(false).addArg(false);
+
+				sendBroadcast(i);
+				}
+		}
+		
+		
 	}
 
 	

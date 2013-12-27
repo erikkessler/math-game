@@ -1,142 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center"
-    android:orientation="vertical" >
-	
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:id="@+id/timer"
-		android:text="80" />
-	
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
 	<LinearLayout
-		android:orientation="horizontal" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:gravity="center" >
-		
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Right: " />
+			android:text="Right: "
+			android:textSize="25sp"/>
+
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="0" 
-			android:id="@+id/right" />
+			android:text="0"
+			android:id="@+id/right"
+			android:textSize="30sp"
+			android:textColor="#50C900"/>
+
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="  Wrong: " />
+			android:text="  Wrong: "
+			android:textSize="25sp"/>
+
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="0" 
-			android:id="@+id/wrong" />
-		
+			android:text="0"
+			android:id="@+id/wrong"
+			android:textSize="30sp"
+			android:textColor="#FF1607"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/timer"
+			android:textSize="40sp"
+			android:shadowColor="#000000"
+			android:shadowRadius="3.0"
+			android:layout_gravity="bottom"
+			android:gravity="right"
+			android:paddingRight="10dp"/>
+
 	</LinearLayout>
 
 	<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="" 
-		android:id="@+id/problem" />
-	
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="" 
-		android:id="@+id/entry" />
-	
-	
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text=""
+		android:id="@+id/problem"
+		android:textSize="35sp"
+		android:textColor="#1B07F1"
+		android:gravity="center"/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text=""
+		android:id="@+id/entry"
+		android:textSize="28sp"
+		android:gravity="center"/>
+
 	<TableLayout
 		android:layout_width="match_parent"
-		android:layout_height="320dp" 
-		android:id="@+id/table" >
-		
+		android:layout_height="match_parent"
+		android:id="@+id/table"
+		android:paddingTop="60dp"
+		android:paddingLeft="70dp"
+		android:layout_gravity="bottom|center">
+
 		<TableRow
 			android:layout_width="match_parent"
-			android:layout_height="20dp" >
-			
+			android:layout_height="20dp">
+
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="1"
-				android:id="@+id/b1" />
+				android:id="@+id/b1"/>
+
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="2"
-				android:id="@+id/b2" />
+				android:id="@+id/b2"/>
+
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="3"
-				android:id="@+id/b3" />
-			
+				android:id="@+id/b3"/>
+
 		</TableRow>
-		
+
 		<TableRow
 			android:layout_width="match_parent"
-			android:layout_height="30dp" >
+			android:layout_height="30dp">
 
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="4"
-				android:id="@+id/b4" />
+				android:id="@+id/b4"/>
+
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="5"
-				android:id="@+id/b5" />
+				android:id="@+id/b5"/>
+
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="6"
-				android:id="@+id/b6" />
+				android:id="@+id/b6"/>
 
 		</TableRow>
+
 		<TableRow
 			android:layout_width="match_parent"
-			android:layout_height="30dp" >
+			android:layout_height="30dp">
 
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="7"
-				android:id="@+id/b7" />
+				android:id="@+id/b7"/>
+
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="8"
-				android:id="@+id/b8" />
+				android:id="@+id/b8"/>
+
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="9"
-				android:id="@+id/b9" />
+				android:id="@+id/b9"/>
 
 		</TableRow>
+
 		<TableRow
 			android:layout_width="match_parent"
-			android:layout_height="30dp" 
-			android:paddingLeft="64dp" >
+			android:layout_height="30dp"
+			android:paddingLeft="64dp">
 
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="0"
-				android:id="@+id/b0" />
-			
+				android:id="@+id/b0"/>
+
 			<Button
-				android:layout_height="80dp" 
-				android:layout_width="80dp"
+				android:layout_height="100dp"
+				android:layout_width="100dp"
 				android:text="Delete"
-				android:id="@+id/b10" />
+				android:id="@+id/b10"/>
 
 		</TableRow>
+
 	</TableLayout>
+
 </LinearLayout>
+
