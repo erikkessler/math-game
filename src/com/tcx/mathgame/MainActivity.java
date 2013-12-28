@@ -1,14 +1,23 @@
 package com.tcx.mathgame;
 
-import android.app.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import java.util.*;
-import org.apache.commons.logging.*;
-import android.content.*;
-import com.tcx.mathgame.R;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener
 {
@@ -20,7 +29,6 @@ public class MainActivity extends Activity implements OnClickListener
 	private TextView wrong;
 	private TextView time;
 	private int answer;
-	private String type = "Subtraction";
 	private int LENGTH = 10;
 	private int time_left = LENGTH;
 	private Runnable runnable;
@@ -28,45 +36,20 @@ public class MainActivity extends Activity implements OnClickListener
 	private boolean gameOn;
 	private int group1Id = 1;
 	private SharedPreferences prefs;
-
+	private int[] rVs = new int[8];
+	private int subR, addR, multR, divR;
+	private int[] probTypes = new int[4];
+	private int numbTypes;
+	private Random rn = new Random();
+	private Game game;
+	private DatabaseHandler db;
+	
 	int newGameId = Menu.FIRST;
 	int settingsId = Menu.FIRST +1;
+	int endGameId = Menu.FIRST + 2;
+	int histoyId = Menu.FIRST + 3;
 	
-
-   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-	    menu.add(group1Id, newGameId, newGameId, "New Game");
-	    menu.add(group1Id, settingsId, settingsId, "Settings");
-	   
-	
-	    return super.onCreateOptionsMenu(menu); 
-    }
-	
-	 @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-	    switch (item.getItemId()) {
-	
-		case 1:
-	    	newGame();
-	    	return true;
-	
-		case 2:
-			endGame();
-	    	Intent intent = new Intent( this , Settings.class );
-			startActivity( intent );
-	    	return true;
-			
-		default:
-	    	break;
-	
-	       }
-	    	return super.onOptionsItemSelected(item);
-		}
-
-	
-    /** Called when the activity is first created. */
+	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
 	{
@@ -87,6 +70,7 @@ public class MainActivity extends Activity implements OnClickListener
 			buttons[i].setOnClickListener( this );
 		}
 		
+		db = new DatabaseHandler(this);
 		
 		handler = new Handler();
 		runnable = new Runnable() {
@@ -106,6 +90,53 @@ public class MainActivity extends Activity implements OnClickListener
 		};
 		
     }
+	
+
+   @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+	    menu.add(group1Id, newGameId, newGameId, "New Game");
+	    menu.add(group1Id, settingsId, settingsId, "Settings");
+	    menu.add( group1Id, endGameId, endGameId, "End Game");
+	    menu.add( group1Id, histoyId, histoyId, "History");
+	   
+	
+	    return super.onCreateOptionsMenu(menu); 
+    }
+	
+	 @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+	    switch (item.getItemId()) {
+	
+		case 1:
+	    	newGame();
+	    	return true;
+	
+		case 2:
+			endGame();
+	    	Intent intent = new Intent( this , Settings.class );
+			startActivity( intent );
+	    	return true;
+	    	
+		case 3:
+			endGame();
+			return true;
+			
+		case 4:
+			endGame();
+	    	Intent intent1 = new Intent( this , GameHistory.class );
+			startActivity( intent1 );
+			
+		default:
+	    	break;
+	
+	       }
+	    	return super.onOptionsItemSelected(item);
+		}
+
+	
+    
 	
 	
 
@@ -144,37 +175,99 @@ public class MainActivity extends Activity implements OnClickListener
 		
 	}
 	
+	
+	
+	@Override
+	protected void onResume() {
+		for( int i = 0; i < rVs.length; i++)
+			if( i % 2 == 0)
+				rVs[i] = Integer.parseInt( prefs.getString("range" + i, "0"));
+			else
+				rVs[i] = Integer.parseInt( prefs.getString("range" + i, "12"));
+		
+		addR = rVs[1] - rVs[0];
+		subR = rVs[3] - rVs[2];
+		multR = rVs[5] - rVs[4];
+		divR = rVs[7] - rVs[6];
+		
+		numbTypes = 0;
+		boolean[] checked = { prefs.getBoolean("0Checked", false), prefs.getBoolean("1Checked", false) , prefs.getBoolean("2Checked", false),prefs.getBoolean("3Checked", false)};
+		for( int i = 0; i < checked.length; i++) {
+			if( checked[i] ) {
+				probTypes[numbTypes] = i;
+				numbTypes++;
+			}
+		}
+		
+		// In case none is selected
+		if ( numbTypes == 0 ) {
+			probTypes[0] = 0;
+			numbTypes = 1;
+		}
+		super.onResume();
+	}
+
+
 	private void probGen() {
-		String gType = prefs.getString("gameType","Subtraction");
-		if( gType.equals("Subtraction") ){
-			Random rn = new Random();
-			int first = rn.nextInt(20) + 1;
-			int second = rn.nextInt(first + 1);
+		
+		int gType = probTypes[ rn.nextInt(numbTypes)];
+		
+		
+		if( gType == 1 ){ // Subtraction
+			int first = rn.nextInt(subR + 1) + rVs[2];
+			int second = rn.nextInt(first - rVs[2] + 1) + rVs[2];
 			answer = first - second;
 			prob.setText(  first + " - " + second );
-		} else if ( gType.equals("Addition") ){
-			Random rn = new Random();
-			int first = rn.nextInt(20) + 1;
-			int second = rn.nextInt(20)+ 1;
+		} else if ( gType == 0 ){ // Addition
+			int first = rn.nextInt(addR) + rVs[0] + 1;
+			int second = rn.nextInt(addR)+ rVs[0] + 1;
 			answer = first + second;
 			prob.setText(  first + " + " + second );
-		} else if ( gType.equals("Multiplication") ){
-			Random rn = new Random();
-			int first = rn.nextInt(12) + 1;
-			int second = rn.nextInt(12) + 1;
+		} else if ( gType == 2 ){ // Multiplication
+			int first = rn.nextInt(multR) + rVs[4] + 1;
+			int second = rn.nextInt(multR) + rVs[4] +1;
 			answer = first * second;
-			prob.setText(  first + " × " + second );
-		 }else if ( gType.equals("Division") ){
-			 Random rn = new Random();
-			 int first = rn.nextInt(12) + 1;
-			 int second = rn.nextInt(12) + 1;
-			 answer = first / second;
-			 prob.setText(  first + " ÷ " + second );
+			prob.setText(  first + " x " + second );
+		 }else if ( gType == 3 ){ // Divisions
+			 int second = rn.nextInt(divR) + rVs[6] + 1;
+			 int first = second *( rn.nextInt(divR + 1) + rVs[6]);
+			 answer = first/second;
+			 prob.setText(  first + " � " + second );
 		}
 	}
 	
 	private void newGame() {
 		endGame();
+		
+		game = new Game();
+		game.setDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(new Date()));
+		
+		// Get Types
+		String types = "";
+		for( int i = 0; i < numbTypes; i++) {
+			if( i != 0 ) {
+				types = types + ", ";
+			}
+			
+			switch ( probTypes[i]) {
+				case 0:
+					types = types + "Addition";
+					break;
+				case 1:
+					types = types + "Subtraction";
+					break;
+				case 2:
+					types = types + "Multipication";
+					break;
+				case 3:
+					types = types + "Division";
+					break;
+			}
+			
+		}
+		
+		game.setType( types );
+		
 		gameOn = true;
 		probGen();
 		right.setText("0");
@@ -190,9 +283,19 @@ public class MainActivity extends Activity implements OnClickListener
 	private void endGame()
 	{
 		if( gameOn ) {
+			
 			handler.removeCallbacks( runnable );
 			gameOn = false;
-			Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right!", Toast.LENGTH_LONG).show();
+			
+			game.setRight( right.getText().toString());
+			game.setWrong( wrong.getText().toString());
+			game.setPercent(Math.round( Integer.parseInt(right.getText().toString()) * 100.0/ (Integer.parseInt(right.getText().toString()) + Integer.parseInt(wrong.getText().toString()))) + "%");
+			
+			Log.d("Game:", game.getDate() + " " + game.getType() + " " + game.getRight() + " " + game.getWrong() + " " + game.getPercent());
+			Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() , Toast.LENGTH_LONG).show();
+			
+			db.addGame( game );
+			
 			int numNeed = Integer.parseInt(prefs.getString("correctNeeded", "25"));
 			String timeE = prefs.getString("earnedTime","15");
 

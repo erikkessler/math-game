@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk 
-        android:minSdkVersion="11" 
-        android:targetSdkVersion="11" />
+        android:minSdkVersion="14" 
+        android:targetSdkVersion="14" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -28,6 +28,11 @@
 		 <activity
             android:label="Settings"
             android:name="com.tcx.mathgame.Settings"
+			android:theme="@android:style/Theme.Holo.Light" />
+		 
+		 <activity
+            android:label="History"
+            android:name="com.tcx.mathgame.GameHistory"
 			android:theme="@android:style/Theme.Holo.Light" />
 		
     </application>

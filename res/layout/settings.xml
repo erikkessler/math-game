@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingTop="15dp" >
 
 	<LinearLayout
 		android:layout_height="wrap_content"
@@ -98,6 +98,149 @@
 			android:ems="10"
 			android:layout_width="wrap_content"
 			android:id="@+id/eTime"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Addition Range: "
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<EditText
+		    android:id="@+id/r0"
+		    android:layout_width="130dp"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="number" >
+
+		    <requestFocus />
+		</EditText>
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text=" to "
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<EditText
+		    android:id="@+id/r1"
+		    android:layout_width="130dp"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="number" />
+
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Subtraction Range: "
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<EditText
+		    android:id="@+id/r2"
+		    android:layout_width="130dp"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="number" >
+
+		    <requestFocus />
+		</EditText>
+
+		<TextView
+		    android:id="@+id/textView2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text=" to "
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<EditText
+		    android:id="@+id/r3"
+		    android:layout_width="130dp"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="number" />
+
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Multipication Range: "
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<EditText
+		    android:id="@+id/r4"
+		    android:layout_width="130dp"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="number" >
+
+		    <requestFocus />
+		</EditText>
+
+		<TextView
+		    android:id="@+id/textView2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text=" to "
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<EditText
+		    android:id="@+id/r5"
+		    android:layout_width="130dp"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="number" />
+
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Division Range: "
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<EditText
+		    android:id="@+id/r6"
+		    android:layout_width="130dp"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="number" >
+
+		    <requestFocus />
+		</EditText>
+
+		<TextView
+		    android:id="@+id/textView2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text=" to "
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<EditText
+		    android:id="@+id/r7"
+		    android:layout_width="130dp"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="number" />
 
 	</LinearLayout>
 
