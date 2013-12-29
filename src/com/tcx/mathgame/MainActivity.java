@@ -6,10 +6,15 @@ import java.util.Locale;
 import java.util.Random;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +48,7 @@ public class MainActivity extends Activity implements OnClickListener
 	private Random rn = new Random();
 	private Game game;
 	private DatabaseHandler db;
+	private MyScheduleReciver reciever;
 	
 	int newGameId = Menu.FIRST;
 	int settingsId = Menu.FIRST +1;
@@ -88,6 +94,7 @@ public class MainActivity extends Activity implements OnClickListener
 			
 		
 		};
+		
 		
     }
 	
@@ -205,7 +212,42 @@ public class MainActivity extends Activity implements OnClickListener
 			numbTypes = 1;
 		}
 		super.onResume();
+		
+		if( reciever == null) {
+				Log.d("A", "Reciver was null");
+				reciever = new MyScheduleReciver();
+		}
+		
+		boolean isNew = false;
+		if(! reciever.isStarted()) {
+			isNew = true;
+			Intent i = new Intent("tcx.YOLO");
+			Bundle extras = new Bundle();  
+	        extras.putBoolean("start_now", prefs.getBoolean("restrictedMode", false) );  
+	        i.putExtras(extras);  
+			sendBroadcast(i);
+			Log.d("A", "Main Started Reciver");
+			
+			
+		}
+			
+		
+		if (prefs.getBoolean("restrictedMode", false)) {
+			startService(new Intent(MainActivity.this,AppCheckerService.class));
+			if(!isNew) reciever.resumeReciver();
+			
+			
+		}else {
+			stopService(new Intent(MainActivity.this,AppCheckerService.class));
+			if(!isNew) reciever.stopReciver();
+		}
 	}
+	
+	@Override
+	  protected void onPause() {
+	    super.onPause();
+	    
+	  }
 
 
 	private void probGen() {
@@ -300,10 +342,11 @@ public class MainActivity extends Activity implements OnClickListener
 			String timeE = prefs.getString("earnedTime","15");
 
 			if ( Integer.parseInt( right.getText().toString() ) >= numNeed && prefs.getBoolean("restrictedMode", true)) {
-				TaskerIntent i = new TaskerIntent("SET_VARS");
-				i.addAction(ActionCodes.SET_VARIABLE).addArg("%GAME").addArg(timeE).addArg(false).addArg(false);
-
-				sendBroadcast(i);
+//				TaskerIntent i = new TaskerIntent("SET_VARS");
+//				i.addAction(ActionCodes.SET_VARIABLE).addArg("%GAME").addArg(timeE).addArg(false).addArg(false);
+//
+//				sendBroadcast(i);
+				reciever.pauseReciever(Integer.parseInt(timeE));
 				}
 		}
 		

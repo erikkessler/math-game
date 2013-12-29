@@ -34,9 +34,27 @@
             android:label="History"
             android:name="com.tcx.mathgame.GameHistory"
 			android:theme="@android:style/Theme.Holo.Light" />
+		 
+		 <service 
+		     android:name="com.tcx.mathgame.AppCheckerService"
+		     android:label="App Checker Service" />
+		 
+
+        <receiver android:name="MyScheduleReciver" 
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="tcx.YOLO" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="MyStartServiceReceiver" >
+        </receiver>
+		     
 		
     </application>
 	<uses-permission android:name="net.dinglisch.android.tasker.PERMISSION_RUN_TASKS" />
+	<uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 		
 
 </manifest>

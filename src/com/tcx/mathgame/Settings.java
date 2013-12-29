@@ -30,16 +30,16 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	{
 		editor.putBoolean( "restrictedMode", p2 );
 		editor.commit();
-		if( p2 ) {
-			TaskerIntent i = new TaskerIntent( "TOGGLE_PROF");
-			i.addAction(ActionCodes.TOGGLE_PROFILE).addArg("Only Math").addArg(1);
-			sendBroadcast(i);
-		} else {
-			TaskerIntent i = new TaskerIntent( "TOGGLE_PROF");
-			i.addAction(ActionCodes.TOGGLE_PROFILE).addArg("Only Math").addArg(0);
-			sendBroadcast(i);
-			
-		}
+//		if( p2 ) {
+//			TaskerIntent i = new TaskerIntent( "TOGGLE_PROF");
+//			i.addAction(ActionCodes.TOGGLE_PROFILE).addArg("Only Math").addArg(1);
+//			sendBroadcast(i);
+//		} else {
+//			TaskerIntent i = new TaskerIntent( "TOGGLE_PROF");
+//			i.addAction(ActionCodes.TOGGLE_PROFILE).addArg("Only Math").addArg(0);
+//			sendBroadcast(i);
+//			
+//		}
 	}
 	
 	@Override
