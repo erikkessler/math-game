@@ -1,12 +1,15 @@
 package com.tcx.mathgame;
 
 import java.util.Calendar;
+import java.util.List;
 
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,7 +42,7 @@ public class MyScheduleReciver extends BroadcastReceiver{
 	public static void startReceiver() {
 		NotificationCompat.Builder mBuilder =
 			    new NotificationCompat.Builder(mContext)
-			    .setSmallIcon(R.drawable.ic_launcher)
+			    .setSmallIcon(R.drawable.ic_stat_device_access_secure)
 			    .setContentTitle("Restriced Mode Enabled")
 			    .setContentText("Click to Change Settings");
 		
@@ -93,7 +96,7 @@ public class MyScheduleReciver extends BroadcastReceiver{
 		stopReciver();
 		NotificationCompat.Builder mBuilder =
 			    new NotificationCompat.Builder(mContext)
-			    .setSmallIcon(R.drawable.ic_launcher)
+			    .setSmallIcon(R.drawable.ic_stat_device_access_not_secure)
 			    .setContentTitle("Restricted Mode Paused")
 			    .setContentText("You have " + time + " minutes to play");
 		mNotifyMgr.notify(002, mBuilder.build());
@@ -102,10 +105,19 @@ public class MyScheduleReciver extends BroadcastReceiver{
 		    public void run() {
 		    	resumeReciver();
 			    mNotifyMgr.cancel(002); 
-			    Intent startMain = new Intent(Intent.ACTION_MAIN);
-	        	startMain.addCategory(Intent.CATEGORY_HOME);
-	        	startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	        	mContext.startActivity(startMain);
+			    ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+
+		        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+
+		        ComponentName componentInfo = taskInfo.get(0).topActivity;                      
+		        String packageName=componentInfo.getPackageName();
+		        
+		        if(!packageName.equals("com.tcx.mathgame")){
+				    Intent startMain = new Intent(Intent.ACTION_MAIN);
+		        	startMain.addCategory(Intent.CATEGORY_HOME);
+		        	startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		        	mContext.startActivity(startMain);
+		        }
 			    Toast.makeText( mContext, "Time's up buster!", Toast.LENGTH_SHORT).show();
 		    }
 		};

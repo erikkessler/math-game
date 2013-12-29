@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -342,10 +343,8 @@ public class MainActivity extends Activity implements OnClickListener
 			String timeE = prefs.getString("earnedTime","15");
 
 			if ( Integer.parseInt( right.getText().toString() ) >= numNeed && prefs.getBoolean("restrictedMode", true)) {
-//				TaskerIntent i = new TaskerIntent("SET_VARS");
-//				i.addAction(ActionCodes.SET_VARIABLE).addArg("%GAME").addArg(timeE).addArg(false).addArg(false);
-//
-//				sendBroadcast(i);
+				 MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.ronniecall);
+				    mp.start();
 				reciever.pauseReciever(Integer.parseInt(timeE));
 				}
 		}
