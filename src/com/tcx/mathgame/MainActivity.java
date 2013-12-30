@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+import android.R.color;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +53,7 @@ public class MainActivity extends Activity implements OnClickListener
 	private Game game;
 	private DatabaseHandler db;
 	private MyScheduleReciver reciever;
+	private LinearLayout background;
 	
 	int newGameId = Menu.FIRST;
 	int settingsId = Menu.FIRST +1;
@@ -70,6 +74,7 @@ public class MainActivity extends Activity implements OnClickListener
 		right = (TextView) findViewById(R.id.right);
 		wrong = (TextView) findViewById(R.id.wrong);
 		time= (TextView) findViewById(R.id.timer);
+		background = (LinearLayout) findViewById(R.id.ll_main);
 		
 		for( int i=0; i < buttons.length; i++ ) {
 			String a = "b" + i;
@@ -170,15 +175,32 @@ public class MainActivity extends Activity implements OnClickListener
 
 	private void check()
 	{
+		Handler handle = new Handler();
+		Runnable runable = new Runnable() {
+
+			@Override
+			public void run() {
+				//background.setBackgroundColor(color.background_light);
+				entry.setTextColor(Color.BLACK);
+				entry.setText("");	
+				
+			}
+			
+		};
 		if( entry.getText().equals( answer + "" ) ) {
 			int correct = Integer.parseInt( right.getText().toString() ) + 1;
 			right.setText( correct + "" );
+			//background.setBackgroundColor(Color.GREEN);
+			entry.setTextColor(Color.parseColor("#50C900"));
+			handler.postDelayed(runable, 400);
 		} else {
 			int incorrect = Integer.parseInt( wrong.getText().toString() ) + 1;
 			wrong.setText( incorrect + "" );
+			entry.setTextColor(Color.parseColor("#FF1607"));
+			handler.postDelayed(runable, 400);
 		}
 		
-		entry.setText("");
+		
 		probGen();
 		
 	}
@@ -327,6 +349,8 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		if( gameOn ) {
 			
+			prob.setText("Game Over");
+			
 			handler.removeCallbacks( runnable );
 			gameOn = false;
 			
@@ -335,7 +359,6 @@ public class MainActivity extends Activity implements OnClickListener
 			game.setPercent(Math.round( Integer.parseInt(right.getText().toString()) * 100.0/ (Integer.parseInt(right.getText().toString()) + Integer.parseInt(wrong.getText().toString()))) + "%");
 			
 			Log.d("Game:", game.getDate() + " " + game.getType() + " " + game.getRight() + " " + game.getWrong() + " " + game.getPercent());
-			Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() , Toast.LENGTH_LONG).show();
 			
 			db.addGame( game );
 			
@@ -346,6 +369,11 @@ public class MainActivity extends Activity implements OnClickListener
 				 MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.ronniecall);
 				    mp.start();
 				reciever.pauseReciever(Integer.parseInt(timeE));
+				Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() +"\nYou get " + timeE + " minutes to play!" , Toast.LENGTH_LONG).show();
+
+				} else{
+					Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() , Toast.LENGTH_LONG).show();
+
 				}
 		}
 		

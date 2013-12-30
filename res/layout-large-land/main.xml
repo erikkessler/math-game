@@ -60,12 +60,12 @@
 
 		<TableLayout
 		    android:id="@+id/table"
-		    android:layout_width="450dp"
+		    android:layout_width="350dp"
 		    android:layout_height="match_parent"
 		    android:gravity="bottom|center"
 		    android:paddingBottom="5dp"
 		    android:paddingTop="5dp"
-		    android:paddingLeft="25dp" >
+		    android:paddingLeft="15dp" >
 
 		    <TableRow
 		        android:layout_width="match_parent"
@@ -73,22 +73,22 @@
 
 		        <Button
 		            android:id="@+id/b1"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="1"
 		            android:textSize="30sp" />
 
 		        <Button
 		            android:id="@+id/b2"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="2"
 		            android:textSize="30sp" />
 
 		        <Button
 		            android:id="@+id/b3"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="3"
 		            android:textSize="30sp" />
 		    </TableRow>
@@ -99,22 +99,22 @@
 
 		        <Button
 		            android:id="@+id/b4"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="4"
 		            android:textSize="30sp" />
 
 		        <Button
 		            android:id="@+id/b5"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="5"
 		            android:textSize="30sp" />
 
 		        <Button
 		            android:id="@+id/b6"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="6"
 		            android:textSize="30sp" />
 		    </TableRow>
@@ -125,22 +125,22 @@
 
 		        <Button
 		            android:id="@+id/b7"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="7"
 		            android:textSize="30sp" />
 
 		        <Button
 		            android:id="@+id/b8"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="8"
 		            android:textSize="30sp" />
 
 		        <Button
 		            android:id="@+id/b9"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="9"
 		            android:textSize="30sp" />
 		    </TableRow>
@@ -148,20 +148,20 @@
 		    <TableRow
 		        android:layout_width="match_parent"
 		        android:gravity="center"
-		        android:paddingLeft="145dp" >
+		        android:paddingLeft="80dp" >
 
 		        <Button
 		            android:id="@+id/b0"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
 		            android:text="0"
 		            android:textSize="30sp" />
 
 		        <Button
 		            android:id="@+id/b10"
-		            android:layout_width="145dp"
-		            android:layout_height="145dp"
-		            android:text="Delete"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
+		            android:text="←"
 		            android:textSize="30sp" />
 		    </TableRow>
 		</TableLayout>
@@ -176,10 +176,10 @@
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 			    android:gravity="center"
-			    android:paddingTop="135dp"
+			    android:paddingTop="75dp"
 			    android:text=""
 			    android:textColor="#1B07F1"
-			    android:textSize="100sp" />
+			    android:textSize="75sp" />
 
 			<TextView
 			    android:id="@+id/entry"
@@ -188,7 +188,7 @@
 			    android:gravity="center"
 			    android:paddingTop="25dp"
 			    android:text=""
-			    android:textSize="65sp" />
+			    android:textSize="45sp" />
 
 		</LinearLayout>
 

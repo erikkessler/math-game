@@ -43,6 +43,21 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	}
 	
 	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+	    menu.add(1, 0, 0, "Save Settings").setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+	
+	    return super.onCreateOptionsMenu(menu); 
+    }
+	
+	 @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+		 	onBackPressed();
+	    	return super.onOptionsItemSelected(item);
+		}
+	
+	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		// TODO: Implement this method

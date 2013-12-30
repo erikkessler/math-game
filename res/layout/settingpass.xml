@@ -6,24 +6,36 @@
 	android:orientation="vertical"
 	android:id="@+id/settingpassLinearLayout1">
 
-	<TextView
-		android:layout_height="wrap_content"
-		android:text="Enter Password:"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:layout_width="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="25dp" >
 
-	<EditText
-		android:layout_height="wrap_content"
-		android:inputType="textPassword"
-		android:ems="10"
-		android:layout_width="wrap_content"
-		android:id="@+id/settingPass"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Password:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-	<Button
-		android:layout_height="wrap_content"
-		android:text="Enter"
-		android:layout_width="wrap_content"
-		android:id="@+id/settingpassButton1"/>
+        <EditText
+            android:id="@+id/settingPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/settingpassButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter" />
+
+    </LinearLayout>
 
 </LinearLayout>
 
