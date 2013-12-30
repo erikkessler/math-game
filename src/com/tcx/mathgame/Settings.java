@@ -6,7 +6,6 @@ import android.view.*;
 import android.os.*;
 import android.widget.*;
 import android.content.*;
-import org.holoeverywhere.widget.Switch;
 
 import com.tcx.mathgame.R;
 
