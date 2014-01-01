@@ -30,8 +30,26 @@ public class MyScheduleReciver extends BroadcastReceiver{
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		SharedPreferences prefs= context.getSharedPreferences("MyPrefsFile",0);
-        go = prefs.getBoolean("restrictedMode", true);	
+		
+		boolean userSentBackground = intent.getAction().equals( Intent.ACTION_USER_BACKGROUND );
+        boolean userSentForeground = intent.getAction().equals( Intent.ACTION_USER_FOREGROUND );
+        Log.d( "Frisck", "Switch received. User sent background = " + userSentBackground + "; User sent foreground = " + userSentForeground + ";" );
+
+        if (isStarted() && userSentBackground)
+        	stopReciver();
+        
+        SharedPreferences prefs= context.getSharedPreferences("MyPrefsFile",0);
+        go = prefs.getBoolean("restrictedMode", false);	
+        
+        if (go && userSentForeground) {
+        	mContext = context;
+			startReceiver();
+        }
+        	
+        int user = intent.getExtras().getInt( "android.intent.extra.user_handle" );
+        Log.d( "Frick", "user = " + user );
+		
+		
 		Log.d("R", "Recieved Command");
 		if((!started) && go) {
 			mContext = context;
@@ -122,7 +140,7 @@ public class MyScheduleReciver extends BroadcastReceiver{
 		    }
 		};
 		Handler handle = new Handler();
-		handle.postDelayed(runny, time * 1000);
+		handle.postDelayed(runny, time * 60000);
 	    
 	    
 		

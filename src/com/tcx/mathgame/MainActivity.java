@@ -59,6 +59,7 @@ public class MainActivity extends Activity implements OnClickListener
 	int settingsId = Menu.FIRST +1;
 	int endGameId = Menu.FIRST + 2;
 	int histoyId = Menu.FIRST + 3;
+	int extraId = Menu.FIRST + 4;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -112,6 +113,7 @@ public class MainActivity extends Activity implements OnClickListener
 	    menu.add(group1Id, settingsId, settingsId, "Settings");
 	    menu.add( group1Id, endGameId, endGameId, "End Game");
 	    menu.add( group1Id, histoyId, histoyId, "History");
+	    menu.add( group1Id, extraId, extraId, "Extra Math");
 	   
 	
 	    return super.onCreateOptionsMenu(menu); 
@@ -140,6 +142,13 @@ public class MainActivity extends Activity implements OnClickListener
 			endGame();
 	    	Intent intent1 = new Intent( this , GameHistory.class );
 			startActivity( intent1 );
+			return true;
+			
+		case 5:
+			endGame();
+	    	Intent intent2 = new Intent( this , ExtraMath.class );
+			startActivity( intent2 );
+			return true;
 			
 		default:
 	    	break;
@@ -239,6 +248,11 @@ public class MainActivity extends Activity implements OnClickListener
 		if( reciever == null) {
 				Log.d("A", "Reciver was null");
 				reciever = new MyScheduleReciver();
+				
+				IntentFilter filter = new IntentFilter();
+				filter.addAction( Intent.ACTION_USER_BACKGROUND );
+				filter.addAction( Intent.ACTION_USER_FOREGROUND );
+				registerReceiver( reciever, filter );
 		}
 		
 		boolean isNew = false;

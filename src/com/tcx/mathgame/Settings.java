@@ -52,7 +52,7 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	
 	 @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+		 	onPause();
 		 	onBackPressed();
 	    	return super.onOptionsItemSelected(item);
 		}

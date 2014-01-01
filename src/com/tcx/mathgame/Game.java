@@ -8,6 +8,7 @@ public class Game {
 	String mRight;
 	String mWrong;
 	String mPercent;
+	String mProbsWrong;
 	
 	public Game() {
 		
@@ -58,5 +59,13 @@ public class Game {
 	
 	public void setPercent( String percent ) {
 		mPercent = percent;
+	}
+	
+	public String getProbsWrong() {
+		return mProbsWrong;
+	}
+	
+	public void setProbsWrong( String wrong ) {
+		mProbsWrong = wrong;
 	}
 }
