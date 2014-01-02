@@ -40,7 +40,7 @@ public class AppCheckerService extends Service {
         	//Toast.makeText( this.getApplicationContext() , packageName, Toast.LENGTH_SHORT).show();
         
 //        oldPackage = packageName;
-        if((!packageName.equals("com.tcx.mathgame") && (!packageName.equals( homeName)))) {
+        if((!packageName.equals("com.tcx.mathgame") && (!packageName.equals( homeName))) && (!packageName.equals("fr.lehovetzki.ABMath"))) {
         	Toast.makeText( this.getApplicationContext() , "Hey! Do your math!", Toast.LENGTH_SHORT).show();
         	Intent startMain = new Intent(Intent.ACTION_MAIN);
         	startMain.addCategory(Intent.CATEGORY_HOME);

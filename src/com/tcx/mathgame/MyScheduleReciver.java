@@ -64,10 +64,10 @@ public class MyScheduleReciver extends BroadcastReceiver{
 			    .setContentTitle("Restriced Mode Enabled")
 			    .setContentText("Click to Change Settings");
 		
-		Intent resultIntent = new Intent(mContext, Settings.class);
+		Intent resultIntent = new Intent(mContext, HomeScreen.class);
 		// Because clicking the notification opens a new ("special") activity, there's
 		// no need to create an artificial back stack.
-		PendingIntent resultPendingIntent =PendingIntent.getActivity( mContext,0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent resultPendingIntent = PendingIntent.getActivity( mContext,0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		mBuilder.setContentIntent(resultPendingIntent);
 		mNotifyMgr = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
 		// Builds the notification and issues it.

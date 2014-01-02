@@ -59,12 +59,24 @@
 
 			android:id = "@+id/tv_percent"
  
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
  
             android:layout_height="wrap_content"
  
             android:layout_marginLeft="10dp"
  
             android:text="Percent" />
+         
+          <TextView
+
+			android:id = "@+id/tv_mistakes"
+ 
+            android:layout_width="match_parent"
+ 
+            android:layout_height="wrap_content"
+ 
+            android:layout_marginLeft="10dp"
+ 
+            android:text="Mistakes" />
  
 </LinearLayout>

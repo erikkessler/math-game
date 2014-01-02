@@ -3,6 +3,7 @@ package com.tcx.mathgame;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,9 @@ public class GameHistory extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.history);
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		
 		list = (ListView) findViewById(R.id.gameList);

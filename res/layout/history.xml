@@ -69,13 +69,24 @@
          <TextView
 
  
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
  
             android:layout_height="wrap_content"
  
             android:layout_marginLeft="10dp"
  
             android:text="Percent" />
+         
+          <TextView
+
+ 
+            android:layout_width="match_parent"
+ 
+            android:layout_height="wrap_content"
+ 
+            android:layout_marginLeft="10dp"
+ 
+            android:text="Mistakes" />
  
     </LinearLayout>
  

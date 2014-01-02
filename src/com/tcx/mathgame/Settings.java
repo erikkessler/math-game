@@ -2,6 +2,7 @@ package com.tcx.mathgame;
 
 import android.app.*;
 import android.view.View.*;
+import android.view.inputmethod.InputMethodManager;
 import android.view.*;
 import android.os.*;
 import android.widget.*;
@@ -15,7 +16,7 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	
 	
 
-	private final String PASS = "ronnieboy";
+	private String pass;
 	private TextView password, gLenth, eTime, cNeeded;
 	public static final String PREFS_NAME = "MyPrefsFile";
 	private SharedPreferences prefs;
@@ -30,16 +31,7 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	{
 		editor.putBoolean( "restrictedMode", p2 );
 		editor.commit();
-//		if( p2 ) {
-//			TaskerIntent i = new TaskerIntent( "TOGGLE_PROF");
-//			i.addAction(ActionCodes.TOGGLE_PROFILE).addArg("Only Math").addArg(1);
-//			sendBroadcast(i);
-//		} else {
-//			TaskerIntent i = new TaskerIntent( "TOGGLE_PROF");
-//			i.addAction(ActionCodes.TOGGLE_PROFILE).addArg("Only Math").addArg(0);
-//			sendBroadcast(i);
-//			
-//		}
+
 	}
 	
 	@Override
@@ -64,11 +56,17 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 		super.onCreate(savedInstanceState);
 		setContentView( R.layout.settingpass );
 		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
 		// Login screen
 		password = (TextView) findViewById(R.id.settingPass);
 		Button submit = (Button) findViewById(R.id.settingpassButton1);
 		submit.setOnClickListener(this);
 		settings = false;
+		
+		prefs = getSharedPreferences(PREFS_NAME, 0);
+		editor = prefs.edit();
 		
 		
 		
@@ -78,6 +76,7 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	protected void onPause()
 	{
 		if (settings ) {
+			
 			editor.putString("gameLength", gLenth.getText().toString());
 			editor.putString("earnedTime", eTime.getText().toString());
 			editor.putString("correctNeeded", cNeeded.getText().toString());
@@ -102,7 +101,10 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	public void onClick(View p1)
 	{
 		if( p1.getId() == R.id.settingpassButton1 ){
-			if( password.getText().toString().equals(PASS) ){
+			if( password.getText().toString().equals(prefs.getString("password", "admin")) ){
+				
+				InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 				
 				setContentView(R.layout.settings);
 				
@@ -113,14 +115,15 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 				eTime = (TextView) findViewById(R.id.eTime);
 				cNeeded = (TextView) findViewById(R.id.cNeed);
 				gType = (Button) findViewById(R.id.gType);
+				Button change = (Button) findViewById(R.id.pPass);
+				change.setOnClickListener(this);
 				for( int i=0; i < ranges.length; i++ ) {
 					String a = "r" + i;
 					ranges[i] = (TextView) findViewById(getResources().getIdentifier(a, "id", getPackageName()));
 				}
 
 
-				prefs = getSharedPreferences(PREFS_NAME, 0);
-				editor = prefs.edit();
+				
 				rOn.setChecked( prefs.getBoolean( "restrictedMode", false));
 				gLenth.setText( prefs.getString("gameLength", "25"));
 				eTime.setText( prefs.getString("earnedTime", "15"));
@@ -142,7 +145,7 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 				password.setText("");
 			}
 			
-		} else{
+		} else if( p1.getId() == R.id.gType){
 			AlertDialog.Builder adb = new AlertDialog.Builder(this);
 			final CharSequence items[] = new CharSequence[] {"Addition", "Subtraction", "Multiplication", "Division"};
 			boolean[] checked = { prefs.getBoolean("0Checked", false), prefs.getBoolean("1Checked", false) , prefs.getBoolean("2Checked", false),prefs.getBoolean("3Checked", false)};
@@ -170,6 +173,33 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 			adb.setNegativeButton("Ok", null);
 			adb.setTitle("Which ones?");
 			adb.show();
+		}else {
+			 final Dialog dialog = new Dialog(this);
+		        dialog.setContentView(R.layout.dialog);
+		        dialog.setTitle("Change Password...");
+
+		        // set the custom dialog components - text, image and button
+		        EditText current = (EditText) dialog.findViewById(R.id.pass_cur);
+		        EditText newPass = (EditText) dialog.findViewById(R.id.pass_new);
+
+		        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialog_ok);
+		        Button dialogButtonCan = (Button) dialog.findViewById(R.id.dialog_cancel);
+		        // if button is clicked, close the custom dialog
+		        dialogButtonOk.setOnClickListener(new OnClickListener() {
+		            @Override
+		            public void onClick(View v) {
+		                dialog.dismiss();
+		            }
+		        });
+		        
+		        dialogButtonCan.setOnClickListener(new OnClickListener() {
+		            @Override
+		            public void onClick(View v) {
+		                dialog.dismiss();
+		            }
+		        });
+
+		        dialog.show();
 		}
 	}
 	

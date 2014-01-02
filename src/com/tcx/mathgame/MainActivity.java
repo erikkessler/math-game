@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import android.R.color;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -49,17 +50,17 @@ public class MainActivity extends Activity implements OnClickListener
 	private int subR, addR, multR, divR;
 	private int[] probTypes = new int[4];
 	private int numbTypes;
-	private Random rn = new Random();
+	private Random rn;
 	private Game game;
 	private DatabaseHandler db;
 	private MyScheduleReciver reciever;
-	private LinearLayout background;
+	private String mistakes;
+	private int first, second;
 	
 	int newGameId = Menu.FIRST;
-	int settingsId = Menu.FIRST +1;
-	int endGameId = Menu.FIRST + 2;
-	int histoyId = Menu.FIRST + 3;
-	int extraId = Menu.FIRST + 4;
+	int endGameId = Menu.FIRST + 1;
+	int mainId = Menu.FIRST +2;
+
 	
 	/** Called when the activity is first created. */
     @Override
@@ -67,15 +68,18 @@ public class MainActivity extends Activity implements OnClickListener
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		prefs = getSharedPreferences("MyPrefsFile",0);
+		rn = new Random();
 		
 		entry = (TextView) findViewById(R.id.entry);
 		prob = (TextView) findViewById(R.id.problem);
 		right = (TextView) findViewById(R.id.right);
 		wrong = (TextView) findViewById(R.id.wrong);
-		time= (TextView) findViewById(R.id.timer);
-		background = (LinearLayout) findViewById(R.id.ll_main);
+		time = (TextView) findViewById(R.id.timer);
 		
 		for( int i=0; i < buttons.length; i++ ) {
 			String a = "b" + i;
@@ -103,6 +107,8 @@ public class MainActivity extends Activity implements OnClickListener
 		};
 		
 		
+		
+		
     }
 	
 
@@ -110,10 +116,8 @@ public class MainActivity extends Activity implements OnClickListener
     public boolean onCreateOptionsMenu(Menu menu) {
 
 	    menu.add(group1Id, newGameId, newGameId, "New Game");
-	    menu.add(group1Id, settingsId, settingsId, "Settings");
 	    menu.add( group1Id, endGameId, endGameId, "End Game");
-	    menu.add( group1Id, histoyId, histoyId, "History");
-	    menu.add( group1Id, extraId, extraId, "Extra Math");
+	    menu.add( group1Id, mainId, mainId, "Main Screen");
 	   
 	
 	    return super.onCreateOptionsMenu(menu); 
@@ -130,25 +134,13 @@ public class MainActivity extends Activity implements OnClickListener
 	
 		case 2:
 			endGame();
-	    	Intent intent = new Intent( this , Settings.class );
-			startActivity( intent );
-	    	return true;
+			return true;
 	    	
 		case 3:
-			endGame();
-			return true;
-			
-		case 4:
-			endGame();
-	    	Intent intent1 = new Intent( this , GameHistory.class );
+	    	Intent intent1 = new Intent( this , HomeScreen.class );
 			startActivity( intent1 );
 			return true;
 			
-		case 5:
-			endGame();
-	    	Intent intent2 = new Intent( this , ExtraMath.class );
-			startActivity( intent2 );
-			return true;
 			
 		default:
 	    	break;
@@ -184,7 +176,6 @@ public class MainActivity extends Activity implements OnClickListener
 
 	private void check()
 	{
-		Handler handle = new Handler();
 		Runnable runable = new Runnable() {
 
 			@Override
@@ -203,10 +194,12 @@ public class MainActivity extends Activity implements OnClickListener
 			entry.setTextColor(Color.parseColor("#50C900"));
 			handler.postDelayed(runable, 400);
 		} else {
+			mistakes = mistakes + prob.getText() + "\n";
 			int incorrect = Integer.parseInt( wrong.getText().toString() ) + 1;
 			wrong.setText( incorrect + "" );
 			entry.setTextColor(Color.parseColor("#FF1607"));
 			handler.postDelayed(runable, 400);
+			
 		}
 		
 		
@@ -218,6 +211,7 @@ public class MainActivity extends Activity implements OnClickListener
 	
 	@Override
 	protected void onResume() {
+		super.onResume();
 		for( int i = 0; i < rVs.length; i++)
 			if( i % 2 == 0)
 				rVs[i] = Integer.parseInt( prefs.getString("range" + i, "0"));
@@ -238,50 +232,25 @@ public class MainActivity extends Activity implements OnClickListener
 			}
 		}
 		
-		// In case none is selected
-		if ( numbTypes == 0 ) {
-			probTypes[0] = 0;
-			numbTypes = 1;
-		}
-		super.onResume();
 		
-		if( reciever == null) {
-				Log.d("A", "Reciver was null");
-				reciever = new MyScheduleReciver();
-				
-				IntentFilter filter = new IntentFilter();
-				filter.addAction( Intent.ACTION_USER_BACKGROUND );
-				filter.addAction( Intent.ACTION_USER_FOREGROUND );
-				registerReceiver( reciever, filter );
-		}
-		
-		boolean isNew = false;
-		if(! reciever.isStarted()) {
-			isNew = true;
-			Intent i = new Intent("tcx.YOLO");
-			Bundle extras = new Bundle();  
-	        extras.putBoolean("start_now", prefs.getBoolean("restrictedMode", false) );  
-	        i.putExtras(extras);  
-			sendBroadcast(i);
-			Log.d("A", "Main Started Reciver");
-			
-			
-		}
 			
 		
-		if (prefs.getBoolean("restrictedMode", false)) {
-			startService(new Intent(MainActivity.this,AppCheckerService.class));
-			if(!isNew) reciever.resumeReciver();
-			
-			
-		}else {
-			stopService(new Intent(MainActivity.this,AppCheckerService.class));
-			if(!isNew) reciever.stopReciver();
-		}
+//		if (prefs.getBoolean("restrictedMode", false)) {
+//			startService(new Intent(MainActivity.this,AppCheckerService.class));
+//			HomeScreen.reciever.resumeReciver();
+//			
+//			
+//		}else {
+//			stopService(new Intent(MainActivity.this,AppCheckerService.class));
+//			HomeScreen.reciever.stopReciver();
+//		}
+		
+		newGame();
 	}
 	
 	@Override
 	  protected void onPause() {
+		endGame();
 	    super.onPause();
 	    
 	  }
@@ -293,30 +262,35 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		
 		if( gType == 1 ){ // Subtraction
-			int first = rn.nextInt(subR + 1) + rVs[2];
-			int second = rn.nextInt(first - rVs[2] + 1) + rVs[2];
-			answer = first - second;
+			first = rn.nextInt(subR) + rVs[2] + 1;
+			second = rn.nextInt(first - rVs[2] + 1) + rVs[2];
+			answer = first - second; 
 			prob.setText(  first + " - " + second );
+			
 		} else if ( gType == 0 ){ // Addition
-			int first = rn.nextInt(addR) + rVs[0] + 1;
-			int second = rn.nextInt(addR)+ rVs[0] + 1;
+			first = rn.nextInt(addR) + rVs[0] + 1;
+			second = rn.nextInt(addR)+ rVs[0] + 1;
 			answer = first + second;
 			prob.setText(  first + " + " + second );
+			
 		} else if ( gType == 2 ){ // Multiplication
-			int first = rn.nextInt(multR) + rVs[4] + 1;
-			int second = rn.nextInt(multR) + rVs[4] +1;
+			first = rn.nextInt(multR) + rVs[4] + 1;
+			second = rn.nextInt(multR) + rVs[4] +1;
 			answer = first * second;
 			prob.setText(  first + " x " + second );
+			
 		 }else if ( gType == 3 ){ // Divisions
-			 int second = rn.nextInt(divR) + rVs[6] + 1;
-			 int first = second *( rn.nextInt(divR + 1) + rVs[6]);
+			 second = rn.nextInt(divR) + rVs[6] + 1;
+			 first = second *( rn.nextInt(divR + 1) + rVs[6]);
 			 answer = first/second;
 			 prob.setText(  first + " ÷ " + second );
+
 		}
 	}
 	
 	private void newGame() {
 		endGame();
+		mistakes = "";
 		
 		game = new Game();
 		game.setDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(new Date()));
@@ -371,6 +345,7 @@ public class MainActivity extends Activity implements OnClickListener
 			game.setRight( right.getText().toString());
 			game.setWrong( wrong.getText().toString());
 			game.setPercent(Math.round( Integer.parseInt(right.getText().toString()) * 100.0/ (Integer.parseInt(right.getText().toString()) + Integer.parseInt(wrong.getText().toString()))) + "%");
+			game.setProbsWrong(mistakes);
 			
 			Log.d("Game:", game.getDate() + " " + game.getType() + " " + game.getRight() + " " + game.getWrong() + " " + game.getPercent());
 			
@@ -380,10 +355,10 @@ public class MainActivity extends Activity implements OnClickListener
 			String timeE = prefs.getString("earnedTime","15");
 
 			if ( Integer.parseInt( right.getText().toString() ) >= numNeed && prefs.getBoolean("restrictedMode", true)) {
-				 MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.ronniecall);
+					MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.ronniecall);
 				    mp.start();
-				reciever.pauseReciever(Integer.parseInt(timeE));
-				Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() +"\nYou get " + timeE + " minutes to play!" , Toast.LENGTH_LONG).show();
+				    HomeScreen.reciever.pauseReciever(Integer.parseInt(timeE));
+				    Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() +"\nYou get " + timeE + " minutes to play!" , Toast.LENGTH_LONG).show();
 
 				} else{
 					Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() , Toast.LENGTH_LONG).show();

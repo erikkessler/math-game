@@ -61,6 +61,9 @@ public class GameListAdapter extends BaseAdapter{
 		TextView percent = (TextView) convertView.findViewById(R.id.tv_percent);
 		percent.setText(game.getPercent());
 		
+		TextView probsWrong = (TextView) convertView.findViewById(R.id.tv_mistakes);
+		probsWrong.setText(game.getProbsWrong());
+		
 		
 		return convertView;
 	}
