@@ -38,7 +38,7 @@
 			android:layout_width="200dp"/>
 
 		<Button
-			android:layout_height="30dp"
+			android:layout_height="35dp"
 			android:layout_width="wrap_content"
 			android:id="@+id/gType"
 			android:text="Select..."
@@ -59,7 +59,7 @@
 			android:layout_width="200dp"/>
 
 		<Button
-			android:layout_height="30dp"
+			android:layout_height="35dp"
 			android:layout_width="wrap_content"
 			android:id="@+id/pPass"
 			android:text="Change..."
@@ -138,30 +138,15 @@
 		<TextView
 		    android:layout_width="200dp"
 		    android:layout_height="wrap_content"
-		    android:text="Addition Range: "
+		    android:text="Addition Difficulty: "
 		    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-		<EditText
-		    android:id="@+id/r0"
-		    android:layout_width="50dp"
-		    android:layout_height="wrap_content"
-		    android:ems="10"
-		    android:inputType="number" >
-
-		</EditText>
-
-		<TextView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text=" to "
-		    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-		<EditText
-		    android:id="@+id/r1"
-		    android:layout_width="50dp"
-		    android:layout_height="wrap_content"
-		    android:ems="10"
-		    android:inputType="number" />
+		<Button
+			android:layout_height="35dp"
+			android:layout_width="wrap_content"
+			android:id="@+id/aRan"
+			android:text="Change..."
+			android:textSize="12sp"/>
 
 	</LinearLayout>
 	
@@ -173,31 +158,15 @@
 		<TextView
 		    android:layout_width="200dp"
 		    android:layout_height="wrap_content"
-		    android:text="Subtraction Range: "
+		    android:text="Subtraction Difficulty: "
 		    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-		<EditText
-		    android:id="@+id/r2"
-		    android:layout_width="50dp"
-		    android:layout_height="wrap_content"
-		    android:ems="10"
-		    android:inputType="number" >
-
-		</EditText>
-
-		<TextView
-		    android:id="@+id/textView2"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text=" to "
-		    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-		<EditText
-		    android:id="@+id/r3"
-		    android:layout_width="50dp"
-		    android:layout_height="wrap_content"
-		    android:ems="10"
-		    android:inputType="number" />
+		<Button
+			android:layout_height="35dp"
+			android:layout_width="wrap_content"
+			android:id="@+id/sRan"
+			android:text="Change..."
+			android:textSize="12sp"/>
 
 	</LinearLayout>
 	
@@ -209,31 +178,15 @@
 		<TextView
 		    android:layout_width="200dp"
 		    android:layout_height="wrap_content"
-		    android:text="Multipication Range: "
+		    android:text="Multipication Difficulty: "
 		    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-		<EditText
-		    android:id="@+id/r4"
-		    android:layout_width="50dp"
-		    android:layout_height="wrap_content"
-		    android:ems="10"
-		    android:inputType="number" >
-
-		</EditText>
-
-		<TextView
-		    android:id="@+id/textView2"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text=" to "
-		    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-		<EditText
-		    android:id="@+id/r5"
-		    android:layout_width="50dp"
-		    android:layout_height="wrap_content"
-		    android:ems="10"
-		    android:inputType="number" />
+		<Button
+			android:layout_height="35dp"
+			android:layout_width="wrap_content"
+			android:id="@+id/mRan"
+			android:text="Change..."
+			android:textSize="12sp"/>
 
 	</LinearLayout>
 	
@@ -245,35 +198,17 @@
 		<TextView
 		    android:layout_width="200dp"
 		    android:layout_height="wrap_content"
-		    android:text="Division Range: "
+		    android:text="Division Difficulty: "
 		    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-		<EditText
-		    android:id="@+id/r6"
-		    android:layout_width="50dp"
-		    android:layout_height="wrap_content"
-		    android:ems="10"
-		    android:inputType="number" >
-
-		    
-		</EditText>
-
-		<TextView
-		    android:id="@+id/textView2"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text=" to "
-		    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-		<EditText
-		    android:id="@+id/r7"
-		    android:layout_width="50dp"
-		    android:layout_height="wrap_content"
-		    android:ems="10"
-		    android:inputType="number" />
+		<Button
+			android:layout_height="35dp"
+			android:layout_width="wrap_content"
+			android:id="@+id/dRan"
+			android:text="Change..."
+			android:textSize="12sp"/>
 
 	</LinearLayout>
-	
 
 </LinearLayout>
 

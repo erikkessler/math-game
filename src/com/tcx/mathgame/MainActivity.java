@@ -46,8 +46,7 @@ public class MainActivity extends Activity implements OnClickListener
 	private boolean gameOn;
 	private int group1Id = 1;
 	private SharedPreferences prefs;
-	private int[] rVs = new int[8];
-	private int subR, addR, multR, divR;
+	private String subR, addR, multR, divR;
 	private int[] probTypes = new int[4];
 	private int numbTypes;
 	private Random rn;
@@ -137,8 +136,10 @@ public class MainActivity extends Activity implements OnClickListener
 			return true;
 	    	
 		case 3:
-	    	Intent intent1 = new Intent( this , HomeScreen.class );
-			startActivity( intent1 );
+//	    	Intent intent1 = new Intent( this , HomeScreen.class );
+//			startActivity( intent1 );
+			onBackPressed();
+			finish();
 			return true;
 			
 			
@@ -212,16 +213,11 @@ public class MainActivity extends Activity implements OnClickListener
 	@Override
 	protected void onResume() {
 		super.onResume();
-		for( int i = 0; i < rVs.length; i++)
-			if( i % 2 == 0)
-				rVs[i] = Integer.parseInt( prefs.getString("range" + i, "0"));
-			else
-				rVs[i] = Integer.parseInt( prefs.getString("range" + i, "12"));
-		
-		addR = rVs[1] - rVs[0];
-		subR = rVs[3] - rVs[2];
-		multR = rVs[5] - rVs[4];
-		divR = rVs[7] - rVs[6];
+
+		addR = prefs.getString("aDiff", "Easy");
+		subR = prefs.getString("sDiff", "Easy");
+		multR = prefs.getString("mDiff", "Easy");
+		divR = prefs.getString("dDiff", "Easy");
 		
 		numbTypes = 0;
 		boolean[] checked = { prefs.getBoolean("0Checked", false), prefs.getBoolean("1Checked", false) , prefs.getBoolean("2Checked", false),prefs.getBoolean("3Checked", false)};
@@ -232,18 +228,11 @@ public class MainActivity extends Activity implements OnClickListener
 			}
 		}
 		
+		if (numbTypes == 0) {
+			numbTypes = 1;
+			probTypes[0] = 0;
+		}
 		
-			
-		
-//		if (prefs.getBoolean("restrictedMode", false)) {
-//			startService(new Intent(MainActivity.this,AppCheckerService.class));
-//			HomeScreen.reciever.resumeReciver();
-//			
-//			
-//		}else {
-//			stopService(new Intent(MainActivity.this,AppCheckerService.class));
-//			HomeScreen.reciever.stopReciver();
-//		}
 		
 		newGame();
 	}
@@ -262,28 +251,251 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		
 		if( gType == 1 ){ // Subtraction
-			first = rn.nextInt(subR) + rVs[2] + 1;
-			second = rn.nextInt(first - rVs[2] + 1) + rVs[2];
-			answer = first - second; 
-			prob.setText(  first + " - " + second );
+			if( subR.equals("Easy")){
+				first = rn.nextInt(9) + 1;
+				second= rn.nextInt( first + 1);
+				answer = first - second;
+				prob.setText(  first + " - " + second );
+				
+			} else if( subR.equals("Medium")) {
+				first = rn.nextInt(18) + 3;
+				if(first == 4 )
+					if( rn.nextBoolean())
+						first = 16;
+				else if( first == 5 )
+					if( rn.nextBoolean())
+						first = 17;
+				else if( first == 6 )
+					if( rn.nextBoolean())
+						first = 18;
+				else if( first == 7 )
+					if( rn.nextBoolean())
+							first = 15;
+				else if( first == 8 )
+					if( rn.nextBoolean())
+							first = 14;
+				else if( first == 10 )
+					if( rn.nextBoolean())
+						first = 20;
+				
+				second= rn.nextInt( first - 1 ) + 2;
+				if( first - second == 0 || first - second == 2 ||first - second == 1 )
+					if( rn.nextInt(3) <= 3  )
+						probGen();
+					else {
+						answer = first - second;
+						prob.setText(  first + " - " + second );
+					}
+				else{
+					answer = first - second;
+					prob.setText(  first + " - " + second );
+				}
+				
+			} else if( subR.equals("Hard")) {
+				first = rn.nextInt(36) + 15;	
+				second= rn.nextInt( first - 6 ) + 5;
+				if( first - second == 0 || first - second == 1 ) {
+					probGen();
+				
+				} else if( first - second == 10){
+					if(rn.nextBoolean())
+						probGen();
+					else{
+						answer = first - second;
+						prob.setText(  first + " - " + second );
+					}
+						
+				}else {
+					answer = first - second;
+					prob.setText(  first + " - " + second );
+				}
+				
+			} else if( subR.equals("Expert")) {
+				first = rn.nextInt(51) + 40;	
+				second= rn.nextInt( first - 39 ) + 40;
+				if( first - second == 0 || first - second == 1 || first - second == 2) {
+					probGen();
+				
+				} else if( first - second == 10){
+					if(rn.nextBoolean())
+						probGen();
+					else{
+						answer = first - second;
+						prob.setText(  first + " - " + second );
+					}
+						
+				}else {
+					answer = first - second;
+					prob.setText(  first + " - " + second );
+				}
+				
+			}
 			
 		} else if ( gType == 0 ){ // Addition
-			first = rn.nextInt(addR) + rVs[0] + 1;
-			second = rn.nextInt(addR)+ rVs[0] + 1;
-			answer = first + second;
-			prob.setText(  first + " + " + second );
+			if( addR.equals("Easy")){
+				first = rn.nextInt(9) + 1;
+				second = rn.nextInt(10);
+				answer = first + second;
+				prob.setText(  first + " + " + second );
+			} else if( addR.equals("Medium")) {
+				first = rn.nextInt(19) + 2;	
+				second= rn.nextInt( 19 ) + 2;
+				if( first + second == 4 || first + second == 5 || first + second == 6 || first + second == 7) {
+					probGen();
+				
+				} else {
+					answer = first + second;
+					prob.setText(  first + " + " + second );
+				}
+			} else if( addR.equals("Hard")) {
+				first = rn.nextInt(46) + 5;	
+				second= rn.nextInt( 45 ) + 6;
+				if( first + second < 20 ) {
+					probGen();
+				
+				}else if( first + second <= 30){
+					if(rn.nextBoolean())
+						probGen();
+					else{
+						answer = first + second;
+						prob.setText(  first + " + " + second );
+					}
+						
+				} else {
+					answer = first + second;
+					prob.setText(  first + " + " + second );
+				}
+			} else if( addR.equals("Expert")) {
+				first = rn.nextInt(50) + 40;	
+				second= rn.nextInt( 50 ) + 40;
+				if( first + second < 100 ) {
+					probGen();
+				
+				}else if( first == second ){
+					if(rn.nextBoolean())
+						probGen();
+					else{
+						answer = first + second;
+						prob.setText(  first + " + " + second );
+					}
+						
+				} else {
+					answer = first + second;
+					prob.setText(  first + " + " + second );
+				}
+			}
 			
 		} else if ( gType == 2 ){ // Multiplication
-			first = rn.nextInt(multR) + rVs[4] + 1;
-			second = rn.nextInt(multR) + rVs[4] +1;
-			answer = first * second;
-			prob.setText(  first + " x " + second );
+			if( multR.equals("Easy")){
+				first = rn.nextInt(4) + 1;
+				second = rn.nextInt(4) + 1;
+				answer = first * second;
+				prob.setText(  first + " x " + second );
+			} else if( multR.equals("Medium")) {
+				first = rn.nextInt(7) + 2;
+				if(first == 2 )
+					if( rn.nextBoolean())
+						first = 7;
+				else if( first == 3 )
+					if( rn.nextBoolean())
+						first = 8;
+				second = rn.nextInt(7) + 2;
+				if(second == 2 )
+					if( rn.nextBoolean())
+						second = 7;
+				else if( second == 3 )
+					if( rn.nextBoolean())
+						second = 8;
+				if( first * second == 4 || first * second == 6 )
+					probGen();
+					
+				else{
+					answer = first * second;
+					prob.setText(  first + " x " + second );
+				}
+			} else if( multR.equals("Hard")) {
+				first = rn.nextInt(11) + 2;
+				if(first == 10 )
+					if( rn.nextBoolean())
+						first = 12;
+				second = rn.nextInt(11) + 2;
+				if(second == 10 )
+					if( rn.nextBoolean())
+						second = 9;
+				
+				if( first * second < 10 )
+					probGen();
+					
+				else{
+					answer = first * second;
+					prob.setText(  first + " x " + second );
+				}
+			} else if( multR.equals("Expert")) {
+				first = rn.nextInt(6) + 10;
+				second = rn.nextInt(6) + 10;
+				answer = first * second;
+				prob.setText(  first + " x " + second );
+			}
 			
 		 }else if ( gType == 3 ){ // Divisions
-			 second = rn.nextInt(divR) + rVs[6] + 1;
-			 first = second *( rn.nextInt(divR + 1) + rVs[6]);
-			 answer = first/second;
-			 prob.setText(  first + " ÷ " + second );
+			 if( divR.equals("Easy")){
+				 second = rn.nextInt(3) + 1;
+				 first = second * (rn.nextInt(3) + 1);
+				 answer = first/second;
+				 prob.setText(  first + " ÷ " + second );
+				} else if( divR.equals("Medium")) {
+					second = rn.nextInt(7) + 2;
+					first = second * (rn.nextInt(7) + 2);
+					
+					if( first / second == 1 )
+						probGen();
+						
+					else{
+						answer = first / second;
+						prob.setText(  first + " ÷ " + second );
+					}
+				} else if( divR.equals("Hard")) {
+					second = rn.nextInt(9) + 4;
+					if( second == 10)
+						if(rn.nextBoolean())
+							second = 12;
+					first = second * (rn.nextInt(9) + 4);
+					
+	
+					if( first / second == 10 ){
+						if(rn.nextBoolean())
+							probGen();
+						else{
+							answer = first / second;
+							prob.setText(  first + " ÷ " + second );
+						}
+							
+					}else {
+						answer = first / second;
+						prob.setText(  first + " ÷ " + second );
+					}
+					
+				} else if( divR.equals("Expert")) {
+					second = rn.nextInt(9) + 7;
+					if( second == 10)
+						if(rn.nextBoolean())
+							second = 12;
+					first = second * (rn.nextInt(9) + 7);
+					
+	
+					if( first / second == 10 ){
+						if(rn.nextBoolean())
+							probGen();
+						else{
+							answer = first / second;
+							prob.setText(  first + " ÷ " + second );
+						}
+							
+					}else {
+						answer = first / second;
+						prob.setText(  first + " ÷ " + second );
+					}
+				}
 
 		}
 	}

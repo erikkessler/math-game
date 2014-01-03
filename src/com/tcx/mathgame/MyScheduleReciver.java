@@ -8,6 +8,7 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,6 +28,7 @@ public class MyScheduleReciver extends BroadcastReceiver{
 	private static boolean started;
 	private boolean go;
 	private static NotificationManager mNotifyMgr;
+	private boolean paused;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -103,6 +105,7 @@ public class MyScheduleReciver extends BroadcastReceiver{
 	}
 	
 	public void resumeReciver() {
+		paused = false;
 		startReceiver();
 	}
 	
@@ -111,6 +114,7 @@ public class MyScheduleReciver extends BroadcastReceiver{
 	}
 	
 	public void pauseReciever(int time) {
+		paused = true;
 		stopReciver();
 		NotificationCompat.Builder mBuilder =
 			    new NotificationCompat.Builder(mContext)
@@ -125,10 +129,10 @@ public class MyScheduleReciver extends BroadcastReceiver{
 			    mNotifyMgr.cancel(002); 
 			    ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
 
-		        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-
-		        ComponentName componentInfo = taskInfo.get(0).topActivity;                      
-		        String packageName=componentInfo.getPackageName();
+				List<RunningAppProcessInfo> runningProcInfo = am.getRunningAppProcesses();
+				
+				        Log.d("YOLO", runningProcInfo.get(0).processName);
+				       String packageName =  runningProcInfo.get(0).processName;
 		        
 		        if(!packageName.equals("com.tcx.mathgame")){
 				    Intent startMain = new Intent(Intent.ACTION_MAIN);
@@ -145,5 +149,6 @@ public class MyScheduleReciver extends BroadcastReceiver{
 	    
 		
 	}
+	
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 public class AppCheckerService extends Service {
@@ -31,15 +33,12 @@ public class AppCheckerService extends Service {
 		}
 		ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 
-        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+		List<RunningAppProcessInfo> runningProcInfo = am.getRunningAppProcesses();
+		
+		        Log.d("YOLO", runningProcInfo.get(0).processName);
+		       String packageName =  runningProcInfo.get(0).processName;
+		        
 
-        ComponentName componentInfo = taskInfo.get(0).topActivity;                      
-        String currentActivityName=componentInfo.getClassName();
-        String packageName=componentInfo.getPackageName();
-//        if(!packageName.equals(oldPackage))
-        	//Toast.makeText( this.getApplicationContext() , packageName, Toast.LENGTH_SHORT).show();
-        
-//        oldPackage = packageName;
         if((!packageName.equals("com.tcx.mathgame") && (!packageName.equals( homeName))) && (!packageName.equals("fr.lehovetzki.ABMath"))) {
         	Toast.makeText( this.getApplicationContext() , "Hey! Do your math!", Toast.LENGTH_SHORT).show();
         	Intent startMain = new Intent(Intent.ACTION_MAIN);

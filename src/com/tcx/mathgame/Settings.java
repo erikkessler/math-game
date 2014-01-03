@@ -1,6 +1,7 @@
 package com.tcx.mathgame;
 
 import android.app.*;
+import android.util.Log;
 import android.view.View.*;
 import android.view.inputmethod.InputMethodManager;
 import android.view.*;
@@ -25,6 +26,7 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	private Button gType;
 	private boolean settings;
 	private TextView[] ranges = new TextView[8];
+	private EditText current, newPass;
 	
 	@Override
 	public void onCheckedChanged(CompoundButton p1, boolean p2)
@@ -80,20 +82,11 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 			editor.putString("gameLength", gLenth.getText().toString());
 			editor.putString("earnedTime", eTime.getText().toString());
 			editor.putString("correctNeeded", cNeeded.getText().toString());
-			//editor.putString("gameType", gType.getText().toString());
-			int[] rVs =  {Integer.parseInt(ranges[0].getText().toString()),Integer.parseInt(ranges[1].getText().toString()),
-								Integer.parseInt(ranges[2].getText().toString()),Integer.parseInt(ranges[3].getText().toString()),
-								Integer.parseInt(ranges[4].getText().toString()),Integer.parseInt(ranges[5].getText().toString()),
-								Integer.parseInt(ranges[6].getText().toString()),Integer.parseInt(ranges[7].getText().toString())};
-			
-			if( rVs[0] < rVs[1] && rVs[2] < rVs[3] && rVs[4] < rVs[5] && rVs[6] < rVs[7]) {
-				for( int i = 0; i < rVs.length; i++)
-					editor.putString("range"+i, rVs[i] + "");
-				
-			}
+		
 			editor.commit();
 		}
 		super.onPause();
+		finish();
 	}
 	
 
@@ -117,6 +110,20 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 				gType = (Button) findViewById(R.id.gType);
 				Button change = (Button) findViewById(R.id.pPass);
 				change.setOnClickListener(this);
+				
+				Button aDiff = (Button) findViewById(R.id.aRan);
+				aDiff.setOnClickListener(this);
+				
+				Button sDiff = (Button) findViewById(R.id.sRan);
+				sDiff.setOnClickListener(this);
+				
+				Button mDiff = (Button) findViewById(R.id.mRan);
+				mDiff.setOnClickListener(this);
+				
+				Button dDiff = (Button) findViewById(R.id.dRan);
+				dDiff.setOnClickListener(this);
+				
+				
 				for( int i=0; i < ranges.length; i++ ) {
 					String a = "r" + i;
 					ranges[i] = (TextView) findViewById(getResources().getIdentifier(a, "id", getPackageName()));
@@ -128,14 +135,6 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 				gLenth.setText( prefs.getString("gameLength", "25"));
 				eTime.setText( prefs.getString("earnedTime", "15"));
 				cNeeded.setText( prefs.getString("correctNeeded", "25"));
-				//gType.setText( prefs.getString("gameType", "Subtraction" ));
-				
-				for( int i = 0; i < ranges.length; i++){
-					if( i % 2 == 0)
-						ranges[i].setText( prefs.getString( "range" + i, "0"));
-					else
-						ranges[i].setText( prefs.getString( "range" + i, "12"));
-				}
 				
 				gType.setOnClickListener(this);
 				
@@ -173,14 +172,14 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 			adb.setNegativeButton("Ok", null);
 			adb.setTitle("Which ones?");
 			adb.show();
-		}else {
-			 final Dialog dialog = new Dialog(this);
+		}else if( p1.getId() == R.id.pPass) {
+				final Dialog dialog = new Dialog(this);
 		        dialog.setContentView(R.layout.dialog);
 		        dialog.setTitle("Change Password...");
 
 		        // set the custom dialog components - text, image and button
-		        EditText current = (EditText) dialog.findViewById(R.id.pass_cur);
-		        EditText newPass = (EditText) dialog.findViewById(R.id.pass_new);
+		        current = (EditText) dialog.findViewById(R.id.pass_cur);
+		        newPass = (EditText) dialog.findViewById(R.id.pass_new);
 
 		        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialog_ok);
 		        Button dialogButtonCan = (Button) dialog.findViewById(R.id.dialog_cancel);
@@ -188,7 +187,25 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 		        dialogButtonOk.setOnClickListener(new OnClickListener() {
 		            @Override
 		            public void onClick(View v) {
-		                dialog.dismiss();
+		    
+		            	if(current.getText().toString().equals(prefs.getString("password", "admin"))){
+		            		if(newPass.getText().toString().equals("")){
+		            			Toast.makeText( getApplicationContext() , "Enter a new password..." , Toast.LENGTH_LONG).show();
+		            			newPass.setText("");
+		            		} else{
+		            			editor.putString("password", newPass.getText().toString());
+		            			editor.commit();
+		            			Toast.makeText( getApplicationContext() , "New Password Saved!" , Toast.LENGTH_LONG).show();
+		            			dialog.dismiss();
+		            		}
+		            		
+		            	} else {
+		            		Toast.makeText( getApplicationContext() , "Incorrect Password" , Toast.LENGTH_LONG).show();
+		            		current.setText("");
+		            		newPass.setText("");
+		            	}
+		            		
+		                
 		            }
 		        });
 		        
@@ -200,7 +217,37 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 		        });
 
 		        dialog.show();
+		} else if( p1.getId() == R.id.aRan) {
+			diffDialog("a");
+			
+		} else if( p1.getId() == R.id.sRan) {
+			diffDialog("s");
+		} else if( p1.getId() == R.id.mRan) {
+			diffDialog("m");
+		} else if( p1.getId() == R.id.dRan) {
+			diffDialog("d");
 		}
+	}
+	
+	private void diffDialog(final String type) {
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		final String items[] = new String[] {"Easy", "Medium", "Hard", "Expert"};
+		adb.setSingleChoiceItems(items, prefs.getInt(type + "DiffPlace", 0), new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface p1, int p2)
+				{
+					editor.putString(type + "Diff", items[p2]);
+					editor.putInt(type + "DiffPlace", p2);
+					editor.commit();
+					p1.dismiss();
+				}
+				
+			
+		}
+		
+		);
+		adb.show();
 	}
 	
 }
