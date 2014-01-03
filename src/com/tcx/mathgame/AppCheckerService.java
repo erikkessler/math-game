@@ -35,7 +35,7 @@ public class AppCheckerService extends Service {
 
 		List<RunningAppProcessInfo> runningProcInfo = am.getRunningAppProcesses();
 		
-		        Log.d("YOLO", runningProcInfo.get(0).processName);
+		        //Log.d("YOLO", runningProcInfo.get(0).processName);
 		       String packageName =  runningProcInfo.get(0).processName;
 		        
 

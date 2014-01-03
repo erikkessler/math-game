@@ -1,10 +1,13 @@
 package com.tcx.mathgame;
 
+import java.util.Random;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -126,38 +129,89 @@ public class HomeScreen extends Activity {
 				
 				typers.setText(types);
 				
-				if( reciever == null) {
-					Log.d("A", "Reciver was null");
-					reciever = new MyScheduleReciver();
+				if(!MyScheduleReciver.hasUser()) {
 					
+					reciever = new MyScheduleReciver();
 					IntentFilter filter = new IntentFilter();
 					filter.addAction( Intent.ACTION_USER_BACKGROUND );
 					filter.addAction( Intent.ACTION_USER_FOREGROUND );
 					registerReceiver( reciever, filter );
-			}
-			
-			
-			boolean isNew = false;
-			if(! reciever.isStarted()) {
-				isNew = true;
-				Intent i = new Intent("tcx.YOLO");
-				Bundle extras = new Bundle();  
-		        extras.putBoolean("start_now", false );  
-		        i.putExtras(extras);  
-				sendBroadcast(i);
-				Log.d("A", "Main Started Reciver");
+					Log.d("YOLO", "Main Added Things");
+					MyScheduleReciver.setUser();
+				}
 				
 				
-			}
-			
+//				Intent i = new Intent("tcx.THERE");
+//				Bundle extras = new Bundle();   
+//		        i.putExtras(extras);  
+//				sendBroadcast(i);
+//				Log.d("YOLO", "Sent finding intent");
+//				
+//				Runnable runs = new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						
+//						if( prefs.getBoolean("there", false)) {
+//							prefs.edit().putBoolean("there", false);
+//							prefs.edit().commit();
+//							Log.d("YOLO", "It was there");
+//							
+//						} else {
+//							reciever = new MyScheduleReciver();
+//							IntentFilter filter = new IntentFilter();
+//							filter.addAction( Intent.ACTION_USER_BACKGROUND );
+//							filter.addAction( Intent.ACTION_USER_FOREGROUND );
+//							registerReceiver( reciever, filter );
+//							Log.d("YOLO", "Main Started Reciver");
+//						}
+//						
+//					}
+//				};
+//				
+//				Handler handler = new Handler();
+//				handler.postDelayed(runs, 2000);
+				
+//				if( reciever == null) {
+//					Log.d("A", "Reciver was null");
+//					reciever = new MyScheduleReciver();
+//					
+//					IntentFilter filter = new IntentFilter();
+//					filter.addAction( Intent.ACTION_USER_BACKGROUND );
+//					filter.addAction( Intent.ACTION_USER_FOREGROUND );
+//					registerReceiver( reciever, filter );
+//			}
+//			
+//			
+//			boolean isNew = false;
+//			if(! reciever.isStarted()) {
+//				isNew = true;
+//				Intent i = new Intent("tcx.YOLO");
+//				Bundle extras = new Bundle();  
+//		        extras.putBoolean("start_now", false );  
+//		        i.putExtras(extras);  
+//				sendBroadcast(i);
+//				Log.d("A", "Main Started Reciver");
+//				
+//				
+//			}
+//			
 			if (prefs.getBoolean("restrictedMode", false)) {
 				startService(new Intent(HomeScreen.this,AppCheckerService.class));
-				if(!isNew) reciever.resumeReciver();
+				Intent i = new Intent("tcx.START");
+				Bundle extras = new Bundle();   
+		        i.putExtras(extras);  
+				sendBroadcast(i);
+				Log.d("YOLO", "On Resume tried to start service");
 				
 				
 			}else {
 				stopService(new Intent(HomeScreen.this,AppCheckerService.class));
-				if(!isNew) reciever.stopReciver();
+				Intent i = new Intent("tcx.STOP");
+				Bundle extras = new Bundle();   
+		        i.putExtras(extras);  
+				sendBroadcast(i);
+				Log.d("YOLO", "On Resume tried to stop service");
 			}
 	}
 	

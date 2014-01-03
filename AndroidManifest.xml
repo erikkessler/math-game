@@ -55,9 +55,12 @@
 		 
 
         <receiver android:name="MyScheduleReciver" 
-            android:enabled="true">
+            >
             <intent-filter>
                 <action android:name="tcx.YOLO" />
+                <action android:name="tcx.START" />
+                <action android:name="tcx.STOP" />
+                <action android:name="tcx.PAUSE" />
             </intent-filter>
         </receiver>
         <receiver android:name="MyStartServiceReceiver" >

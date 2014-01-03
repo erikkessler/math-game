@@ -561,7 +561,8 @@ public class MainActivity extends Activity implements OnClickListener
 			
 			Log.d("Game:", game.getDate() + " " + game.getType() + " " + game.getRight() + " " + game.getWrong() + " " + game.getPercent());
 			
-			db.addGame( game );
+			if(!right.getText().toString().equals("0") || !wrong.getText().toString().equals("0") )
+				db.addGame( game );
 			
 			int numNeed = Integer.parseInt(prefs.getString("correctNeeded", "25"));
 			String timeE = prefs.getString("earnedTime","15");
@@ -569,7 +570,11 @@ public class MainActivity extends Activity implements OnClickListener
 			if ( Integer.parseInt( right.getText().toString() ) >= numNeed && prefs.getBoolean("restrictedMode", true)) {
 					MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.ronniecall);
 				    mp.start();
-				    HomeScreen.reciever.pauseReciever(Integer.parseInt(timeE));
+				    Intent i = new Intent("tcx.PAUSE");
+					Bundle extras = new Bundle();   
+					extras.putInt("time", Integer.parseInt(timeE));
+			        i.putExtras(extras);  
+					sendBroadcast(i);
 				    Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() +"\nYou get " + timeE + " minutes to play!" , Toast.LENGTH_LONG).show();
 
 				} else{
