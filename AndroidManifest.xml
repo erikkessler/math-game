@@ -25,7 +25,7 @@
 		
         </activity>
         <activity
-            android:label="MainActivity"
+            android:label="Math"
             android:name="com.tcx.mathgame.MainActivity"
 			android:theme="@android:style/Theme.Holo.Light"
 			android:parentActivityName="com.tcx.mathgame.MainActivity" />

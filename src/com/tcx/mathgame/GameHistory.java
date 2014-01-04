@@ -6,6 +6,7 @@ import java.util.Collections;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -13,7 +14,6 @@ import android.widget.ListView;
 public class GameHistory extends Activity {
 	
 	private ListView list;
-	private DatabaseHandler db;
 	GameListAdapter adapter;
 
 	@Override
@@ -26,13 +26,15 @@ public class GameHistory extends Activity {
 		
 		
 		list = (ListView) findViewById(R.id.gameList);
-		db = new DatabaseHandler(this);
 		showList();
+		
 	}
+	
 
 	private void showList() {
-		
+		DatabaseHandler db = new DatabaseHandler(this);
 		ArrayList<Game> gameList = db.getAllGames();
+		db.close();
 		Collections.reverse(gameList);
 		adapter = new GameListAdapter(GameHistory.this, gameList);
 		list.setAdapter( adapter);
@@ -51,12 +53,16 @@ public class GameHistory extends Activity {
 		
 		 @Override
 	    public boolean onOptionsItemSelected(MenuItem item) {
-
-		   deleteAll();
-		    	return super.onOptionsItemSelected(item);
+			 if ( item.getItemId() == 0)
+				 deleteAll();
+		    return super.onOptionsItemSelected(item);
 			}
 
+		
+
+
 		private void deleteAll() {
+			DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 			ArrayList<Game> gameList = db.getAllGames();
 			for( Game game : gameList ) 
 				db.deleteGame(game);
@@ -64,6 +70,7 @@ public class GameHistory extends Activity {
 			gameList = db.getAllGames();
 			adapter = new GameListAdapter(GameHistory.this, gameList);
 			list.setAdapter( adapter);
+			db.close();
 			
 			
 		}

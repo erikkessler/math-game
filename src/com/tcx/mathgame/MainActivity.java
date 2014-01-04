@@ -50,11 +50,10 @@ public class MainActivity extends Activity implements OnClickListener
 	private int[] probTypes = new int[4];
 	private int numbTypes;
 	private Random rn;
-	private Game game;
-	private DatabaseHandler db;
-	private MyScheduleReciver reciever;
 	private String mistakes;
 	private int first, second;
+	private String types, date;
+	private boolean screenChanged = false;
 	
 	int newGameId = Menu.FIRST;
 	int endGameId = Menu.FIRST + 1;
@@ -86,7 +85,8 @@ public class MainActivity extends Activity implements OnClickListener
 			buttons[i].setOnClickListener( this );
 		}
 		
-		db = new DatabaseHandler(this);
+		
+		
 		
 		handler = new Handler();
 		runnable = new Runnable() {
@@ -233,13 +233,12 @@ public class MainActivity extends Activity implements OnClickListener
 			probTypes[0] = 0;
 		}
 		
-		
-		newGame();
+		if(!screenChanged)
+			newGame();
 	}
 	
 	@Override
 	  protected void onPause() {
-		endGame();
 	    super.onPause();
 	    
 	  }
@@ -504,11 +503,11 @@ public class MainActivity extends Activity implements OnClickListener
 		endGame();
 		mistakes = "";
 		
-		game = new Game();
-		game.setDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(new Date()));
+		
+		date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(new Date());
 		
 		// Get Types
-		String types = "";
+		types = "";
 		for( int i = 0; i < numbTypes; i++) {
 			if( i != 0 ) {
 				types = types + ", ";
@@ -516,22 +515,22 @@ public class MainActivity extends Activity implements OnClickListener
 			
 			switch ( probTypes[i]) {
 				case 0:
-					types = types + "Addition";
+					types = types + "Addition " + "(" + addR.substring(0,2) + ")";
 					break;
 				case 1:
-					types = types + "Subtraction";
+					types = types + "Subtraction " + "(" + subR.substring(0,2) + ")";
 					break;
 				case 2:
-					types = types + "Multipication";
+					types = types + "Multipication " + "(" + multR.substring(0,2) + ")";
 					break;
 				case 3:
-					types = types + "Division";
+					types = types + "Division " + "(" + divR.substring(0,2) + ")";
 					break;
 			}
 			
 		}
 		
-		game.setType( types );
+		
 		
 		gameOn = true;
 		probGen();
@@ -543,7 +542,53 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		}
 		
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		Log.d("YOLO", "Save stuff");
+		outState.putString("right", right.getText().toString());
+		outState.putString("wrong", wrong.getText().toString());
+		outState.putString("prob", prob.getText().toString());
+		outState.putString("enty", entry.getText().toString());
+		outState.putString("time", time.getText().toString());
+		outState.putString("mistakes", mistakes);
+		outState.putString("types", types);
+		outState.putBoolean("gameon", gameOn);
+		outState.putString("date", date);
+		outState.putInt("answer", answer);
+		handler.removeCallbacks(runnable);
+	}
 		
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		Log.d("YOLO", "Restore stuff");
+		right.setText(savedInstanceState.getString("right"));
+		wrong.setText(savedInstanceState.getString("wrong"));
+		prob.setText(savedInstanceState.getString("prob"));
+		entry.setText(savedInstanceState.getString("entry"));
+		time.setText(savedInstanceState.getString("time"));
+		screenChanged = true;
+		mistakes = savedInstanceState.getString("mistakes");
+		types = savedInstanceState.getString("types");
+		time_left = Integer.parseInt(savedInstanceState.getString("time"));
+		gameOn = savedInstanceState.getBoolean("gameon");
+		date = savedInstanceState.getString("date");
+		answer = savedInstanceState.getInt("answer");
+		if( gameOn )
+			handler.postDelayed(runnable,1000);
+		
+	}
+
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Log.d("YOLO", "Back Pressed");
+		endGame();
+	}
+
 
 	private void endGame()
 	{
@@ -554,6 +599,9 @@ public class MainActivity extends Activity implements OnClickListener
 			handler.removeCallbacks( runnable );
 			gameOn = false;
 			
+			Game game = new Game();
+			game.setType( types );
+			game.setDate(date);
 			game.setRight( right.getText().toString());
 			game.setWrong( wrong.getText().toString());
 			game.setPercent(Math.round( Integer.parseInt(right.getText().toString()) * 100.0/ (Integer.parseInt(right.getText().toString()) + Integer.parseInt(wrong.getText().toString()))) + "%");
@@ -561,8 +609,11 @@ public class MainActivity extends Activity implements OnClickListener
 			
 			Log.d("Game:", game.getDate() + " " + game.getType() + " " + game.getRight() + " " + game.getWrong() + " " + game.getPercent());
 			
-			if(!right.getText().toString().equals("0") || !wrong.getText().toString().equals("0") )
+			if(!right.getText().toString().equals("0") || !wrong.getText().toString().equals("0") ) {
+				DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 				db.addGame( game );
+				db.close();
+			}
 			
 			int numNeed = Integer.parseInt(prefs.getString("correctNeeded", "25"));
 			String timeE = prefs.getString("earnedTime","15");
