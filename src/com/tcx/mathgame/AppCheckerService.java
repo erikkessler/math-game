@@ -1,22 +1,17 @@
 package com.tcx.mathgame;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 public class AppCheckerService extends Service {
@@ -59,7 +54,6 @@ public class AppCheckerService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return mBinder;
 	}
 	

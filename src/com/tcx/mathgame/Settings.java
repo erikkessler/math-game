@@ -1,23 +1,29 @@
 package com.tcx.mathgame;
 
-import android.app.*;
-import android.util.Log;
-import android.view.View.*;
+import android.app.ActionBar;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
-import android.view.*;
-import android.os.*;
-import android.widget.*;
-import android.content.*;
-
-import com.tcx.mathgame.R;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class Settings extends Activity implements OnClickListener, CompoundButton.OnCheckedChangeListener
 {
 
-	
-	
-
-	private String pass;
 	private TextView password, gLenth, eTime, cNeeded;
 	public static final String PREFS_NAME = "MyPrefsFile";
 	private SharedPreferences prefs;
@@ -33,6 +39,8 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	{
 		editor.putBoolean( "restrictedMode", p2 );
 		editor.commit();
+		Button fTime = (Button) findViewById(R.id.fTime);
+		if(!p2) fTime.setEnabled(prefs.getBoolean( "restrictedMode", false));
 
 	}
 	
@@ -54,7 +62,6 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
 		setContentView( R.layout.settingpass );
 		
@@ -123,6 +130,9 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 				Button dDiff = (Button) findViewById(R.id.dRan);
 				dDiff.setOnClickListener(this);
 				
+				Button fTime = (Button) findViewById(R.id.fTime);
+				fTime.setOnClickListener(this);
+				
 				
 				for( int i=0; i < ranges.length; i++ ) {
 					String a = "r" + i;
@@ -135,6 +145,7 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 				gLenth.setText( prefs.getString("gameLength", "25"));
 				eTime.setText( prefs.getString("earnedTime", "15"));
 				cNeeded.setText( prefs.getString("correctNeeded", "25"));
+				fTime.setEnabled(prefs.getBoolean( "restrictedMode", false));
 				
 				gType.setOnClickListener(this);
 				
@@ -226,6 +237,15 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 			diffDialog("m");
 		} else if( p1.getId() == R.id.dRan) {
 			diffDialog("d");
+		} else if( p1.getId() == R.id.fTime) {
+			if(!eTime.getText().equals("")){
+				Intent i = new Intent("tcx.PAUSE");
+				Bundle extras = new Bundle();   
+				extras.putInt("time", Integer.parseInt(eTime.getText().toString()));
+		        i.putExtras(extras);  
+				sendBroadcast(i);
+//			    Toast.makeText( this.getApplicationContext() , eTime.getText().toString() + " minutes of reward time started..." , Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 	

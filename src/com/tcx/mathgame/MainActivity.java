@@ -5,27 +5,21 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-import android.R.color;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,18 +27,14 @@ public class MainActivity extends Activity implements OnClickListener
 {
 	
 	private Button[] buttons = new Button[11];
-	private TextView entry;
-	private TextView prob;
-	private TextView right;
-	private TextView wrong;
+	private TextView entry, prob;
+	private TextView right, wrong;
 	private TextView time;
 	private int answer;
-	private int LENGTH = 10;
-	private int time_left = LENGTH;
+	private int time_left;
 	private Runnable runnable;
 	private Handler handler;
 	private boolean gameOn;
-	private int group1Id = 1;
 	private SharedPreferences prefs;
 	private String subR, addR, multR, divR;
 	private int[] probTypes = new int[4];
@@ -55,9 +45,6 @@ public class MainActivity extends Activity implements OnClickListener
 	private String types, date;
 	private boolean screenChanged = false;
 	
-	int newGameId = Menu.FIRST;
-	int endGameId = Menu.FIRST + 1;
-	int mainId = Menu.FIRST +2;
 
 	
 	/** Called when the activity is first created. */
@@ -85,9 +72,6 @@ public class MainActivity extends Activity implements OnClickListener
 			buttons[i].setOnClickListener( this );
 		}
 		
-		
-		
-		
 		handler = new Handler();
 		runnable = new Runnable() {
 			@Override
@@ -100,23 +84,16 @@ public class MainActivity extends Activity implements OnClickListener
 					handler.postDelayed(this, 1000);
 				}
 			}
-
-			
-		
 		};
-		
-		
-		
-		
     }
 	
 
    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-	    menu.add(group1Id, newGameId, newGameId, "New Game");
-	    menu.add( group1Id, endGameId, endGameId, "End Game");
-	    menu.add( group1Id, mainId, mainId, "Main Screen");
+	    menu.add(1, 0, 0, "New Game");
+	    menu.add( 1, 1, 1, "End Game");
+	    menu.add( 1, 2, 2, "Main Screen");
 	   
 	
 	    return super.onCreateOptionsMenu(menu); 
@@ -127,22 +104,22 @@ public class MainActivity extends Activity implements OnClickListener
 
 	    switch (item.getItemId()) {
 	
-		case 1:
+		case 0:
 	    	newGame();
 	    	return true;
 	
-		case 2:
+		case 1:
 			endGame();
 			return true;
 	    	
-		case 3:
-//	    	Intent intent1 = new Intent( this , HomeScreen.class );
-//			startActivity( intent1 );
+		case 2:
 			onBackPressed();
 			finish();
 			return true;
-			
-			
+		case android.R.id.home:
+			endGame();
+	        NavUtils.navigateUpFromSameTask(this);
+	        return true;	
 		default:
 	    	break;
 	
@@ -150,44 +127,37 @@ public class MainActivity extends Activity implements OnClickListener
 	    	return super.onOptionsItemSelected(item);
 		}
 
-	
-    
-	
-	
-
 	@Override
-	public void onClick(View p1)
-	{
+	public void onClick(View p1) {
 		Button clicked = (Button) p1;
 		if ( gameOn ) {
-		if(clicked.getText().equals("Delete") ) {
-			if(entry.getText().length() != 0 ) 
-				entry.setText(entry.getText().subSequence(0, entry.getText().length()-1));
-		} else {
-			entry.setText( entry.getText() + "" + clicked.getText());
-			
-			if(entry.getText().toString().length() == (answer + "").length() ) {
-				check();
-				}
-		}
+			if(clicked.getText().equals("Delete") ) {
+				if(entry.getText().length() != 0 ) 
+					entry.setText(entry.getText().subSequence(0, entry.getText().length()-1));
+			} else {
+				entry.setText( entry.getText() + "" + clicked.getText());
+				
+				if(entry.getText().toString().length() == (answer + "").length() ) {
+					check();
+					}
+			}
 		}
 	}
 
 
 
-	private void check()
-	{
+	private void check() {
 		Runnable runable = new Runnable() {
 
 			@Override
 			public void run() {
-				//background.setBackgroundColor(color.background_light);
 				entry.setTextColor(Color.BLACK);
 				entry.setText("");	
 				
 			}
 			
 		};
+		
 		if( entry.getText().equals( answer + "" ) ) {
 			int correct = Integer.parseInt( right.getText().toString() ) + 1;
 			right.setText( correct + "" );
@@ -202,7 +172,6 @@ public class MainActivity extends Activity implements OnClickListener
 			handler.postDelayed(runable, 400);
 			
 		}
-		
 		
 		probGen();
 		
@@ -236,13 +205,6 @@ public class MainActivity extends Activity implements OnClickListener
 		if(!screenChanged)
 			newGame();
 	}
-	
-	@Override
-	  protected void onPause() {
-	    super.onPause();
-	    
-	  }
-
 
 	private void probGen() {
 		
@@ -495,14 +457,12 @@ public class MainActivity extends Activity implements OnClickListener
 						prob.setText(  first + " ÷ " + second );
 					}
 				}
-
 		}
 	}
 	
 	private void newGame() {
 		endGame();
 		mistakes = "";
-		
 		
 		date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(new Date());
 		
@@ -629,7 +589,8 @@ public class MainActivity extends Activity implements OnClickListener
 				    Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() +"\nYou get " + timeE + " minutes to play!" , Toast.LENGTH_LONG).show();
 
 				} else{
-					Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() , Toast.LENGTH_LONG).show();
+					if(!right.getText().toString().equals("0") || !wrong.getText().toString().equals("0") )
+						Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() , Toast.LENGTH_LONG).show();
 
 				}
 		}

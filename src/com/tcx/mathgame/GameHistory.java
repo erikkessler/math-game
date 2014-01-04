@@ -6,7 +6,6 @@ import java.util.Collections;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
