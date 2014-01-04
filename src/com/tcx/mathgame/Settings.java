@@ -238,7 +238,7 @@ public class Settings extends Activity implements OnClickListener, CompoundButto
 		} else if( p1.getId() == R.id.dRan) {
 			diffDialog("d");
 		} else if( p1.getId() == R.id.fTime) {
-			if(!eTime.getText().equals("")){
+			if(!eTime.getText().toString().equals("")){
 				Intent i = new Intent("tcx.PAUSE");
 				Bundle extras = new Bundle();   
 				extras.putInt("time", Integer.parseInt(eTime.getText().toString()));
