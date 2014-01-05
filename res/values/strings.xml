@@ -3,5 +3,37 @@
 
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">Reward Math</string>
+    <string name="pref_category_restricted" >Admin Settings</string>
+    <string name="pref_category_game">Game Settings</string>
+    <string name="pref_category_diff">Difficulty Settings</string>
+    <string name="pref_title_restricted_mode">Restricted Mode</string>
+    <string name="pref_title_password">Change Password</string>
+    <string name="pref_title_free_time">Start Free Time</string>
+    <string name="pref_summary_free_time">Pauses restriced mode for time defined by Earned Time</string>
+    <string name="pref_title_game_type">Game Type</string>
+    <string name="pref_title_earned_time">Earned Time</string>
+    <string name="pref_title_game_length">Game Length</string>
+    <string name="pref_title_correct_needed">Correct Needed</string>
+    <string name="pref_title_add_diff">Addition Difficulty</string>
+    <string name="pref_title_sub_diff">Subtraction Difficulty</string>
+    <string name="pref_title_mult_diff">Multiplication Difficulty</string>
+    <string name="pref_title_div_diff">Division Difficulty</string>
+    <string-array name="pref_game_type_entries">
+        <item >Addition</item>
+        <item >Subtraction</item>
+        <item >Multiplication</item>
+        <item >Division</item>
+    </string-array>
+    <string-array name="pref_diff_entries">
+        <item >Easy</item>
+        <item >Medium</item>
+        <item >Hard</item>
+        <item >Expert</item>
+    </string-array>
+    <string name="pref_diff_default">Easy</string>
+    <string name="pref_summary_correct_needed">Number of correct answers needed to pause restricted mode for the time set by Earned Time</string>
+    <string-array name="pref_game_type_default">
+        <item >Addition</item>
+    </string-array>
 
 </resources>

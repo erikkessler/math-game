@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk 
-        android:minSdkVersion="19" 
+        android:minSdkVersion="15" 
         android:targetSdkVersion="19" />
 
     <application
@@ -33,6 +33,13 @@
 		 <activity
             android:label="Settings"
             android:name="com.tcx.mathgame.Settings"
+			android:theme="@android:style/Theme.Holo.Light"
+			android:parentActivityName="com.tcx.mathgame.MainActivity" 
+			/>
+		 
+		 <activity
+            android:label="Settings"
+            android:name="com.tcx.mathgame.SettingsActivity"
 			android:theme="@android:style/Theme.Holo.Light"
 			android:parentActivityName="com.tcx.mathgame.MainActivity" 
 			/>
