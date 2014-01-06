@@ -41,7 +41,7 @@ public class SettingsActivity extends Activity implements OnClickListener{
 			if(v.getId() == R.id.settingpassButton1) {
 				TextView password = (TextView) findViewById(R.id.settingPass);
 				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-				String passwordString = sharedPref.getString("pref_password", "admin");
+				String passwordString = sharedPref.getString("pref_key_password", "admin");
 				
 				if( password.getText().toString().equals(passwordString )) {
 				
@@ -54,6 +54,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
 			        getFragmentManager().beginTransaction()
 			                .replace(android.R.id.content, new SettingsFragment())
 			                .commit();
+				} else{
+					password.setText("");
 				}
 			
 			}

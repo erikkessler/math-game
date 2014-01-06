@@ -1,10 +1,15 @@
 package com.tcx.mathgame;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.MultiSelectListPreference;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +26,7 @@ public class HomeScreen extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.homescreen);
-		prefs = getSharedPreferences("MyPrefsFile",0);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		
 				
@@ -70,146 +75,59 @@ public class HomeScreen extends Activity {
 				startActivity( intent );
 				
 			}
-		});
-		
+		});			
+	}
 	
-				
-				
-				
+	private CharSequence fromSet(Set<String> stringSet) {
+		String result = "";
+		Object[] stringArray = stringSet.toArray();
+		for(int i = 0; i < stringArray.length; i++){
+			if(i == 0)
+				result = (String) stringArray[0];
+			else
+				result = result + ", " + stringArray[i];
+		}
+		return result;
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		
-		prefs = getSharedPreferences("MyPrefsFile",0);
+		Set<String> set = new HashSet<String>();
 		
-		int[] probTypes = new int[4];
-		int numbTypes = 0;
-		boolean[] checked = { prefs.getBoolean("0Checked", false), prefs.getBoolean("1Checked", false) , prefs.getBoolean("2Checked", false),prefs.getBoolean("3Checked", false)};
-		for( int i = 0; i < checked.length; i++) {
-			if( checked[i] ) {
-				probTypes[numbTypes] = i;
-				numbTypes++;
-			}
+		set.add("Addition");
+        typers.setText(fromSet(prefs.getStringSet("pref_key_game_type", set )));
+				
+		if(!MyScheduleReciver.hasUser()) {
+			
+			reciever = new MyScheduleReciver();
+			IntentFilter filter = new IntentFilter();
+			filter.addAction( Intent.ACTION_USER_BACKGROUND );
+			filter.addAction( Intent.ACTION_USER_FOREGROUND );
+			registerReceiver( reciever, filter );
+			Log.d("YOLO", "Main Added Things");
+			MyScheduleReciver.setUser();
 		}
-		
-		// In case none is selected
-		if ( numbTypes == 0 ) {
-			probTypes[0] = 0;
-			numbTypes = 1;
+				
+					
+		if (prefs.getBoolean("pref_key_restricted_mode", false)) {
+			startService(new Intent(HomeScreen.this,AppCheckerService.class));
+			Intent i = new Intent("tcx.START");
+			Bundle extras = new Bundle();   
+	        i.putExtras(extras);  
+			sendBroadcast(i);
+			Log.d("YOLO", "On Resume tried to start service");
+			
+			
+		}else {
+			stopService(new Intent(HomeScreen.this,AppCheckerService.class));
+			Intent i = new Intent("tcx.STOP");
+			Bundle extras = new Bundle();   
+	        i.putExtras(extras);  
+			sendBroadcast(i);
+			Log.d("YOLO", "On Resume tried to stop service");
 		}
-		
-		// Get Types
-				String types = "";
-				for( int i = 0; i < numbTypes; i++) {
-					if( i != 0 ) {
-						types = types + ", ";
-					}
-					
-					switch ( probTypes[i]) {
-						case 0:
-							types = types + "Addition";
-							break;
-						case 1:
-							types = types + "Subtraction";
-							break;
-						case 2:
-							types = types + "Multipication";
-							break;
-						case 3:
-							types = types + "Division";
-							break;
-					}
-					
-				}
-				
-				typers.setText(types);
-				
-				if(!MyScheduleReciver.hasUser()) {
-					
-					reciever = new MyScheduleReciver();
-					IntentFilter filter = new IntentFilter();
-					filter.addAction( Intent.ACTION_USER_BACKGROUND );
-					filter.addAction( Intent.ACTION_USER_FOREGROUND );
-					registerReceiver( reciever, filter );
-					Log.d("YOLO", "Main Added Things");
-					MyScheduleReciver.setUser();
-				}
-				
-				
-//				Intent i = new Intent("tcx.THERE");
-//				Bundle extras = new Bundle();   
-//		        i.putExtras(extras);  
-//				sendBroadcast(i);
-//				Log.d("YOLO", "Sent finding intent");
-//				
-//				Runnable runs = new Runnable() {
-//					
-//					@Override
-//					public void run() {
-//						
-//						if( prefs.getBoolean("there", false)) {
-//							prefs.edit().putBoolean("there", false);
-//							prefs.edit().commit();
-//							Log.d("YOLO", "It was there");
-//							
-//						} else {
-//							reciever = new MyScheduleReciver();
-//							IntentFilter filter = new IntentFilter();
-//							filter.addAction( Intent.ACTION_USER_BACKGROUND );
-//							filter.addAction( Intent.ACTION_USER_FOREGROUND );
-//							registerReceiver( reciever, filter );
-//							Log.d("YOLO", "Main Started Reciver");
-//						}
-//						
-//					}
-//				};
-//				
-//				Handler handler = new Handler();
-//				handler.postDelayed(runs, 2000);
-				
-//				if( reciever == null) {
-//					Log.d("A", "Reciver was null");
-//					reciever = new MyScheduleReciver();
-//					
-//					IntentFilter filter = new IntentFilter();
-//					filter.addAction( Intent.ACTION_USER_BACKGROUND );
-//					filter.addAction( Intent.ACTION_USER_FOREGROUND );
-//					registerReceiver( reciever, filter );
-//			}
-//			
-//			
-//			boolean isNew = false;
-//			if(! reciever.isStarted()) {
-//				isNew = true;
-//				Intent i = new Intent("tcx.YOLO");
-//				Bundle extras = new Bundle();  
-//		        extras.putBoolean("start_now", false );  
-//		        i.putExtras(extras);  
-//				sendBroadcast(i);
-//				Log.d("A", "Main Started Reciver");
-//				
-//				
-//			}
-//			
-			if (prefs.getBoolean("restrictedMode", false)) {
-				startService(new Intent(HomeScreen.this,AppCheckerService.class));
-				Intent i = new Intent("tcx.START");
-				Bundle extras = new Bundle();   
-		        i.putExtras(extras);  
-				sendBroadcast(i);
-				Log.d("YOLO", "On Resume tried to start service");
-				
-				
-			}else {
-				stopService(new Intent(HomeScreen.this,AppCheckerService.class));
-				Intent i = new Intent("tcx.STOP");
-				Bundle extras = new Bundle();   
-		        i.putExtras(extras);  
-				sendBroadcast(i);
-				Log.d("YOLO", "On Resume tried to stop service");
-			}
 	}
 	
 	

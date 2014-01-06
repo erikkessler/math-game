@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -37,8 +38,8 @@ public class MyScheduleReciver extends BroadcastReceiver{
 		
 		mContext = context;
 		
-		prefs= context.getSharedPreferences("MyPrefsFile",0);
-		go = prefs.getBoolean("restrictedMode", false);	
+		prefs= PreferenceManager.getDefaultSharedPreferences(mContext);
+		go = prefs.getBoolean("pref_key_restriced_mode", false);	
 		Boolean paused = prefs.getBoolean("paused", false);
 		
 		if( intent.getAction().equals("tcx.START") &&!paused ) {

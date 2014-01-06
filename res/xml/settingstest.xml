@@ -3,49 +3,73 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.tcx.mathgame">
 	<PreferenceCategory android:title="@string/pref_category_restricted">
-		<SwitchPreference android:key="pref_key_restricted_mode"
-			android:defaultValue="false" android:title="@string/pref_title_restricted_mode" />
-		<com.tcx.mathgame.PasswordChangerPreference android:title="@string/pref_title_password"
-			android:key="pref_key_password" android:defaultValue="admin" />
-		<Preference android:dependency="pref_key_restricted_mode"
-			android:title="@string/pref_title_free_time" android:summary="@string/pref_summary_free_time" />
+		<SwitchPreference 
+		    android:key="pref_key_restricted_mode"
+			android:defaultValue="false" 
+			android:title="@string/pref_title_restricted_mode" />
+		<com.tcx.mathgame.PasswordChangerPreference 
+		    android:title="@string/pref_title_password"
+			android:key="pref_key_password" 
+			android:defaultValue="admin" />
+		<Preference 
+		    android:key="pref_key_free_time"
+		    android:dependency="pref_key_restricted_mode"
+			android:title="@string/pref_title_free_time" 
+			android:summary="@string/pref_summary_free_time" />
 	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/pref_category_game">
+	
+	<PreferenceCategory 
+	    android:title="@string/pref_category_game">
 		<MultiSelectListPreference
 			android:defaultValue="@array/pref_game_type_default"
-			android:entryValues="@array/pref_diff_entries" android:dialogTitle="@string/pref_title_game_type"
-			android:entries="@array/pref_diff_entries" android:key="pref_key_game_type"
+			android:entryValues="@array/pref_game_type_entries" android:dialogTitle="@string/pref_title_game_type"
+			android:entries="@array/pref_game_type_entries" android:key="pref_key_game_type"
 			android:title="@string/pref_title_game_type" />
 		<com.tcx.mathgame.NumberPickerPreference
-			android:title="@string/pref_title_game_length" android:key="pref_key_game_length"
+			android:title="@string/pref_title_game_length" 
+			android:key="pref_key_game_length"
 			android:defaultValue="80"
 			custom:text="Set the game length in seconds" />
 		<com.tcx.mathgame.NumberPickerPreference
 		    android:title="@string/pref_title_correct_needed"
-			android:key="pref_key_correct_needed" android:summary="@string/pref_summary_correct_needed"
+			android:key="pref_key_correct_needed" 
 			android:defaultValue="25"
 			custom:text="Set the number of correct answers needed to pause restriced mode" />
 		<com.tcx.mathgame.NumberPickerPreference
 		    custom:text="Set the number of minutes that will be earned for reaching the correct needed threshold" 
 		    android:defaultValue="15"
-			android:title="@string/pref_title_earned_time" android:key="pref_key_earned_time" />
+			android:title="@string/pref_title_earned_time" 
+			android:key="pref_key_earned_time" />
 	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/pref_category_diff">
-		<ListPreference android:entryValues="@array/pref_diff_entries"
-			android:key="pref_key_add_diff" android:title="@string/pref_title_add_diff"
-			android:entries="@array/pref_diff_entries" android:defaultValue="@string/pref_diff_default"
+	<PreferenceCategory 
+	    android:title="@string/pref_category_diff">
+		<ListPreference 
+		    android:entryValues="@array/pref_diff_entries"
+			android:key="pref_key_add_diff" 
+			android:title="@string/pref_title_add_diff"
+			android:entries="@array/pref_diff_entries" 
+			android:defaultValue="@string/pref_diff_default"
 			android:dialogTitle="@string/pref_title_add_diff" />
-		<ListPreference android:entryValues="@array/pref_diff_entries"
-			android:key="pref_key_sub_diff" android:title="@string/pref_title_sub_diff"
-			android:entries="@array/pref_diff_entries" android:defaultValue="@string/pref_diff_default"
+		<ListPreference 
+		    android:entryValues="@array/pref_diff_entries"
+			android:key="pref_key_sub_diff" 
+			android:title="@string/pref_title_sub_diff"
+			android:entries="@array/pref_diff_entries" 
+			android:defaultValue="@string/pref_diff_default"
 			android:dialogTitle="@string/pref_title_sub_diff" />
-		<ListPreference android:entryValues="@array/pref_diff_entries"
-			android:key="pref_key_mult_diff" android:title="@string/pref_title_mult_diff"
-			android:entries="@array/pref_diff_entries" android:defaultValue="@string/pref_diff_default"
+		<ListPreference 
+		    android:entryValues="@array/pref_diff_entries"
+			android:key="pref_key_mult_diff" 
+			android:title="@string/pref_title_mult_diff"
+			android:entries="@array/pref_diff_entries" 
+			android:defaultValue="@string/pref_diff_default"
 			android:dialogTitle="@string/pref_title_mult_diff" />
-		<ListPreference android:entryValues="@array/pref_diff_entries"
-			android:key="pref_key_div_diff" android:title="@string/pref_title_div_diff"
-			android:entries="@array/pref_diff_entries" android:defaultValue="@string/pref_diff_default"
+		<ListPreference 
+		    android:entryValues="@array/pref_diff_entries"
+			android:key="pref_key_div_diff" 
+			android:title="@string/pref_title_div_diff"
+			android:entries="@array/pref_diff_entries" 
+			android:defaultValue="@string/pref_diff_default"
 			android:dialogTitle="@string/pref_title_div_diff" />
 	</PreferenceCategory>
 

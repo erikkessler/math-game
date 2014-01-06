@@ -14,7 +14,7 @@ public class PasswordChangerPreference extends DialogPreference {
     public PasswordChangerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         
-        setDialogLayoutResource(R.layout.number_picker);
+        setDialogLayoutResource(R.layout.password_changer);
         setPositiveButtonText(android.R.string.ok);
         setNegativeButtonText(android.R.string.cancel);
         

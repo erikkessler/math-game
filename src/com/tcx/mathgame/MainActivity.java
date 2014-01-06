@@ -2,8 +2,10 @@ package com.tcx.mathgame;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -13,6 +15,7 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -37,7 +40,7 @@ public class MainActivity extends Activity implements OnClickListener
 	private boolean gameOn;
 	private SharedPreferences prefs;
 	private String subR, addR, multR, divR;
-	private int[] probTypes = new int[4];
+	private Object[] probTypes;
 	private int numbTypes;
 	private Random rn;
 	private String mistakes;
@@ -57,7 +60,7 @@ public class MainActivity extends Activity implements OnClickListener
         ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		prefs = getSharedPreferences("MyPrefsFile",0);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		rn = new Random();
 		
 		entry = (TextView) findViewById(R.id.entry);
@@ -183,35 +186,27 @@ public class MainActivity extends Activity implements OnClickListener
 	protected void onResume() {
 		super.onResume();
 
-		addR = prefs.getString("aDiff", "Easy");
-		subR = prefs.getString("sDiff", "Easy");
-		multR = prefs.getString("mDiff", "Easy");
-		divR = prefs.getString("dDiff", "Easy");
+		addR = prefs.getString("pref_key_add_diff", "Easy");
+		subR = prefs.getString("pref_key_sub_diff", "Easy");
+		multR = prefs.getString("pref_key_mult_diff", "Easy");
+		divR = prefs.getString("pref_key_div_diff", "Easy");
 		
-		numbTypes = 0;
-		boolean[] checked = { prefs.getBoolean("0Checked", false), prefs.getBoolean("1Checked", false) , prefs.getBoolean("2Checked", false),prefs.getBoolean("3Checked", false)};
-		for( int i = 0; i < checked.length; i++) {
-			if( checked[i] ) {
-				probTypes[numbTypes] = i;
-				numbTypes++;
-			}
-		}
-		
-		if (numbTypes == 0) {
-			numbTypes = 1;
-			probTypes[0] = 0;
-		}
+		Set<String> set = new HashSet<String>();
+		set.add("Addition");
+        probTypes = prefs.getStringSet("pref_key_game_type", set ).toArray();
 		
 		if(!screenChanged)
 			newGame();
 	}
 
+
+
 	private void probGen() {
 		
-		int gType = probTypes[ rn.nextInt(numbTypes)];
+		String gType = (String) probTypes[ rn.nextInt(probTypes.length)];
 		
 		
-		if( gType == 1 ){ // Subtraction
+		if( gType.equals("Subtraction") ){ // Subtraction
 			if( subR.equals("Easy")){
 				first = rn.nextInt(9) + 1;
 				second= rn.nextInt( first + 1);
@@ -292,7 +287,7 @@ public class MainActivity extends Activity implements OnClickListener
 				
 			}
 			
-		} else if ( gType == 0 ){ // Addition
+		} else if ( gType.equals("Addition") ){ // Addition
 			if( addR.equals("Easy")){
 				first = rn.nextInt(9) + 1;
 				second = rn.nextInt(10);
@@ -346,7 +341,7 @@ public class MainActivity extends Activity implements OnClickListener
 				}
 			}
 			
-		} else if ( gType == 2 ){ // Multiplication
+		} else if ( gType.equals("Multiplication") ){ // Multiplication
 			if( multR.equals("Easy")){
 				first = rn.nextInt(4) + 1;
 				second = rn.nextInt(4) + 1;
@@ -398,7 +393,7 @@ public class MainActivity extends Activity implements OnClickListener
 				prob.setText(  first + " x " + second );
 			}
 			
-		 }else if ( gType == 3 ){ // Divisions
+		 }else if ( gType.equals("Division") ){ // Divisions
 			 if( divR.equals("Easy")){
 				 second = rn.nextInt(3) + 1;
 				 first = second * (rn.nextInt(3) + 1);
@@ -468,24 +463,20 @@ public class MainActivity extends Activity implements OnClickListener
 		
 		// Get Types
 		types = "";
-		for( int i = 0; i < numbTypes; i++) {
+		for( int i = 0; i < probTypes.length; i++) {
 			if( i != 0 ) {
 				types = types + ", ";
 			}
 			
-			switch ( probTypes[i]) {
-				case 0:
+			if( ((String) probTypes[i]).equals("Addition")) {
 					types = types + "Addition " + "(" + addR.substring(0,2) + ")";
-					break;
-				case 1:
+					
+			}else if( ((String) probTypes[i]).equals("Subtraction")) {
 					types = types + "Subtraction " + "(" + subR.substring(0,2) + ")";
-					break;
-				case 2:
+			}else if( ((String) probTypes[i]).equals("Multiplication")) {
 					types = types + "Multipication " + "(" + multR.substring(0,2) + ")";
-					break;
-				case 3:
+			} else if( ((String) probTypes[i]).equals("Division")) {
 					types = types + "Division " + "(" + divR.substring(0,2) + ")";
-					break;
 			}
 			
 		}
@@ -496,7 +487,7 @@ public class MainActivity extends Activity implements OnClickListener
 		probGen();
 		right.setText("0");
 		wrong.setText("0");
-		time_left = Integer.parseInt( prefs.getString("gameLength", "80"));
+		time_left = prefs.getInt("pref_key_game_length", 80);
 		time.setText( time_left + "" );
 		handler.postDelayed(runnable,1000);
 		
@@ -575,10 +566,10 @@ public class MainActivity extends Activity implements OnClickListener
 				db.close();
 			}
 			
-			int numNeed = Integer.parseInt(prefs.getString("correctNeeded", "25"));
-			String timeE = prefs.getString("earnedTime","15");
+			int numNeed = prefs.getInt("pref_key_correct_needed", 25);
+			String timeE = prefs.getInt("pref_key_earned_time",15) + "";
 
-			if ( Integer.parseInt( right.getText().toString() ) >= numNeed && prefs.getBoolean("restrictedMode", true)) {
+			if ( Integer.parseInt( right.getText().toString() ) >= numNeed && prefs.getBoolean("pref_key_restricted_mode", false)) {
 					MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.ronniecall);
 				    mp.start();
 				    Intent i = new Intent("tcx.PAUSE");

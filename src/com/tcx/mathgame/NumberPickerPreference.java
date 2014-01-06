@@ -4,6 +4,7 @@ import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -42,8 +43,10 @@ public class NumberPickerPreference extends DialogPreference {
         TextView mTextView = (TextView)view.findViewById(R.id.number_picker_tv);
         mTextView.setText(mText);
         mNumberPicker = (NumberPicker)view.findViewById(R.id.number_picker_np);
+        mNumberPicker.setMinValue(1);
         mNumberPicker.setMaxValue(9999);
         mNumberPicker.setWrapSelectorWheel(false);
+        mNumberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         
         int mCurrentValue = getPersistedInt(mDefaultValue);
         
@@ -57,6 +60,7 @@ public class NumberPickerPreference extends DialogPreference {
            super.onDialogClosed(positiveResult);
 
             if (positiveResult) {
+            	callChangeListener(mNumberPicker.getValue());
                 persistInt(mNumberPicker.getValue());
             }
         }
