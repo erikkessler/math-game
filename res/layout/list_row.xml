@@ -3,30 +3,33 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+    android:weightSum="100">
  
     <TextView
  
  			android:id = "@+id/tv_date"
  			
-            android:layout_width="150dp"
+            android:layout_width="0dp"
  
             android:layout_height="wrap_content"
  
-            android:text="Date" />
+            android:text="Date"
+            android:layout_weight="20" />
  
  
  
         <TextView
             android:id = "@+id/tv_type"
  
-            android:layout_width="100dp"
+            android:layout_width="0dp"
  
             android:layout_height="wrap_content"
  
             android:layout_marginLeft="10dp"
  
-            android:text="Type" />
+            android:text="Type"
+            android:layout_weight="25" />
  
  
  
@@ -34,49 +37,53 @@
 
 			android:id = "@+id/tv_right"
  
-            android:layout_width="100dp"
+            android:layout_width="0dp"
  
             android:layout_height="wrap_content"
  
             android:layout_marginLeft="10dp"
  
-            android:text="Correct"  />
+            android:text="Correct" 
+            android:layout_weight="10" />
         
         <TextView
             
             android:id = "@+id/tv_wrong"
 
  
-            android:layout_width="100dp"
+            android:layout_width="0dp"
  
             android:layout_height="wrap_content"
  
             android:layout_marginLeft="10dp"
  
-            android:text="Incorrect" />
+            android:text="Incorrect"
+            android:layout_weight="10" />
         
          <TextView
 
 			android:id = "@+id/tv_percent"
  
-            android:layout_width="100dp"
+            android:layout_width="0dp"
  
             android:layout_height="wrap_content"
  
             android:layout_marginLeft="10dp"
  
-            android:text="Percent" />
+            android:text="Percent"
+            android:layout_weight="10" />
          
           <TextView
 
 			android:id = "@+id/tv_mistakes"
  
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
  
             android:layout_height="wrap_content"
  
             android:layout_marginLeft="10dp"
  
-            android:text="Mistakes" />
+            android:text="Mistakes" 
+            android:layout_weight="25"/>
  
 </LinearLayout>

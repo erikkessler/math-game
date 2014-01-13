@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -60,4 +62,12 @@ public class SettingsActivity extends Activity implements OnClickListener{
 			
 			}
 		}
+		
+		 @Override
+		    public boolean onOptionsItemSelected(MenuItem item) {
+				 if(item.getItemId() == android.R.id.home) {
+					 NavUtils.navigateUpFromSameTask(this);
+				 }
+			    return super.onOptionsItemSelected(item);
+				}
 	}

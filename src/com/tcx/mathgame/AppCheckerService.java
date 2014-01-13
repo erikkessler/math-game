@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 public class AppCheckerService extends Service {
@@ -30,7 +31,7 @@ public class AppCheckerService extends Service {
 
 		List<RunningAppProcessInfo> runningProcInfo = am.getRunningAppProcesses();
 		
-		        //Log.d("YOLO", runningProcInfo.get(0).processName);
+		       //Log.d("YOLO", runningProcInfo.get(0).processName);
 		       String packageName =  runningProcInfo.get(0).processName;
 		        
 

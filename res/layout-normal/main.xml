@@ -72,7 +72,7 @@
 	    android:gravity="center"
 	    android:paddingTop="15dp"
 	    android:textSize="35sp"
-	    android:text="YOLO" />
+	    android:text="" />
 
 	<TableLayout
 	    android:id="@+id/table"

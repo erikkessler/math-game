@@ -3,7 +3,9 @@ package com.tcx.mathgame;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -44,6 +46,13 @@ public class ExtraMath extends Activity{
 	    return super.onKeyDown(keyCode, event);
 	}
 	
+	 @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+			 if(item.getItemId() == android.R.id.home) {
+				 NavUtils.navigateUpFromSameTask(this);
+			 }
+		    return super.onOptionsItemSelected(item);
+			}
 	
 
 }

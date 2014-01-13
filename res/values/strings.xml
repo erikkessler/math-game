@@ -23,6 +23,7 @@
         <item >Subtraction</item>
         <item >Multiplication</item>
         <item >Division</item>
+        <item >Mistakes</item>
     </string-array>
     <string-array name="pref_diff_entries">
         <item >Easy</item>

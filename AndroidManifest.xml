@@ -28,33 +28,41 @@
             android:label="Math"
             android:name="com.tcx.mathgame.MainActivity"
 			android:theme="@android:style/Theme.Holo.Light"
-			android:parentActivityName="com.tcx.mathgame.MainActivity" />
-		
-		 <activity
-            android:label="Settings"
-            android:name="com.tcx.mathgame.Settings"
-			android:theme="@android:style/Theme.Holo.Light"
-			android:parentActivityName="com.tcx.mathgame.MainActivity" 
-			/>
+			android:parentActivityName="com.tcx.mathgame.HomeScreen" >
+			<meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="com.tcx.mathgame.HomeScreen" /> 
+          </activity>
 		 
 		 <activity
             android:label="Settings"
             android:name="com.tcx.mathgame.SettingsActivity"
 			android:theme="@android:style/Theme.Holo.Light"
-			android:parentActivityName="com.tcx.mathgame.MainActivity" 
-			/>
+			android:parentActivityName="com.tcx.mathgame.HomeScreen" >
+			<meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="com.tcx.mathgame.HomeScreen" />
+		</activity>
 		 
 		 <activity
             android:label="History"
             android:name="com.tcx.mathgame.GameHistory"
 			android:theme="@android:style/Theme.Holo.Light"
-			android:parentActivityName="com.tcx.mathgame.MainActivity" />
+			android:parentActivityName="com.tcx.mathgame.HomeScreen" >
+			<meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="com.tcx.mathgame.HomeScreen" />
+		 </activity>
 		 
 		 <activity
             android:label="Extra Math"
             android:name="com.tcx.mathgame.ExtraMath"
 			android:theme="@android:style/Theme.Holo.Light"
-			android:parentActivityName="com.tcx.mathgame.MainActivity" />
+			android:parentActivityName="com.tcx.mathgame.HomeScreen" >
+			<meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="com.tcx.mathgame.HomeScreen" />
+		 </activity>
 		 
 		 <service 
 		     android:name="com.tcx.mathgame.AppCheckerService"

@@ -1,6 +1,7 @@
 package com.tcx.mathgame;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
@@ -47,6 +48,7 @@ public class MainActivity extends Activity implements OnClickListener
 	private int first, second;
 	private String types, date;
 	private boolean screenChanged = false;
+	private String[] oldMistakes;
 	
 
 	
@@ -134,7 +136,7 @@ public class MainActivity extends Activity implements OnClickListener
 	public void onClick(View p1) {
 		Button clicked = (Button) p1;
 		if ( gameOn ) {
-			if(clicked.getText().equals("Delete") ) {
+			if(clicked.getId() == R.id.b10 ) {
 				if(entry.getText().length() != 0 ) 
 					entry.setText(entry.getText().subSequence(0, entry.getText().length()-1));
 			} else {
@@ -194,6 +196,10 @@ public class MainActivity extends Activity implements OnClickListener
 		Set<String> set = new HashSet<String>();
 		set.add("Addition");
         probTypes = prefs.getStringSet("pref_key_game_type", set ).toArray();
+        
+        
+       getMistakes();
+        
 		
 		if(!screenChanged)
 			newGame();
@@ -201,9 +207,38 @@ public class MainActivity extends Activity implements OnClickListener
 
 
 
+	private void getMistakes() {
+		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+		ArrayList<Game> gameList = db.getAllGames();
+		db.close();
+		String mMistakes = "";
+		for( Game game : gameList){
+			mMistakes = mMistakes + game.getProbsWrong();
+		}
+		oldMistakes = mMistakes.split("\n");
+		
+		
+		
+	}
+
+
 	private void probGen() {
 		
 		String gType = (String) probTypes[ rn.nextInt(probTypes.length)];
+		
+		if(gType.equals("Mistakes") && (oldMistakes[0].length() == 0)){
+			
+			if(probTypes.length == 1) {
+				Log.d("YOLO", gType);
+				gType = "Addition";
+			} else {
+				probGen();
+				return;
+			}
+		}
+		        	      
+		
+		
 		
 		
 		if( gType.equals("Subtraction") ){ // Subtraction
@@ -452,14 +487,33 @@ public class MainActivity extends Activity implements OnClickListener
 						prob.setText(  first + " ÷ " + second );
 					}
 				}
+		} else if(gType.equals("Mistakes")) {
+			String mProb = oldMistakes[rn.nextInt(oldMistakes.length)];
+			prob.setText(mProb);
+			setAnswer(mProb);
 		}
 	}
 	
+	private void setAnswer(String mProb) {
+		int mFirst = Integer.parseInt(mProb.substring(0,mProb.indexOf(" ")));
+		int mSecond = Integer.parseInt(mProb.substring(mProb.indexOf(" ", mProb.indexOf(" ") + 1) + 1));
+		
+		if(mProb.contains("+"))
+			answer = mFirst + mSecond;
+		else if(mProb.contains("-"))
+			answer = mFirst - mSecond;
+		else if(mProb.contains("x"))
+			answer = mFirst * mSecond;
+		else if(mProb.contains("÷"))
+			answer = mFirst / mSecond;
+	}
+
+
 	private void newGame() {
 		endGame();
 		mistakes = "";
 		
-		date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(new Date());
+		date = new SimpleDateFormat("MM/dd/yy HH:mm", Locale.US).format(new Date());
 		
 		// Get Types
 		types = "";
@@ -475,8 +529,10 @@ public class MainActivity extends Activity implements OnClickListener
 					types = types + "Subtraction " + "(" + subR.substring(0,2) + ")";
 			}else if( ((String) probTypes[i]).equals("Multiplication")) {
 					types = types + "Multipication " + "(" + multR.substring(0,2) + ")";
-			} else if( ((String) probTypes[i]).equals("Division")) {
+			}else if( ((String) probTypes[i]).equals("Division")) {
 					types = types + "Division " + "(" + divR.substring(0,2) + ")";
+			}else if( ((String) probTypes[i]).equals("Mistakes")) {
+				types = types + "Mistakes";
 			}
 			
 		}

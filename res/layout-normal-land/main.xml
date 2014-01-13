@@ -181,7 +181,7 @@
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 			    android:gravity="center"
-			    android:paddingTop="75dp"
+			    android:paddingTop="15dp"
 			    android:text=""
 			    android:textColor="#1B07F1"
 			    android:textSize="75sp" />

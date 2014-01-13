@@ -6,6 +6,7 @@ import java.util.Collections;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -54,6 +55,9 @@ public class GameHistory extends Activity {
 	    public boolean onOptionsItemSelected(MenuItem item) {
 			 if ( item.getItemId() == 0)
 				 deleteAll();
+			 else if(item.getItemId() == android.R.id.home) {
+				 NavUtils.navigateUpFromSameTask(this);
+			 }
 		    return super.onOptionsItemSelected(item);
 			}
 
