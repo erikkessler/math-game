@@ -4,31 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/background" >
 
     <TextView
-        android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
-        android:text="Reward Math"
-        android:textSize="50sp"
-        android:gravity="center"/>
+        android:text="@string/app_name"
+        android:textSize="@dimen/homescreen_title_text_size"
+        android:gravity="center"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textColor="@color/homescreen_title_color"/>
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Game Type:"
-        android:paddingTop="35dp"
+        android:text="@string/homescreen_game_type"
+        android:paddingTop="@dimen/homescreen_type_title_padding"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:gravity="center" />
+        android:gravity="center"
+        android:fontFamily="sans-serif-light" />
     
     <TextView
         android:id="@+id/tv_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
         android:paddingTop="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge" 
         android:gravity="center"/>
@@ -36,46 +38,52 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:gravity="center_horizontal" 
+        >
 
         <Button
             android:id="@+id/button1"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="10dp"
-            android:text="New Game" />
+            android:layout_marginTop="@dimen/homescreen_button_padding"
+            android:layout_marginRight="@dimen/homescreen_button_padding"
+            android:text="@string/homescreen_new_game"
+             />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="10dp"
-            android:text="Xtra Math" />
+            android:layout_marginTop="@dimen/homescreen_button_padding"
+            android:layout_marginLeft="@dimen/homescreen_button_padding"
+            android:text="@string/homescreen_extra"
+            />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:layout_height="wrap_content" 
+        android:gravity="center_horizontal"
+       >
 
         <Button
             android:id="@+id/button4"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="History"
-            android:layout_marginRight="10dp" />
+            android:layout_marginTop="@dimen/homescreen_button_padding"
+            android:layout_marginRight="@dimen/homescreen_button_padding"
+            android:text="@string/homescreen_history" 
+            />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="Settings" 
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginTop="@dimen/homescreen_button_padding"
+            android:layout_marginLeft="@dimen/homescreen_button_padding"
+            android:text="@string/homescreen_settings"
+             />
 
     </LinearLayout>
 

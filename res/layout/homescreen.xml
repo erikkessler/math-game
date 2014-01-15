@@ -4,31 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/background" >
 
     <TextView
-        android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
-        android:text="Reward Math"
-        android:textSize="50sp"
-        android:gravity="center"/>
+        android:text="@string/app_name"
+        android:textSize="@dimen/homescreen_title_text_size"
+        android:gravity="center"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textColor="@color/homescreen_title_color"/>
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Game Type:"
-        android:paddingTop="35dp"
+        android:text="@string/homescreen_game_type"
+        android:paddingTop="@dimen/homescreen_type_title_padding"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:gravity="center" />
+        android:gravity="center"
+        android:fontFamily="sans-serif-light" />
     
     <TextView
         android:id="@+id/tv_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
         android:paddingTop="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge" 
         android:gravity="center"/>
@@ -37,29 +39,29 @@
         android:id="@+id/button1"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="New Game" 
-        android:layout_marginTop="45dp"
+        android:text="@string/homescreen_new_game" 
+        android:layout_marginTop="@dimen/homescreen_button_padding"
         />
     
     <Button
         android:id="@+id/button3"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Xtra Math" 
-        android:layout_marginTop="25dp"/>
+        android:text="@string/homescreen_extra" 
+        android:layout_marginTop="@dimen/homescreen_button_padding"/>
     
     <Button
         android:id="@+id/button4"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="History" 
-        android:layout_marginTop="25dp"/>
+        android:text="@string/homescreen_history" 
+        android:layout_marginTop="@dimen/homescreen_button_padding"/>
 
     <Button
         android:id="@+id/button2"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Settings" 
-        android:layout_marginTop="25dp"/>
+        android:text="@string/homescreen_settings" 
+        android:layout_marginTop="@dimen/homescreen_button_padding"/>
 
 </LinearLayout>

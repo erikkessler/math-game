@@ -20,7 +20,7 @@ public class SettingsActivity extends Activity implements OnClickListener{
 	    protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 
-	        setContentView( R.layout.settingpass );
+	        setContentView( R.layout.settings_password );
 			
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);

@@ -36,5 +36,14 @@
     <string-array name="pref_game_type_default">
         <item >Addition</item>
     </string-array>
+    <string name="settings_password_prompt">Enter Password:</string>
+    <string name="settings_password_enter">Enter</string>
+    <string name="homescreen_game_type">Game Type:</string>
+    <string name="homescreen_new_game">New Game</string>
+    <string name="homescreen_settings">Settings</string>
+    <string name="homescreen_extra">Xtra Math</string>
+    <string name="homescreen_history">History</string>
+    <string name="main_correct">Right:</string>
+    <string name="main_incorrect">Wrong:</string>
 
 </resources>

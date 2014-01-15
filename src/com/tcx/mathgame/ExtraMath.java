@@ -2,16 +2,20 @@ package com.tcx.mathgame;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 
-public class ExtraMath extends Activity{
+public class ExtraMath extends Activity {
 	
 	private WebView web;
 
@@ -23,9 +27,24 @@ public class ExtraMath extends Activity{
 		
 		setContentView(R.layout.extramath);
 		
+		final ProgressBar mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		
 		web = (WebView) findViewById(R.id.webview);
 		
-		web.setWebViewClient(new WebViewClient());
+		
+		web.setWebViewClient(new WebViewClient(){
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				super.onPageStarted(view, url, favicon);
+				mProgressBar.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				mProgressBar.setVisibility(View.GONE);
+			}
+		});
 		WebSettings webSettings = web.getSettings();
 		webSettings.setJavaScriptEnabled(true);
 		webSettings.setDomStorageEnabled(true);
