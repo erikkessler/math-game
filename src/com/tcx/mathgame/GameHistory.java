@@ -9,7 +9,11 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameHistory extends Activity {
 	
@@ -78,7 +82,23 @@ public class GameHistory extends Activity {
 			
 		}
 	
-	
+	public void showWrong(View v) {
+		GameLayout gameLayout = (GameLayout) v;
+		RelativeLayout historyMain = (RelativeLayout) v.findViewById(R.id.history_main);
+		RelativeLayout historyExtra = (RelativeLayout) v.findViewById(R.id.history_extra);
+		TextView types = (TextView) (historyExtra.findViewById(R.id.history_types_string));
+		if( historyMain.getVisibility() == View.VISIBLE ) {
+			historyExtra.setVisibility(View.VISIBLE);
+			historyMain.setVisibility(View.INVISIBLE);
+			types.setSelected(true);
+			
+		} else{
+			historyExtra.setVisibility(View.INVISIBLE);
+			historyMain.setVisibility(View.VISIBLE);
+		}
+		
+		
+	}
 	
 	
 

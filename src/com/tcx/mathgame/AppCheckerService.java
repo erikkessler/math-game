@@ -31,11 +31,11 @@ public class AppCheckerService extends Service {
 
 		List<RunningAppProcessInfo> runningProcInfo = am.getRunningAppProcesses();
 		
-		       //Log.d("YOLO", runningProcInfo.get(0).processName);
+		       Log.d("YOLO", runningProcInfo.get(0).processName);
 		       String packageName =  runningProcInfo.get(0).processName;
 		        
 
-        if((!packageName.equals("com.tcx.mathgame") && (!packageName.equals( homeName))) && (!packageName.equals("fr.lehovetzki.ABMath"))) {
+        if((!packageName.equals("com.tcx.mathgame") && (!packageName.contains( homeName))) && (!packageName.equals("fr.lehovetzki.ABMath"))) {
         	Toast.makeText( this.getApplicationContext() , "Hey! Do your math!", Toast.LENGTH_SHORT).show();
         	Intent startMain = new Intent(Intent.ACTION_MAIN);
         	startMain.addCategory(Intent.CATEGORY_HOME);

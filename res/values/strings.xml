@@ -3,7 +3,7 @@
 
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">Reward Math</string>
-    <string name="pref_category_restricted" >Admin Settings</string>
+    <string name="pref_category_restricted">Admin Settings</string>
     <string name="pref_category_game">Game Settings</string>
     <string name="pref_category_diff">Difficulty Settings</string>
     <string name="pref_title_restricted_mode">Restricted Mode</string>
@@ -18,25 +18,30 @@
     <string name="pref_title_sub_diff">Subtraction Difficulty</string>
     <string name="pref_title_mult_diff">Multiplication Difficulty</string>
     <string name="pref_title_div_diff">Division Difficulty</string>
+
     <string-array name="pref_game_type_entries">
-        <item >Addition</item>
-        <item >Subtraction</item>
-        <item >Multiplication</item>
-        <item >Division</item>
-        <item >Mistakes</item>
+        <item>Addition</item>
+        <item>Subtraction</item>
+        <item>Multiplication</item>
+        <item>Division</item>
+        <item>Mistakes</item>
     </string-array>
     <string-array name="pref_diff_entries">
-        <item >Easy</item>
-        <item >Medium</item>
-        <item >Hard</item>
-        <item >Expert</item>
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+        <item>Expert</item>
     </string-array>
+
     <string name="pref_diff_default">Easy</string>
     <string name="pref_summary_correct_needed">Number of correct answers needed to pause restricted mode for the time set by Earned Time</string>
+
     <string-array name="pref_game_type_default">
-        <item >Addition</item>
+        <item>Addition</item>
     </string-array>
+
     <string name="settings_password_prompt">Enter Password:</string>
+    <string name="settings_password_prompt_new">First Time? Create a Password:</string>
     <string name="settings_password_enter">Enter</string>
     <string name="homescreen_game_type">Game Type:</string>
     <string name="homescreen_new_game">New Game</string>
@@ -45,5 +50,11 @@
     <string name="homescreen_history">History</string>
     <string name="main_correct">Right:</string>
     <string name="main_incorrect">Wrong:</string>
+    <string name="history_wrong">Wrong</string>
+    <string name="history_percent">Percent</string>
+    <string name="history_right">Right</string>
+    <string name="history_header">Click the game to view mistakes...</string>
+    <string name="history_type">Types: </string>
+    <string name="history_mistakes">Mistakes: </string>
 
 </resources>

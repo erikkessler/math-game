@@ -27,9 +27,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener
-{
-	
+public class MainActivity extends Activity implements OnClickListener {
+
 	private Button[] buttons = new Button[11];
 	private TextView entry, prob;
 	private TextView right, wrong;
@@ -49,107 +48,103 @@ public class MainActivity extends Activity implements OnClickListener
 	private String types, date;
 	private boolean screenChanged = false;
 	private String[] oldMistakes;
-	
 
-	
 	/** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-	{
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        ActionBar actionBar = getActionBar();
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		rn = new Random();
-		
+
 		entry = (TextView) findViewById(R.id.entry);
 		prob = (TextView) findViewById(R.id.problem);
 		right = (TextView) findViewById(R.id.right);
 		wrong = (TextView) findViewById(R.id.wrong);
 		time = (TextView) findViewById(R.id.timer);
-		
-		for( int i=0; i < buttons.length; i++ ) {
+
+		for (int i = 0; i < buttons.length; i++) {
 			String a = "b" + i;
-			buttons[i] = (Button) findViewById(getResources().getIdentifier(a, "id", getPackageName()));
-			buttons[i].setOnClickListener( this );
+			buttons[i] = (Button) findViewById(getResources().getIdentifier(a,
+					"id", getPackageName()));
+			buttons[i].setOnClickListener(this);
 		}
-		
+
 		handler = new Handler();
 		runnable = new Runnable() {
 			@Override
 			public void run() {
 				time_left--;
-				time.setText( time_left + "" );
-				if( time_left == 0 ){
+				time.setText(time_left + "");
+				if (time_left == 0) {
 					endGame();
 				} else {
 					handler.postDelayed(this, 1000);
 				}
 			}
 		};
-    }
-	
+	}
 
-   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 
-	    menu.add(1, 0, 0, "New Game");
-	    menu.add( 1, 1, 1, "End Game");
-	    menu.add( 1, 2, 2, "Main Screen");
-	   
-	
-	    return super.onCreateOptionsMenu(menu); 
-    }
-	
-	 @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+		menu.add(1, 0, 0, "New Game");
+		menu.add(1, 1, 1, "End Game");
+		menu.add(1, 2, 2, "Main Screen");
 
-	    switch (item.getItemId()) {
-	
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+
 		case 0:
-	    	newGame();
-	    	return true;
-	
+			newGame();
+			return true;
+
 		case 1:
 			endGame();
 			return true;
-	    	
+
 		case 2:
 			onBackPressed();
 			finish();
 			return true;
 		case android.R.id.home:
 			endGame();
-	        NavUtils.navigateUpFromSameTask(this);
-	        return true;	
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
 		default:
-	    	break;
-	
-	       }
-	    	return super.onOptionsItemSelected(item);
+			break;
+
 		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	@Override
 	public void onClick(View p1) {
 		Button clicked = (Button) p1;
-		if ( gameOn ) {
-			if(clicked.getId() == R.id.b10 ) {
-				if(entry.getText().length() != 0 ) 
-					entry.setText(entry.getText().subSequence(0, entry.getText().length()-1));
+		if (gameOn) {
+			if (clicked.getId() == R.id.b10) {
+				if (entry.getText().length() != 0)
+					entry.setText(entry.getText().subSequence(0,
+							entry.getText().length() - 1));
 			} else {
-				entry.setText( entry.getText() + "" + clicked.getText());
-				
-				if(entry.getText().toString().length() == (answer + "").length() ) {
+				entry.setText(entry.getText() + "" + clicked.getText());
+
+				if (entry.getText().toString().length() == (answer + "")
+						.length()) {
 					check();
-					}
+				}
 			}
 		}
 	}
-
-
 
 	private void check() {
 		Runnable runable = new Runnable() {
@@ -157,33 +152,34 @@ public class MainActivity extends Activity implements OnClickListener
 			@Override
 			public void run() {
 				entry.setTextColor(Color.BLACK);
-				entry.setText("");	
-				
+				entry.setText("");
+
 			}
-			
+
 		};
-		
-		if( entry.getText().equals( answer + "" ) ) {
-			int correct = Integer.parseInt( right.getText().toString() ) + 1;
-			right.setText( correct + "" );
-			//background.setBackgroundColor(Color.GREEN);
+
+		if (entry.getText().equals(answer + "")) {
+			int correct = Integer.parseInt(right.getText().toString()) + 1;
+			right.setText(correct + "");
+			// background.setBackgroundColor(Color.GREEN);
 			entry.setTextColor(Color.parseColor("#50C900"));
 			handler.postDelayed(runable, 400);
 		} else {
-			mistakes = mistakes + prob.getText() + "\n";
-			int incorrect = Integer.parseInt( wrong.getText().toString() ) + 1;
-			wrong.setText( incorrect + "" );
+			if (mistakes.equals(""))
+				mistakes = prob.getText() + "";
+			else
+				mistakes = mistakes + ", " + prob.getText();
+			int incorrect = Integer.parseInt(wrong.getText().toString()) + 1;
+			wrong.setText(incorrect + "");
 			entry.setTextColor(Color.parseColor("#FF1607"));
 			handler.postDelayed(runable, 400);
-			
+
 		}
-		
+
 		probGen();
-		
+
 	}
-	
-	
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -192,43 +188,42 @@ public class MainActivity extends Activity implements OnClickListener
 		subR = prefs.getString("pref_key_sub_diff", "Easy");
 		multR = prefs.getString("pref_key_mult_diff", "Easy");
 		divR = prefs.getString("pref_key_div_diff", "Easy");
-		
+
 		Set<String> set = new HashSet<String>();
 		set.add("Addition");
-        probTypes = prefs.getStringSet("pref_key_game_type", set ).toArray();
-        
-        
-       getMistakes();
-        
-		
-		if(!screenChanged)
+		probTypes = prefs.getStringSet("pref_key_game_type", set).toArray();
+
+		getMistakes();
+
+		if (!screenChanged)
 			newGame();
 	}
-
-
 
 	private void getMistakes() {
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		ArrayList<Game> gameList = db.getAllGames();
 		db.close();
 		String mMistakes = "";
-		for( Game game : gameList){
-			mMistakes = mMistakes + game.getProbsWrong();
+		for (Game game : gameList) {
+			if (!game.getProbsWrong().equals("")) {
+				if (mMistakes.equals(""))
+					mMistakes = game.getProbsWrong();
+				else
+					mMistakes = mMistakes + ", " + game.getProbsWrong();
+			}
 		}
-		oldMistakes = mMistakes.split("\n");
-		
-		
-		
+		oldMistakes = mMistakes.split(", ");
+		Log.d("YOLO", oldMistakes.length+"");
+
 	}
 
-
 	private void probGen() {
-		
-		String gType = (String) probTypes[ rn.nextInt(probTypes.length)];
-		
-		if(gType.equals("Mistakes") && (oldMistakes[0].length() == 0)){
-			
-			if(probTypes.length == 1) {
+
+		String gType = (String) probTypes[rn.nextInt(probTypes.length)];
+
+		if (gType.equals("Mistakes") && (oldMistakes[0].length() == 0)) {
+
+			if (probTypes.length == 1) {
 				Log.d("YOLO", gType);
 				gType = "Addition";
 			} else {
@@ -236,319 +231,317 @@ public class MainActivity extends Activity implements OnClickListener
 				return;
 			}
 		}
-		        	      
-		
-		
-		
-		
-		if( gType.equals("Subtraction") ){ // Subtraction
-			if( subR.equals("Easy")){
+
+		if (gType.equals("Subtraction")) { // Subtraction
+			if (subR.equals("Easy")) {
 				first = rn.nextInt(9) + 1;
-				second= rn.nextInt( first + 1);
+				second = rn.nextInt(first + 1);
 				answer = first - second;
-				prob.setText(  first + " - " + second );
-				
-			} else if( subR.equals("Medium")) {
+				prob.setText(first + " - " + second);
+
+			} else if (subR.equals("Medium")) {
 				first = rn.nextInt(18) + 3;
-				if(first == 4 )
-					if( rn.nextBoolean())
+				if (first == 4)
+					if (rn.nextBoolean())
 						first = 16;
-				else if( first == 5 )
-					if( rn.nextBoolean())
-						first = 17;
-				else if( first == 6 )
-					if( rn.nextBoolean())
-						first = 18;
-				else if( first == 7 )
-					if( rn.nextBoolean())
-							first = 15;
-				else if( first == 8 )
-					if( rn.nextBoolean())
-							first = 14;
-				else if( first == 10 )
-					if( rn.nextBoolean())
-						first = 20;
-				
-				second= rn.nextInt( first - 1 ) + 2;
-				if( first - second == 0 || first - second == 2 ||first - second == 1 )
-					if( rn.nextInt(3) <= 3  )
+					else if (first == 5)
+						if (rn.nextBoolean())
+							first = 17;
+						else if (first == 6)
+							if (rn.nextBoolean())
+								first = 18;
+							else if (first == 7)
+								if (rn.nextBoolean())
+									first = 15;
+								else if (first == 8)
+									if (rn.nextBoolean())
+										first = 14;
+									else if (first == 10)
+										if (rn.nextBoolean())
+											first = 20;
+
+				second = rn.nextInt(first - 1) + 2;
+				if (first - second == 0 || first - second == 2
+						|| first - second == 1)
+					if (rn.nextInt(3) <= 3)
 						probGen();
 					else {
 						answer = first - second;
-						prob.setText(  first + " - " + second );
+						prob.setText(first + " - " + second);
 					}
-				else{
+				else {
 					answer = first - second;
-					prob.setText(  first + " - " + second );
+					prob.setText(first + " - " + second);
 				}
-				
-			} else if( subR.equals("Hard")) {
-				first = rn.nextInt(36) + 15;	
-				second= rn.nextInt( first - 6 ) + 5;
-				if( first - second == 0 || first - second == 1 ) {
+
+			} else if (subR.equals("Hard")) {
+				first = rn.nextInt(36) + 15;
+				second = rn.nextInt(first - 6) + 5;
+				if (first - second == 0 || first - second == 1) {
 					probGen();
-				
-				} else if( first - second == 10){
-					if(rn.nextBoolean())
+
+				} else if (first - second == 10) {
+					if (rn.nextBoolean())
 						probGen();
-					else{
+					else {
 						answer = first - second;
-						prob.setText(  first + " - " + second );
+						prob.setText(first + " - " + second);
 					}
-						
-				}else {
+
+				} else {
 					answer = first - second;
-					prob.setText(  first + " - " + second );
+					prob.setText(first + " - " + second);
 				}
-				
-			} else if( subR.equals("Expert")) {
-				first = rn.nextInt(51) + 40;	
-				second= rn.nextInt( first - 39 ) + 40;
-				if( first - second == 0 || first - second == 1 || first - second == 2) {
+
+			} else if (subR.equals("Expert")) {
+				first = rn.nextInt(51) + 40;
+				second = rn.nextInt(first - 39) + 40;
+				if (first - second == 0 || first - second == 1
+						|| first - second == 2) {
 					probGen();
-				
-				} else if( first - second == 10){
-					if(rn.nextBoolean())
+
+				} else if (first - second == 10) {
+					if (rn.nextBoolean())
 						probGen();
-					else{
+					else {
 						answer = first - second;
-						prob.setText(  first + " - " + second );
+						prob.setText(first + " - " + second);
 					}
-						
-				}else {
+
+				} else {
 					answer = first - second;
-					prob.setText(  first + " - " + second );
+					prob.setText(first + " - " + second);
 				}
-				
+
 			}
-			
-		} else if ( gType.equals("Addition") ){ // Addition
-			if( addR.equals("Easy")){
+
+		} else if (gType.equals("Addition")) { // Addition
+			if (addR.equals("Easy")) {
 				first = rn.nextInt(9) + 1;
 				second = rn.nextInt(10);
 				answer = first + second;
-				prob.setText(  first + " + " + second );
-			} else if( addR.equals("Medium")) {
-				first = rn.nextInt(19) + 2;	
-				second= rn.nextInt( 19 ) + 2;
-				if( first + second == 4 || first + second == 5 || first + second == 6 || first + second == 7) {
+				prob.setText(first + " + " + second);
+			} else if (addR.equals("Medium")) {
+				first = rn.nextInt(19) + 2;
+				second = rn.nextInt(19) + 2;
+				if (first + second == 4 || first + second == 5
+						|| first + second == 6 || first + second == 7) {
 					probGen();
-				
+
 				} else {
 					answer = first + second;
-					prob.setText(  first + " + " + second );
+					prob.setText(first + " + " + second);
 				}
-			} else if( addR.equals("Hard")) {
-				first = rn.nextInt(46) + 5;	
-				second= rn.nextInt( 45 ) + 6;
-				if( first + second < 20 ) {
+			} else if (addR.equals("Hard")) {
+				first = rn.nextInt(46) + 5;
+				second = rn.nextInt(45) + 6;
+				if (first + second < 20) {
 					probGen();
-				
-				}else if( first + second <= 30){
-					if(rn.nextBoolean())
+
+				} else if (first + second <= 30) {
+					if (rn.nextBoolean())
 						probGen();
-					else{
+					else {
 						answer = first + second;
-						prob.setText(  first + " + " + second );
+						prob.setText(first + " + " + second);
 					}
-						
+
 				} else {
 					answer = first + second;
-					prob.setText(  first + " + " + second );
+					prob.setText(first + " + " + second);
 				}
-			} else if( addR.equals("Expert")) {
-				first = rn.nextInt(50) + 40;	
-				second= rn.nextInt( 50 ) + 40;
-				if( first + second < 100 ) {
+			} else if (addR.equals("Expert")) {
+				first = rn.nextInt(50) + 40;
+				second = rn.nextInt(50) + 40;
+				if (first + second < 100) {
 					probGen();
-				
-				}else if( first == second ){
-					if(rn.nextBoolean())
+
+				} else if (first == second) {
+					if (rn.nextBoolean())
 						probGen();
-					else{
+					else {
 						answer = first + second;
-						prob.setText(  first + " + " + second );
+						prob.setText(first + " + " + second);
 					}
-						
+
 				} else {
 					answer = first + second;
-					prob.setText(  first + " + " + second );
+					prob.setText(first + " + " + second);
 				}
 			}
-			
-		} else if ( gType.equals("Multiplication") ){ // Multiplication
-			if( multR.equals("Easy")){
+
+		} else if (gType.equals("Multiplication")) { // Multiplication
+			if (multR.equals("Easy")) {
 				first = rn.nextInt(4) + 1;
 				second = rn.nextInt(4) + 1;
 				answer = first * second;
-				prob.setText(  first + " x " + second );
-			} else if( multR.equals("Medium")) {
+				prob.setText(first + " x " + second);
+			} else if (multR.equals("Medium")) {
 				first = rn.nextInt(7) + 2;
-				if(first == 2 )
-					if( rn.nextBoolean())
+				if (first == 2)
+					if (rn.nextBoolean())
 						first = 7;
-				else if( first == 3 )
-					if( rn.nextBoolean())
-						first = 8;
+					else if (first == 3)
+						if (rn.nextBoolean())
+							first = 8;
 				second = rn.nextInt(7) + 2;
-				if(second == 2 )
-					if( rn.nextBoolean())
+				if (second == 2)
+					if (rn.nextBoolean())
 						second = 7;
-				else if( second == 3 )
-					if( rn.nextBoolean())
-						second = 8;
-				if( first * second == 4 || first * second == 6 )
+					else if (second == 3)
+						if (rn.nextBoolean())
+							second = 8;
+				if (first * second == 4 || first * second == 6)
 					probGen();
-					
-				else{
+
+				else {
 					answer = first * second;
-					prob.setText(  first + " x " + second );
+					prob.setText(first + " x " + second);
 				}
-			} else if( multR.equals("Hard")) {
+			} else if (multR.equals("Hard")) {
 				first = rn.nextInt(11) + 2;
-				if(first == 10 )
-					if( rn.nextBoolean())
+				if (first == 10)
+					if (rn.nextBoolean())
 						first = 12;
 				second = rn.nextInt(11) + 2;
-				if(second == 10 )
-					if( rn.nextBoolean())
+				if (second == 10)
+					if (rn.nextBoolean())
 						second = 9;
-				
-				if( first * second < 10 )
+
+				if (first * second < 10)
 					probGen();
-					
-				else{
+
+				else {
 					answer = first * second;
-					prob.setText(  first + " x " + second );
+					prob.setText(first + " x " + second);
 				}
-			} else if( multR.equals("Expert")) {
+			} else if (multR.equals("Expert")) {
 				first = rn.nextInt(6) + 10;
 				second = rn.nextInt(6) + 10;
 				answer = first * second;
-				prob.setText(  first + " x " + second );
+				prob.setText(first + " x " + second);
 			}
-			
-		 }else if ( gType.equals("Division") ){ // Divisions
-			 if( divR.equals("Easy")){
-				 second = rn.nextInt(3) + 1;
-				 first = second * (rn.nextInt(3) + 1);
-				 answer = first/second;
-				 prob.setText(  first + " ÷ " + second );
-				} else if( divR.equals("Medium")) {
-					second = rn.nextInt(7) + 2;
-					first = second * (rn.nextInt(7) + 2);
-					
-					if( first / second == 1 )
-						probGen();
-						
-					else{
-						answer = first / second;
-						prob.setText(  first + " ÷ " + second );
-					}
-				} else if( divR.equals("Hard")) {
-					second = rn.nextInt(9) + 4;
-					if( second == 10)
-						if(rn.nextBoolean())
-							second = 12;
-					first = second * (rn.nextInt(9) + 4);
-					
-	
-					if( first / second == 10 ){
-						if(rn.nextBoolean())
-							probGen();
-						else{
-							answer = first / second;
-							prob.setText(  first + " ÷ " + second );
-						}
-							
-					}else {
-						answer = first / second;
-						prob.setText(  first + " ÷ " + second );
-					}
-					
-				} else if( divR.equals("Expert")) {
-					second = rn.nextInt(9) + 7;
-					if( second == 10)
-						if(rn.nextBoolean())
-							second = 12;
-					first = second * (rn.nextInt(9) + 7);
-					
-	
-					if( first / second == 10 ){
-						if(rn.nextBoolean())
-							probGen();
-						else{
-							answer = first / second;
-							prob.setText(  first + " ÷ " + second );
-						}
-							
-					}else {
-						answer = first / second;
-						prob.setText(  first + " ÷ " + second );
-					}
+
+		} else if (gType.equals("Division")) { // Divisions
+			if (divR.equals("Easy")) {
+				second = rn.nextInt(3) + 1;
+				first = second * (rn.nextInt(3) + 1);
+				answer = first / second;
+				prob.setText(first + " ÷ " + second);
+			} else if (divR.equals("Medium")) {
+				second = rn.nextInt(7) + 2;
+				first = second * (rn.nextInt(7) + 2);
+
+				if (first / second == 1)
+					probGen();
+
+				else {
+					answer = first / second;
+					prob.setText(first + " ÷ " + second);
 				}
-		} else if(gType.equals("Mistakes")) {
+			} else if (divR.equals("Hard")) {
+				second = rn.nextInt(9) + 4;
+				if (second == 10)
+					if (rn.nextBoolean())
+						second = 12;
+				first = second * (rn.nextInt(9) + 4);
+
+				if (first / second == 10) {
+					if (rn.nextBoolean())
+						probGen();
+					else {
+						answer = first / second;
+						prob.setText(first + " ÷ " + second);
+					}
+
+				} else {
+					answer = first / second;
+					prob.setText(first + " ÷ " + second);
+				}
+
+			} else if (divR.equals("Expert")) {
+				second = rn.nextInt(9) + 7;
+				if (second == 10)
+					if (rn.nextBoolean())
+						second = 12;
+				first = second * (rn.nextInt(9) + 7);
+
+				if (first / second == 10) {
+					if (rn.nextBoolean())
+						probGen();
+					else {
+						answer = first / second;
+						prob.setText(first + " ÷ " + second);
+					}
+
+				} else {
+					answer = first / second;
+					prob.setText(first + " ÷ " + second);
+				}
+			}
+		} else if (gType.equals("Mistakes")) {
 			String mProb = oldMistakes[rn.nextInt(oldMistakes.length)];
 			prob.setText(mProb);
 			setAnswer(mProb);
 		}
 	}
-	
+
 	private void setAnswer(String mProb) {
-		int mFirst = Integer.parseInt(mProb.substring(0,mProb.indexOf(" ")));
-		int mSecond = Integer.parseInt(mProb.substring(mProb.indexOf(" ", mProb.indexOf(" ") + 1) + 1));
-		
-		if(mProb.contains("+"))
+		int mFirst = Integer.parseInt(mProb.substring(0, mProb.indexOf(" ")));
+		int mSecond = Integer.parseInt(mProb.substring(mProb.indexOf(" ",
+				mProb.indexOf(" ") + 1) + 1));
+
+		if (mProb.contains("+"))
 			answer = mFirst + mSecond;
-		else if(mProb.contains("-"))
+		else if (mProb.contains("-"))
 			answer = mFirst - mSecond;
-		else if(mProb.contains("x"))
+		else if (mProb.contains("x"))
 			answer = mFirst * mSecond;
-		else if(mProb.contains("÷"))
+		else if (mProb.contains("÷"))
 			answer = mFirst / mSecond;
 	}
-
 
 	private void newGame() {
 		endGame();
 		mistakes = "";
-		
-		date = new SimpleDateFormat("MM/dd/yy HH:mm", Locale.US).format(new Date());
-		
+
+		date = new SimpleDateFormat("MM/dd/yy HH:mm", Locale.US)
+				.format(new Date());
+
 		// Get Types
 		types = "";
-		for( int i = 0; i < probTypes.length; i++) {
-			if( i != 0 ) {
+		for (int i = 0; i < probTypes.length; i++) {
+			if (i != 0) {
 				types = types + ", ";
 			}
-			
-			if( ((String) probTypes[i]).equals("Addition")) {
-					types = types + "Addition " + "(" + addR.substring(0,2) + ")";
-					
-			}else if( ((String) probTypes[i]).equals("Subtraction")) {
-					types = types + "Subtraction " + "(" + subR.substring(0,2) + ")";
-			}else if( ((String) probTypes[i]).equals("Multiplication")) {
-					types = types + "Multipication " + "(" + multR.substring(0,2) + ")";
-			}else if( ((String) probTypes[i]).equals("Division")) {
-					types = types + "Division " + "(" + divR.substring(0,2) + ")";
-			}else if( ((String) probTypes[i]).equals("Mistakes")) {
+
+			if (((String) probTypes[i]).equals("Addition")) {
+				types = types + "Addition " + "(" + addR.substring(0, 2) + ")";
+
+			} else if (((String) probTypes[i]).equals("Subtraction")) {
+				types = types + "Subtraction " + "(" + subR.substring(0, 2)
+						+ ")";
+			} else if (((String) probTypes[i]).equals("Multiplication")) {
+				types = types + "Multipication " + "(" + multR.substring(0, 2)
+						+ ")";
+			} else if (((String) probTypes[i]).equals("Division")) {
+				types = types + "Division " + "(" + divR.substring(0, 2) + ")";
+			} else if (((String) probTypes[i]).equals("Mistakes")) {
 				types = types + "Mistakes";
 			}
-			
+
 		}
-		
-		
-		
+
 		gameOn = true;
 		probGen();
 		right.setText("0");
 		wrong.setText("0");
 		time_left = prefs.getInt("pref_key_game_length", 80);
-		time.setText( time_left + "" );
-		handler.postDelayed(runnable,1000);
-		
-		}
-		
+		time.setText(time_left + "");
+		handler.postDelayed(runnable, 1000);
+
+	}
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -565,7 +558,6 @@ public class MainActivity extends Activity implements OnClickListener
 		outState.putInt("answer", answer);
 		handler.removeCallbacks(runnable);
 	}
-		
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -583,11 +575,10 @@ public class MainActivity extends Activity implements OnClickListener
 		gameOn = savedInstanceState.getBoolean("gameon");
 		date = savedInstanceState.getString("date");
 		answer = savedInstanceState.getInt("answer");
-		if( gameOn )
-			handler.postDelayed(runnable,1000);
-		
-	}
+		if (gameOn)
+			handler.postDelayed(runnable, 1000);
 
+	}
 
 	@Override
 	public void onBackPressed() {
@@ -596,54 +587,72 @@ public class MainActivity extends Activity implements OnClickListener
 		endGame();
 	}
 
+	private void endGame() {
+		if (gameOn) {
 
-	private void endGame()
-	{
-		if( gameOn ) {
-			
 			prob.setText("Game Over");
-			
-			handler.removeCallbacks( runnable );
+
+			handler.removeCallbacks(runnable);
 			gameOn = false;
-			
+
 			Game game = new Game();
-			game.setType( types );
+			game.setType(types);
 			game.setDate(date);
-			game.setRight( right.getText().toString());
-			game.setWrong( wrong.getText().toString());
-			game.setPercent(Math.round( Integer.parseInt(right.getText().toString()) * 100.0/ (Integer.parseInt(right.getText().toString()) + Integer.parseInt(wrong.getText().toString()))) + "%");
+			game.setRight(right.getText().toString());
+			game.setWrong(wrong.getText().toString());
+			game.setPercent(Math.round(Integer.parseInt(right.getText()
+					.toString())
+					* 100.0
+					/ (Integer.parseInt(right.getText().toString()) + Integer
+							.parseInt(wrong.getText().toString())))
+					+ "%");
 			game.setProbsWrong(mistakes);
-			
-			Log.d("Game:", game.getDate() + " " + game.getType() + " " + game.getRight() + " " + game.getWrong() + " " + game.getPercent());
-			
-			if(!right.getText().toString().equals("0") || !wrong.getText().toString().equals("0") ) {
-				DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-				db.addGame( game );
+
+			Log.d("Game:",
+					game.getDate() + " " + game.getType() + " "
+							+ game.getRight() + " " + game.getWrong() + " "
+							+ game.getPercent());
+
+			if (!right.getText().toString().equals("0")
+					|| !wrong.getText().toString().equals("0")) {
+				DatabaseHandler db = new DatabaseHandler(
+						getApplicationContext());
+				db.addGame(game);
 				db.close();
 			}
-			
+
 			int numNeed = prefs.getInt("pref_key_correct_needed", 25);
-			String timeE = prefs.getInt("pref_key_earned_time",15) + "";
+			String timeE = prefs.getInt("pref_key_earned_time", 15) + "";
 
-			if ( Integer.parseInt( right.getText().toString() ) >= numNeed && prefs.getBoolean("pref_key_restricted_mode", false)) {
-					MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.ronniecall);
-				    mp.start();
-				    Intent i = new Intent("tcx.PAUSE");
-					Bundle extras = new Bundle();   
-					extras.putInt("time", Integer.parseInt(timeE));
-			        i.putExtras(extras);  
-					sendBroadcast(i);
-				    Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() +"\nYou get " + timeE + " minutes to play!" , Toast.LENGTH_LONG).show();
+			if (Integer.parseInt(right.getText().toString()) >= numNeed
+					&& prefs.getBoolean("pref_key_restricted_mode", false)) {
+				MediaPlayer mp = MediaPlayer.create(getApplicationContext(),
+						R.raw.ronniecall);
+				mp.start();
+				Intent i = new Intent("tcx.PAUSE");
+				Bundle extras = new Bundle();
+				extras.putInt("time", Integer.parseInt(timeE));
+				i.putExtras(extras);
+				sendBroadcast(i);
+				Toast.makeText(
+						this.getApplicationContext(),
+						"You got " + right.getText() + " right! That's "
+								+ game.getPercent() + "\nYou get " + timeE
+								+ " minutes to play!", Toast.LENGTH_LONG)
+						.show();
 
-				} else{
-					if(!right.getText().toString().equals("0") || !wrong.getText().toString().equals("0") )
-						Toast.makeText( this.getApplicationContext() , "You got " + right.getText() + " right! That's " + game.getPercent() , Toast.LENGTH_LONG).show();
+			} else {
+				if (!right.getText().toString().equals("0")
+						|| !wrong.getText().toString().equals("0"))
+					Toast.makeText(
+							this.getApplicationContext(),
+							"You got " + right.getText() + " right! That's "
+									+ game.getPercent(), Toast.LENGTH_LONG)
+							.show();
 
-				}
+			}
 		}
-		
-		
+
 	}
 
-	
 }
