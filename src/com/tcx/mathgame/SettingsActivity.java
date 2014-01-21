@@ -1,9 +1,11 @@
 package com.tcx.mathgame;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
@@ -19,15 +21,16 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
 	private SharedPreferences sharedPref;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.settings_password);
+			ActionBar actionBar = getActionBar();
+			actionBar.setDisplayHomeAsUpEnabled(true);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-
+		
 		// Login screen
 		Button submit = (Button) findViewById(R.id.settingpassButton1);
 		submit.setOnClickListener(this);
@@ -62,19 +65,17 @@ public class SettingsActivity extends Activity implements OnClickListener {
 						.commit();
 				Toast.makeText(this, "Password Saved!", Toast.LENGTH_LONG)
 						.show();
-				
+
 				InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				inputManager.hideSoftInputFromWindow(getCurrentFocus()
-						.getWindowToken(),
-						InputMethodManager.HIDE_NOT_ALWAYS);
+						.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
 				setContentView(R.layout.clear);
 
 				// Display the fragment as the main content.
-				getFragmentManager()
-						.beginTransaction()
-						.replace(android.R.id.content,
-								new SettingsFragment()).commit();
+				getFragmentManager().beginTransaction()
+						.replace(android.R.id.content, new SettingsFragment())
+						.commit();
 
 			} else if (sharedPref.getBoolean("pref_key_password_first", true)
 					&& password.getText().equals("")) {
