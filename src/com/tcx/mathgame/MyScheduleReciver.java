@@ -3,15 +3,12 @@ package com.tcx.mathgame;
 import java.util.Calendar;
 import java.util.List;
 
-import android.R.bool;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,8 +38,11 @@ public class MyScheduleReciver extends BroadcastReceiver {
 		mContext = context;
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-		go = prefs.getBoolean("pref_key_restriced_mode", false);
+		go = prefs.getBoolean("pref_key_restricted_mode", false);
+		
 		Boolean paused = prefs.getBoolean("paused", false);
+		
+		
 
 		if (intent.getAction().equals("tcx.START") && !paused) {
 			Log.d("YOLO", "Reciever starting");
@@ -77,10 +77,18 @@ public class MyScheduleReciver extends BroadcastReceiver {
 				startReceiver();
 			}
 
+		} else if ( intent.getAction().equals("tcx.END_PAUSE")) {
+			Log.d("YOLO", "Ending Time");
+			prefs.edit().putBoolean("paused", false).commit();
+			mNotifyMgr.cancel(002);
+			if(go)
+				startReceiver();
 		}
 	}
 
 	private void startReceiver() {
+
+		prefs.edit().putBoolean("paused", false).commit();
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				mContext).setSmallIcon(R.drawable.ic_stat_device_access_secure)
@@ -110,22 +118,22 @@ public class MyScheduleReciver extends BroadcastReceiver {
 
 		service.setInexactRepeating(AlarmManager.RTC_WAKEUP,
 				cal.getTimeInMillis(), REPEAT_TIME, mPending);
-
 	}
 
 	private void stopReciver() {
+
 		mNotifyMgr.cancel(001);
 		Log.d("R", "Stop Reciver");
 		AlarmManager service = (AlarmManager) mContext
 				.getSystemService(Context.ALARM_SERVICE);
 		service.cancel(mPending);
+
 	}
 
 	private void pauseReciever(int time) {
 		minutesLeft = time;
 		stopReciver();
-		mBuilder = new NotificationCompat.Builder(
-				mContext)
+		mBuilder = new NotificationCompat.Builder(mContext)
 				.setSmallIcon(R.drawable.ic_stat_device_access_not_secure)
 				.setContentTitle("Restricted Mode Paused")
 				.setContentText("You have " + time + " minutes to play");
@@ -134,34 +142,40 @@ public class MyScheduleReciver extends BroadcastReceiver {
 		Runnable runny = new Runnable() {
 			public void run() {
 				minutesLeft--;
-				if (minutesLeft == 0) {
-					prefs.edit().putBoolean("paused", false).commit();
-					startReceiver();
+				if (minutesLeft == 0 && prefs.getBoolean("paused", false)) {
 					mNotifyMgr.cancel(002);
-					ActivityManager am = (ActivityManager) mContext
-							.getSystemService(Context.ACTIVITY_SERVICE);
+					prefs.edit().putBoolean("paused", false).commit();
+					if (prefs.getBoolean("pref_key_restricted_mode", false)) {
+						Log.d("YOLO", "Here Boy!");
+						startReceiver();
+						ActivityManager am = (ActivityManager) mContext
+								.getSystemService(Context.ACTIVITY_SERVICE);
 
-					List<RunningAppProcessInfo> runningProcInfo = am
-							.getRunningAppProcesses();
+						List<RunningTaskInfo> runningProcInfo = am
+								.getRunningTasks(1);
 
-					Log.d("YOLO", runningProcInfo.get(0).processName);
-					String packageName = runningProcInfo.get(0).processName;
+						String packageName = runningProcInfo.get(0).topActivity
+								.getPackageName();
 
-					if (!packageName.equals("com.tcx.mathgame")) {
-						Intent startMain = new Intent(Intent.ACTION_MAIN);
-						startMain.addCategory(Intent.CATEGORY_HOME);
-						startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						mContext.startActivity(startMain);
+						Log.d("YOLO", packageName);
+
+						if ((!packageName.equals("com.tcx.mathgame"))) {
+							Intent startMain = new Intent(Intent.ACTION_MAIN);
+							startMain.addCategory(Intent.CATEGORY_HOME);
+							startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							mContext.startActivity(startMain);
+						}
+						Toast.makeText(mContext, "Time's up buster!",
+								Toast.LENGTH_SHORT).show();
 					}
-					Toast.makeText(mContext, "Time's up buster!",
-							Toast.LENGTH_SHORT).show();
-				} else {
-					mBuilder.setContentText("You have " + minutesLeft + " minutes left to play");
+				} else if (prefs.getBoolean("paused", false)) {
+					mBuilder.setContentText("You have " + minutesLeft
+							+ " minutes left to play");
 					mNotifyMgr.notify(002, mBuilder.build());
 					Handler handle = new Handler();
 					handle.postDelayed(this, 60000);
 				}
-					
+
 			}
 		};
 		Handler handle = new Handler();

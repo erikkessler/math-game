@@ -2,7 +2,7 @@
 <com.tcx.mathgame.GameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/history_item_height"
-    android:background="@drawable/card_bg2"
+    android:background="@drawable/card_bg3"
     android:clickable="true"
     android:onClick="showWrong" >
 

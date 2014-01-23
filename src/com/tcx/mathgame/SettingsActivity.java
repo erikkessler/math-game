@@ -9,17 +9,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
+import android.text.Editable;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class SettingsActivity extends Activity implements OnClickListener {
 
 	private SharedPreferences sharedPref;
+	private TextView password;
 
 
 	@Override
@@ -32,8 +38,20 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
 		
 		// Login screen
-		Button submit = (Button) findViewById(R.id.settingpassButton1);
+		final Button submit = (Button) findViewById(R.id.settingpassButton1);
 		submit.setOnClickListener(this);
+		
+		password = (TextView) findViewById(R.id.settingPass);
+		password.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if(actionId == EditorInfo.IME_ACTION_GO){
+		            onClick(submit);
+		        }
+				return false;
+			}
+		});
 
 		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref.getBoolean("pref_key_password_first", true)) {
@@ -54,7 +72,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.settingpassButton1) {
-			TextView password = (TextView) findViewById(R.id.settingPass);
+			
 			if (sharedPref.getBoolean("pref_key_password_first", true)
 					&& !password.getText().equals("")) {
 				sharedPref

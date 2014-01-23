@@ -79,7 +79,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			@Override
 			public void run() {
 				time_left--;
-				time.setText(time_left + "");
+				setTime();
 				if (time_left == 0) {
 					endGame();
 				} else {
@@ -537,11 +537,21 @@ public class MainActivity extends Activity implements OnClickListener {
 		right.setText("0");
 		wrong.setText("0");
 		time_left = prefs.getInt("pref_key_game_length", 80);
-		time.setText(time_left + "");
+		setTime();
 		handler.postDelayed(runnable, 1000);
 
 	}
+	
+	private void setTime() {
+		String min = time_left / 60 + ""; 
+		String sec = time_left % 60 + "";
+		if (sec.length() == 1)
+			sec = "0" + sec;
+		
+		time.setText( min  + ":" + sec);
+	}
 
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -551,6 +561,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		outState.putString("prob", prob.getText().toString());
 		outState.putString("enty", entry.getText().toString());
 		outState.putString("time", time.getText().toString());
+		outState.putInt("time_left", time_left);
 		outState.putString("mistakes", mistakes);
 		outState.putString("types", types);
 		outState.putBoolean("gameon", gameOn);
@@ -571,7 +582,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		screenChanged = true;
 		mistakes = savedInstanceState.getString("mistakes");
 		types = savedInstanceState.getString("types");
-		time_left = Integer.parseInt(savedInstanceState.getString("time"));
+		time_left = savedInstanceState.getInt("time_left");
 		gameOn = savedInstanceState.getBoolean("gameon");
 		date = savedInstanceState.getString("date");
 		answer = savedInstanceState.getInt("answer");

@@ -16,6 +16,10 @@
 		    android:dependency="pref_key_restricted_mode"
 			android:title="@string/pref_title_free_time" 
 			android:summary="@string/pref_summary_free_time" />
+		<Preference 
+		    android:key="pref_key_end_time"
+			android:title="@string/pref_title_end_time" 
+			android:summary="@string/pref_summary_end_time" />
 	</PreferenceCategory>
 	
 	<PreferenceCategory 
@@ -25,11 +29,11 @@
 			android:entryValues="@array/pref_game_type_entries" android:dialogTitle="@string/pref_title_game_type"
 			android:entries="@array/pref_game_type_entries" android:key="pref_key_game_type"
 			android:title="@string/pref_title_game_type" />
-		<com.tcx.mathgame.NumberPickerPreference
+		<com.tcx.mathgame.TimerPickerPreference
 			android:title="@string/pref_title_game_length" 
 			android:key="pref_key_game_length"
 			android:defaultValue="80"
-			custom:text="Set the game length in seconds" />
+			custom:text="Set the game length (mm:ss)" />
 		<com.tcx.mathgame.NumberPickerPreference
 		    android:title="@string/pref_title_correct_needed"
 			android:key="pref_key_correct_needed" 

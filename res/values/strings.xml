@@ -10,6 +10,8 @@
     <string name="pref_title_password">Change Password</string>
     <string name="pref_title_free_time">Start Free Time</string>
     <string name="pref_summary_free_time">Pauses restriced mode for time defined by Earned Time</string>
+     <string name="pref_title_end_time">End Reward Time</string>
+    <string name="pref_summary_end_time">Ends any reward time instantly</string>
     <string name="pref_title_game_type">Game Type</string>
     <string name="pref_title_earned_time">Earned Time</string>
     <string name="pref_title_game_length">Game Length</string>
@@ -40,6 +42,8 @@
         <item>Addition</item>
     </string-array>
 
+    <string name="pref_minutes">Minutes:</string>
+    <string name="pref_seconds">Seconds:</string>
     <string name="settings_password_prompt">Enter Password:</string>
     <string name="settings_password_prompt_new">First Time? Create a Password:</string>
     <string name="settings_password_enter">Enter</string>
