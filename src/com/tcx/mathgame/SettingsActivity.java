@@ -3,7 +3,9 @@ package com.tcx.mathgame;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.method.KeyListener;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,28 +30,27 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	private SharedPreferences sharedPref;
 	private TextView password;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.settings_password);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		
 		// Login screen
 		final Button submit = (Button) findViewById(R.id.settingpassButton1);
 		submit.setOnClickListener(this);
-		
+
 		password = (TextView) findViewById(R.id.settingPass);
 		password.setOnEditorActionListener(new OnEditorActionListener() {
-			
+
 			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if(actionId == EditorInfo.IME_ACTION_GO){
-		            onClick(submit);
-		        }
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_GO) {
+					onClick(submit);
+				}
 				return false;
 			}
 		});
@@ -72,7 +74,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.settingpassButton1) {
-			
+
 			if (sharedPref.getBoolean("pref_key_password_first", true)
 					&& !password.getText().equals("")) {
 				sharedPref
@@ -126,9 +128,35 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		menu.add(1, 1, 1, "Help");
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	private void openOptionsHelpDialog() {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.help_title)
+				.setMessage(R.string.help_message)
+				.setPositiveButton(R.string.help_okay,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// TODO Auto-generated method stub
+
+							}
+						}).show();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			NavUtils.navigateUpFromSameTask(this);
+		} else if (item.getItemId() == 1) {
+			openOptionsHelpDialog();
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -10,7 +10,7 @@
     <string name="pref_title_password">Change Password</string>
     <string name="pref_title_free_time">Start Free Time</string>
     <string name="pref_summary_free_time">Pauses restriced mode for time defined by Earned Time</string>
-     <string name="pref_title_end_time">End Reward Time</string>
+    <string name="pref_title_end_time">End Reward Time</string>
     <string name="pref_summary_end_time">Ends any reward time instantly</string>
     <string name="pref_title_game_type">Game Type</string>
     <string name="pref_title_earned_time">Earned Time</string>
@@ -60,5 +60,8 @@
     <string name="history_header">Click the game to view mistakes...</string>
     <string name="history_type">Types: </string>
     <string name="history_mistakes">Mistakes: </string>
+    <string name="help_okay">OK</string>
+    <string name="help_title">About the Settings...</string>
+    <string name="help_message">Restricted Mode:\nWhen enabled all other apps on the device will be locked until the player gets the required number of problems correct.\n\nStart Free Time:\nStarts reward time instantly.\n\nEnd Reward Time:\nEnds reward time instantly.\n\nGame Type:\nSet the type of problems that will appear. You can mix different types to get a game that contains multiple types of problems. The mistakes setting allows you to play with mistakes from previous games (visible in the History section from the main screen).\n\nGame Length:\nHow long the game will last. Formatted in mm:ss.\n\nCorrect Needed:\nSet how many correct answers are needed to earn reward time.\n\nEarned Time:\nNumber of minutes that will be awarded for a successful game.\n\nDifficulty:\nChange the difficulty of the problems. Harder problems involve larger numbers.</string>
 
 </resources>

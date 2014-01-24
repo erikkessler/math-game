@@ -49,6 +49,7 @@ public class NumberPickerPreference extends DialogPreference {
 		mNumberPicker.setWrapSelectorWheel(false);
 		mNumberPicker
 				.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+		mNumberPicker.setValue(getPersistedInt(mDefaultValue));
 	}
 
 	@Override

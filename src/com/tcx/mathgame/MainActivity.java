@@ -44,10 +44,11 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int numbTypes;
 	private Random rn;
 	private String mistakes;
+	private Boolean screenChanged;
 	private int first, second;
 	private String types, date;
-	private boolean screenChanged = false;
 	private String[] oldMistakes;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -195,8 +196,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		getMistakes();
 
-		if (!screenChanged)
+		if (!screenChanged) {
 			newGame();
+		}
 	}
 
 	private void getMistakes() {
@@ -213,7 +215,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		}
 		oldMistakes = mMistakes.split(", ");
-		Log.d("YOLO", oldMistakes.length+"");
+		Log.d("YOLO", oldMistakes.length + "");
 
 	}
 
@@ -541,17 +543,16 @@ public class MainActivity extends Activity implements OnClickListener {
 		handler.postDelayed(runnable, 1000);
 
 	}
-	
+
 	private void setTime() {
-		String min = time_left / 60 + ""; 
+		String min = time_left / 60 + "";
 		String sec = time_left % 60 + "";
 		if (sec.length() == 1)
 			sec = "0" + sec;
-		
-		time.setText( min  + ":" + sec);
+
+		time.setText(min + ":" + sec);
 	}
 
-	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
