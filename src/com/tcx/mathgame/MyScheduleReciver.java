@@ -11,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,10 +25,8 @@ public class MyScheduleReciver extends BroadcastReceiver {
 	private static final long REPEAT_TIME = 1000 * 2;
 	private static Context mContext;
 	private static PendingIntent mPending;
-	private boolean started;
 	private boolean go;
 	private static NotificationManager mNotifyMgr;
-	private static boolean hasUserChange;
 	private SharedPreferences prefs;
 	private int minutesLeft;
 	private NotificationCompat.Builder mBuilder;
@@ -59,25 +58,7 @@ public class MyScheduleReciver extends BroadcastReceiver {
 			prefs.edit().putBoolean("paused", true).commit();
 			pauseReciever(intent.getIntExtra("time", 15));
 
-		} else if ((intent.getAction().equals(Intent.ACTION_USER_BACKGROUND) || intent
-				.getAction().equals(Intent.ACTION_USER_FOREGROUND)) && !paused) {
-			boolean userSentBackground = intent.getAction().equals(
-					Intent.ACTION_USER_BACKGROUND);
-			boolean userSentForeground = intent.getAction().equals(
-					Intent.ACTION_USER_FOREGROUND);
-			Log.d("YOLO", "Switch received. User sent background = "
-					+ userSentBackground + "; User sent foreground = "
-					+ userSentForeground + ";");
-
-			if (started && userSentBackground)
-				stopReciver();
-
-			if (go && userSentForeground) {
-				mContext = context;
-				startReceiver();
-			}
-
-		} else if ( intent.getAction().equals("tcx.END_PAUSE")) {
+		}  else if ( intent.getAction().equals("tcx.END_PAUSE")) {
 			Log.d("YOLO", "Ending Time");
 			prefs.edit().putBoolean("paused", false).commit();
 			mNotifyMgr.cancel(002);
@@ -103,7 +84,6 @@ public class MyScheduleReciver extends BroadcastReceiver {
 				.getSystemService(mContext.NOTIFICATION_SERVICE);
 		mNotifyMgr.notify(001, mBuilder.build());
 
-		started = true;
 		Log.d("R", "Reciever Started");
 
 		AlarmManager service = (AlarmManager) mContext
@@ -181,15 +161,6 @@ public class MyScheduleReciver extends BroadcastReceiver {
 		Handler handle = new Handler();
 		handle.postDelayed(runny, 60000);
 
-	}
-
-	static boolean hasUser() {
-		return hasUserChange;
-	}
-
-	static void setUser() {
-		hasUserChange = true;
-		Log.d("YOLO", "Got 'em");
 	}
 
 }

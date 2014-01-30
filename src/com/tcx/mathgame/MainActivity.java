@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int numbTypes;
 	private Random rn;
 	private String mistakes;
-	private Boolean screenChanged;
+	private Boolean screenChanged = false;
 	private int first, second;
 	private String types, date;
 	private String[] oldMistakes;

@@ -3,9 +3,13 @@ package com.tcx.mathgame;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
@@ -132,6 +136,11 @@ public class SettingsFragment extends PreferenceFragment implements
 				i.putExtras(extras);
 				getActivity().sendBroadcast(i);
 				Log.d("YOLO", "Settings tried to start service");
+				
+				if (Utils.isJellyBeanM1()) {
+					userHandler();
+				}
+				
 			} else {
 				prefs.edit().putBoolean("pref_key_restricted_mode", false)
 						.commit();
@@ -165,6 +174,12 @@ public class SettingsFragment extends PreferenceFragment implements
 		return true;
 	}
 	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+	private void userHandler() {
+		
+		
+	}
+
 	private void setTimeSummary(int time) {
 		String min = time / 60 + ""; 
 		String sec = time % 60 + "";

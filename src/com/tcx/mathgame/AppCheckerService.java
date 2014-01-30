@@ -2,16 +2,22 @@ package com.tcx.mathgame;
 
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
+import android.os.UserHandle;
+import android.os.UserManager;
+import android.provider.Settings.Secure;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,12 +35,16 @@ public class AppCheckerService extends Service {
 		}
 		ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 
-		List<RunningTaskInfo> runningProcInfo = am
-				.getRunningTasks(1);
+		List<RunningTaskInfo> runningProcInfo = am.getRunningTasks(1);
 
-		String packageName = runningProcInfo.get(0).topActivity.getPackageName();
+		String packageName = runningProcInfo.get(0).topActivity
+				.getPackageName();
 
 		Log.d("YOLO", packageName);
+
+
+		if (Utils.isJellyBeanM1())
+			userHandler();
 
 		if ((!packageName.equals("com.tcx.mathgame") && (!packageName
 				.contains(homeName)))
@@ -67,6 +77,27 @@ public class AppCheckerService extends Service {
 		AppCheckerService getService() {
 			return AppCheckerService.this;
 		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+	private void userHandler() {
+		
+
+	}
+
+	@Override
+	public void onCreate() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction( Intent.ACTION_USER_BACKGROUND );
+		filter.addAction( Intent.ACTION_USER_FOREGROUND );
+		registerReceiver( Utils.mUserReciever, filter );
+		super.onCreate();
+	}
+
+	@Override
+	public void onDestroy() {
+		unregisterReceiver(Utils.mUserReciever);
+		super.onDestroy();
 	}
 
 }

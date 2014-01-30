@@ -3,11 +3,16 @@ package com.tcx.mathgame;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.UserHandle;
+import android.os.UserManager;
 import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -15,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HomeScreen extends Activity {
 	
@@ -94,22 +100,13 @@ public class HomeScreen extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
+		if(Utils.isJellyBeanM1())
+			multiUser();
+		
 		Set<String> set = new HashSet<String>();
 		
 		set.add("Addition");
-        typers.setText(fromSet(prefs.getStringSet("pref_key_game_type", set )));
-				
-		if(!MyScheduleReciver.hasUser()) {
-			
-			reciever = new MyScheduleReciver();
-			IntentFilter filter = new IntentFilter();
-			filter.addAction( Intent.ACTION_USER_BACKGROUND );
-			filter.addAction( Intent.ACTION_USER_FOREGROUND );
-			registerReceiver( reciever, filter );
-			Log.d("YOLO", "Main Added Things");
-			MyScheduleReciver.setUser();
-		}
-				
+        typers.setText(fromSet(prefs.getStringSet("pref_key_game_type", set )));			
 					
 		if (prefs.getBoolean("pref_key_restricted_mode", false)) {
 			startService(new Intent(HomeScreen.this,AppCheckerService.class));
@@ -128,6 +125,12 @@ public class HomeScreen extends Activity {
 			sendBroadcast(i);
 			Log.d("YOLO", "On Resume tried to stop service");
 		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+	private void multiUser() {
+		
+		
 	}
 	
 	
