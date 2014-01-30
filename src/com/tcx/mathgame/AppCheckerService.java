@@ -40,15 +40,10 @@ public class AppCheckerService extends Service {
 		String packageName = runningProcInfo.get(0).topActivity
 				.getPackageName();
 
-		Log.d("YOLO", packageName);
-
-
-		if (Utils.isJellyBeanM1())
-			userHandler();
-
 		if ((!packageName.equals("com.tcx.mathgame") && (!packageName
 				.contains(homeName)))
-				&& (!packageName.equals("fr.lehovetzki.ABMath"))) {
+				&& (!packageName.equals("fr.lehovetzki.ABMath"))
+				&& Utils.userPresent) {
 			Toast.makeText(this.getApplicationContext(), "Hey! Do your math!",
 					Toast.LENGTH_SHORT).show();
 			Intent startMain = new Intent(Intent.ACTION_MAIN);
@@ -79,18 +74,12 @@ public class AppCheckerService extends Service {
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-	private void userHandler() {
-		
-
-	}
-
 	@Override
 	public void onCreate() {
 		IntentFilter filter = new IntentFilter();
-		filter.addAction( Intent.ACTION_USER_BACKGROUND );
-		filter.addAction( Intent.ACTION_USER_FOREGROUND );
-		registerReceiver( Utils.mUserReciever, filter );
+		filter.addAction(Intent.ACTION_USER_BACKGROUND);
+		filter.addAction(Intent.ACTION_USER_FOREGROUND);
+		registerReceiver(Utils.mUserReciever, filter);
 		super.onCreate();
 	}
 

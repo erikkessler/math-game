@@ -39,28 +39,30 @@ public class MyScheduleReciver extends BroadcastReceiver {
 		prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 		go = prefs.getBoolean("pref_key_restricted_mode", false);
 		
-		Boolean paused = prefs.getBoolean("paused", false);
+		//Boolean paused = prefs.getBoolean("paused", false);
 		
 		
 
-		if (intent.getAction().equals("tcx.START") && !paused) {
+		if (intent.getAction().equals("tcx.START") && !Utils.paused) {
 			Log.d("YOLO", "Reciever starting");
 			startReceiver();
 
 		} else if (intent.getAction().equals("tcx.STOP") && mPending != null
-				&& !paused) {
+				&& !Utils.paused) {
 			Log.d("YOLO", "Reciever stopping");
 			stopReciver();
 
-		} else if (intent.getAction().equals("tcx.PAUSE") && !paused) {
+		} else if (intent.getAction().equals("tcx.PAUSE") && !Utils.paused) {
 
 			Log.d("YOLO", "Reciever pausing");
-			prefs.edit().putBoolean("paused", true).commit();
+			//prefs.edit().putBoolean("paused", true).commit();
+			Utils.paused = true;
 			pauseReciever(intent.getIntExtra("time", 15));
 
 		}  else if ( intent.getAction().equals("tcx.END_PAUSE")) {
 			Log.d("YOLO", "Ending Time");
-			prefs.edit().putBoolean("paused", false).commit();
+			//prefs.edit().putBoolean("paused", false).commit();
+			Utils.paused = false;
 			mNotifyMgr.cancel(002);
 			if(go)
 				startReceiver();
@@ -69,7 +71,8 @@ public class MyScheduleReciver extends BroadcastReceiver {
 
 	private void startReceiver() {
 
-		prefs.edit().putBoolean("paused", false).commit();
+		//prefs.edit().putBoolean("paused", false).commit();
+		Utils.paused = false;
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				mContext).setSmallIcon(R.drawable.ic_stat_device_access_secure)
@@ -122,9 +125,11 @@ public class MyScheduleReciver extends BroadcastReceiver {
 		Runnable runny = new Runnable() {
 			public void run() {
 				minutesLeft--;
-				if (minutesLeft == 0 && prefs.getBoolean("paused", false)) {
+				//if (minutesLeft == 0 && prefs.getBoolean("paused", false)) {
+				if (minutesLeft == 0 && Utils.paused) {
 					mNotifyMgr.cancel(002);
-					prefs.edit().putBoolean("paused", false).commit();
+					//prefs.edit().putBoolean("paused", false).commit();
+					Utils.paused = false;
 					if (prefs.getBoolean("pref_key_restricted_mode", false)) {
 						Log.d("YOLO", "Here Boy!");
 						startReceiver();
@@ -148,7 +153,8 @@ public class MyScheduleReciver extends BroadcastReceiver {
 						Toast.makeText(mContext, "Time's up buster!",
 								Toast.LENGTH_SHORT).show();
 					}
-				} else if (prefs.getBoolean("paused", false)) {
+				//} else if (prefs.getBoolean("paused", false)) {
+				} else if (Utils.paused) {
 					mBuilder.setContentText("You have " + minutesLeft
 							+ " minutes left to play");
 					mNotifyMgr.notify(002, mBuilder.build());

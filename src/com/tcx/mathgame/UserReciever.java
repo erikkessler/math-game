@@ -9,7 +9,14 @@ public class UserReciever extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d("YOLO", "USER CHANGE");
+		
+		if(intent.getAction().equals(Intent.ACTION_USER_BACKGROUND)){
+			Log.d("YOLO", "USER BACKGROUND");
+			Utils.userPresent = false;
+		} else if(intent.getAction().equals(Intent.ACTION_USER_FOREGROUND)) {
+			Log.d("YOLO", "USER FOREGROUND");
+			Utils.userPresent = true;
+		}
 		
 	}
 
