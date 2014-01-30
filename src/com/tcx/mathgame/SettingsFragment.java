@@ -7,8 +7,10 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.UserHandle;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
@@ -30,6 +32,7 @@ public class SettingsFragment extends PreferenceFragment implements
 	private TimerPickerPreference mLength;
 	private MultiSelectListPreference mGameType;
 	private Set<String> set = new HashSet<String>();
+	private int numberClicks;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,9 +45,20 @@ public class SettingsFragment extends PreferenceFragment implements
 
 		Preference mFree = (Preference) findPreference("pref_key_free_time");
 		mFree.setOnPreferenceClickListener(this);
-		
+
 		Preference mEndFree = (Preference) findPreference("pref_key_end_time");
 		mEndFree.setOnPreferenceClickListener(this);
+
+		Preference mXtra = (Preference) findPreference("pref_key_xtra");
+		mXtra.setOnPreferenceClickListener(this);
+
+		try {
+			mXtra.setSummary(getActivity().getPackageManager().getPackageInfo(
+					getActivity().getPackageName(), 0).versionName);
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		SwitchPreference mSwitch = (SwitchPreference) findPreference("pref_key_restricted_mode");
 		mSwitch.setOnPreferenceChangeListener(this);
@@ -84,6 +98,8 @@ public class SettingsFragment extends PreferenceFragment implements
 				set)));
 		mGameType.setOnPreferenceChangeListener(this);
 
+		numberClicks = 0;
+
 	}
 
 	private CharSequence fromSet(Set<String> stringSet) {
@@ -118,6 +134,26 @@ public class SettingsFragment extends PreferenceFragment implements
 			Bundle extras = new Bundle();
 			i.putExtras(extras);
 			getActivity().sendBroadcast(i);
+		} else if (preference.getKey().equals("pref_key_xtra")) {
+			numberClicks++;
+			if (numberClicks == 3) {
+				if (!prefs.getBoolean("pref_key_xtra", false)) {
+					prefs.edit().putBoolean("pref_key_xtra", true).commit();
+					Toast.makeText(getActivity(), "Xtra Math Enabled",
+							Toast.LENGTH_LONG).show();
+				}
+			} else if (numberClicks == 1) {
+				Runnable runny = new Runnable() {
+					
+					@Override
+					public void run() {
+						numberClicks = 0;
+						
+					}
+				};
+				Handler handler = new Handler();
+				handler.postDelayed(runny, 3000);
+			}
 		}
 		return false;
 	}
@@ -136,11 +172,11 @@ public class SettingsFragment extends PreferenceFragment implements
 				i.putExtras(extras);
 				getActivity().sendBroadcast(i);
 				Log.d("YOLO", "Settings tried to start service");
-				
+
 				if (Utils.isJellyBeanM1()) {
 					userHandler();
 				}
-				
+
 			} else {
 				prefs.edit().putBoolean("pref_key_restricted_mode", false)
 						.commit();
@@ -173,22 +209,19 @@ public class SettingsFragment extends PreferenceFragment implements
 		}
 		return true;
 	}
-	
+
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void userHandler() {
-		
-		
+
 	}
 
 	private void setTimeSummary(int time) {
-		String min = time / 60 + ""; 
+		String min = time / 60 + "";
 		String sec = time % 60 + "";
 		if (sec.length() == 1)
 			sec = "0" + sec;
-		
-		mLength.setSummary( min  + ":" + sec);
+
+		mLength.setSummary(min + ":" + sec);
 	}
-	
-	
 
 }

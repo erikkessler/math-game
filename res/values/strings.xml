@@ -5,7 +5,7 @@
     <string name="app_name">Reward Math</string>
     <string name="pref_category_restricted">Admin Settings</string>
     <string name="pref_category_game">Game Settings</string>
-    <string name="pref_category_diff">Difficulty Settings</string>
+    <string name="pref_category_diff">Difficulty Settings</string><string name="pref_category_about">About</string>
     <string name="pref_title_restricted_mode">Restricted Mode</string>
     <string name="pref_title_password">Change Password</string>
     <string name="pref_title_free_time">Start Free Time</string>
@@ -63,5 +63,7 @@
     <string name="help_okay">OK</string>
     <string name="help_title">About the Settings...</string>
     <string name="help_message">Restricted Mode:\nWhen enabled all other apps on the device will be locked until the player gets the required number of problems correct.\n\nStart Free Time:\nStarts reward time instantly.\n\nEnd Reward Time:\nEnds reward time instantly.\n\nGame Type:\nSet the type of problems that will appear. You can mix different types to get a game that contains multiple types of problems. The mistakes setting allows you to play with mistakes from previous games (visible in the History section from the main screen).\n\nGame Length:\nHow long the game will last. Formatted in mm:ss.\n\nCorrect Needed:\nSet how many correct answers are needed to earn reward time.\n\nEarned Time:\nNumber of minutes that will be awarded for a successful game.\n\nDifficulty:\nChange the difficulty of the problems. Harder problems involve larger numbers.</string>
+    
+    <string name="pref_about_title">Version</string>
 
 </resources>

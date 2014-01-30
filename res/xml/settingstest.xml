@@ -44,6 +44,7 @@
 		    android:defaultValue="15"
 			android:title="@string/pref_title_earned_time" 
 			android:key="pref_key_earned_time" />
+		
 	</PreferenceCategory>
 	<PreferenceCategory 
 	    android:title="@string/pref_category_diff">
@@ -75,6 +76,8 @@
 			android:entries="@array/pref_diff_entries" 
 			android:defaultValue="@string/pref_diff_default"
 			android:dialogTitle="@string/pref_title_div_diff" />
+	</PreferenceCategory><PreferenceCategory android:title="@string/pref_category_about">
+		<Preference android:key="pref_key_xtra" android:title="@string/pref_about_title"/>
 	</PreferenceCategory>
 
 
