@@ -1,4 +1,6 @@
-package com.tcx.mathgame;
+package com.tcx.chester.mathgame;
+
+import com.tcx.chester.mathgame.R;
 
 import android.content.Context;
 import android.preference.DialogPreference;

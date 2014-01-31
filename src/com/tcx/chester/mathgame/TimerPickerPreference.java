@@ -1,10 +1,9 @@
-package com.tcx.mathgame;
+package com.tcx.chester.mathgame;
 
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.OnValueChangeListener;
 import android.widget.TextView;
@@ -14,7 +13,7 @@ public class TimerPickerPreference extends DialogPreference implements
 
 	private NumberPicker mMinutesPicker;
 	private NumberPicker mSecondsPicker;
-	private static final String PREFERENCE_NS = "http://schemas.android.com/apk/res/com.tcx.mathgame";
+	private static final String PREFERENCE_NS = "http://schemas.android.com/apk/res/com.tcx.chester.mathgame";
 	private static final String ANDROID_NS = "http://schemas.android.com/apk/res/android";
 	private static final String ATTR_DEFAULT_VALUE = "defaultValue";
 	private static final String ATTR_TEXT = "text";

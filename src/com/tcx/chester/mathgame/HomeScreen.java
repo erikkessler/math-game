@@ -1,19 +1,14 @@
-package com.tcx.mathgame;
+package com.tcx.chester.mathgame;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.UserHandle;
-import android.os.UserManager;
-import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class HomeScreen extends Activity {
 

@@ -1,4 +1,4 @@
-package com.tcx.mathgame;
+package com.tcx.chester.mathgame;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

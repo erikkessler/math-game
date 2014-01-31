@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen 
     xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.tcx.mathgame">
+	xmlns:custom="http://schemas.android.com/apk/res/com.tcx.chester.mathgame">
 	<PreferenceCategory android:title="@string/pref_category_restricted">
 		<SwitchPreference 
 		    android:key="pref_key_restricted_mode"
 			android:defaultValue="false" 
 			android:title="@string/pref_title_restricted_mode" />
-		<com.tcx.mathgame.PasswordChangerPreference 
+		<com.tcx.chester.mathgame.PasswordChangerPreference 
 		    android:title="@string/pref_title_password"
 			android:key="pref_key_password" 
 			android:defaultValue="admin" />
@@ -30,17 +30,17 @@
 			android:entryValues="@array/pref_game_type_entries" android:dialogTitle="@string/pref_title_game_type"
 			android:entries="@array/pref_game_type_entries" android:key="pref_key_game_type"
 			android:title="@string/pref_title_game_type" />
-		<com.tcx.mathgame.TimerPickerPreference
+		<com.tcx.chester.mathgame.TimerPickerPreference
 			android:title="@string/pref_title_game_length" 
 			android:key="pref_key_game_length"
 			android:defaultValue="80"
 			custom:text="Set the game length (mm:ss)" />
-		<com.tcx.mathgame.NumberPickerPreference
+		<com.tcx.chester.mathgame.NumberPickerPreference
 		    android:title="@string/pref_title_correct_needed"
 			android:key="pref_key_correct_needed" 
 			android:defaultValue="25"
 			custom:text="Set the number of correct answers needed to pause restriced mode" />
-		<com.tcx.mathgame.NumberPickerPreference
+		<com.tcx.chester.mathgame.NumberPickerPreference
 		    custom:text="Set the number of minutes that will be earned for reaching the correct needed threshold" 
 		    android:defaultValue="15"
 			android:title="@string/pref_title_earned_time" 

@@ -1,4 +1,4 @@
-package com.tcx.mathgame;
+package com.tcx.chester.mathgame;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,13 +6,11 @@ import java.util.Set;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.UserHandle;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
@@ -60,7 +58,6 @@ public class SettingsFragment extends PreferenceFragment implements
 			mXtra.setSummary(getActivity().getPackageManager().getPackageInfo(
 					getActivity().getPackageName(), 0).versionName);
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -166,6 +163,7 @@ public class SettingsFragment extends PreferenceFragment implements
 			
 			db.close();
 			Toast.makeText(getActivity(), "History Deleted", Toast.LENGTH_LONG).show();
+			
 		}
 		return false;
 	}
