@@ -1,5 +1,6 @@
 package com.tcx.mathgame;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +49,9 @@ public class SettingsFragment extends PreferenceFragment implements
 
 		Preference mEndFree = (Preference) findPreference("pref_key_end_time");
 		mEndFree.setOnPreferenceClickListener(this);
+		
+		Preference mDelete = (Preference) findPreference("pref_key_delete");
+		mDelete.setOnPreferenceClickListener(this);
 
 		Preference mXtra = (Preference) findPreference("pref_key_xtra");
 		mXtra.setOnPreferenceClickListener(this);
@@ -120,12 +124,12 @@ public class SettingsFragment extends PreferenceFragment implements
 		if (preference.getKey().equals("pref_key_free_time")) {
 			Intent i = new Intent("tcx.PAUSE");
 			Bundle extras = new Bundle();
-			extras.putInt("time", prefs.getInt("pref_key_earned_time", 1));
+			extras.putInt("time", prefs.getInt("pref_key_earned_time", 15));
 			i.putExtras(extras);
 			getActivity().sendBroadcast(i);
 			Toast.makeText(
 					getActivity(),
-					prefs.getInt("pref_key_earned_time", 1)
+					prefs.getInt("pref_key_earned_time", 15)
 							+ " minutes of reward time started...",
 					Toast.LENGTH_LONG).show();
 		} else if (preference.getKey().equals("pref_key_end_time")) {
@@ -154,6 +158,14 @@ public class SettingsFragment extends PreferenceFragment implements
 				Handler handler = new Handler();
 				handler.postDelayed(runny, 3000);
 			}
+		} else if (preference.getKey().equals("pref_key_delete")) {
+			DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+			ArrayList<Game> gameList = db.getAllGames();
+			for (Game game : gameList)
+				db.deleteGame(game);
+			
+			db.close();
+			Toast.makeText(getActivity(), "History Deleted", Toast.LENGTH_LONG).show();
 		}
 		return false;
 	}

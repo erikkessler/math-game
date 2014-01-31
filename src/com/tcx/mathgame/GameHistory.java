@@ -3,12 +3,8 @@ package com.tcx.mathgame;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -17,7 +13,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GameHistory extends Activity {
 
@@ -50,32 +45,15 @@ public class GameHistory extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		menu.add(1, 0, 0, "Delete History");
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == 0)
-			deleteAll();
-		else if (item.getItemId() == android.R.id.home) {
+		if (item.getItemId() == android.R.id.home) {
 			NavUtils.navigateUpFromSameTask(this);
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void deleteAll() {
-		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-		ArrayList<Game> gameList = db.getAllGames();
-		for (Game game : gameList)
-			db.deleteGame(game);
-
-		gameList = db.getAllGames();
-		adapter = new GameListAdapter(GameHistory.this, gameList);
-		list.setAdapter(adapter);
-		db.close();
-
 	}
 
 	public void showWrong(View v) {
