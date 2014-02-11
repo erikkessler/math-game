@@ -9,6 +9,7 @@ public class Game {
 	String mWrong;
 	String mPercent;
 	String mProbsWrong;
+	String mInclude;
 	
 	public Game() {
 		
@@ -68,4 +69,13 @@ public class Game {
 	public void setProbsWrong( String wrong ) {
 		mProbsWrong = wrong;
 	}
+	
+	public String getInclude() {
+		return mInclude;
+	}
+	
+	public void setInclude( String include ) {
+		mInclude = include;
+	}
+	
 }

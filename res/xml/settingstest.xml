@@ -39,12 +39,21 @@
 		    android:title="@string/pref_title_correct_needed"
 			android:key="pref_key_correct_needed" 
 			android:defaultValue="25"
-			custom:text="Set the number of correct answers needed to pause restriced mode" />
+			custom:text="Set the number of correct answers needed to pause restriced mode" 
+			custom:infinite="false"/>
+		<com.tcx.chester.mathgame.NumberPickerPreference
+		    android:title="@string/pref_title_max_errors"
+			android:key="pref_key_max_errors" 
+			android:defaultValue="6"
+			custom:text="Set the maximum number of errors that the player can have" 
+			custom:infinite="true"/>
 		<com.tcx.chester.mathgame.NumberPickerPreference
 		    custom:text="Set the number of minutes that will be earned for reaching the correct needed threshold" 
 		    android:defaultValue="15"
 			android:title="@string/pref_title_earned_time" 
-			android:key="pref_key_earned_time" />
+			android:key="pref_key_earned_time" 
+			custom:infinite="false"/>
+		<ListPreference android:entries="@array/pref_include_entries" android:entryValues="@array/pref_include_entries" android:dialogTitle="@string/pref_include_title" android:key="pref_key_include_def" android:title="@string/pref_include_title" android:defaultValue="@string/pref_include_default"/>
 		
 	</PreferenceCategory>
 	<PreferenceCategory 

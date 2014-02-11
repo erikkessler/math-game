@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/history_item_height"
     android:background="@drawable/card_bg3"
-    android:clickable="true"
-    android:onClick="showWrong" >
+    android:clickable="true" >
 
     <RelativeLayout
         android:id="@+id/history_main"
@@ -151,6 +150,16 @@
             android:scrollHorizontally="true"
             android:text="Small Text"
             android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <CheckBox
+            android:id="@+id/history_mistakes_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/history_mistakes"
+            android:layout_alignParentBottom="true"
+            android:text="Include Mistakes"
+            android:textSize="12sp" />
+
     </RelativeLayout>
 
 </com.tcx.chester.mathgame.GameLayout>

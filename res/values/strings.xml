@@ -67,5 +67,13 @@
     <string name="pref_about_title">Version</string>
     <string name="pref_title_delete">Delete History</string>
     <string name="pref_summary_delete">Delete the game history</string>
+    <string name="pref_title_max_errors">Maximum Errors</string>
+    <string-array name="pref_include_entries">
+        <item >Include</item>
+        <item >Exclude</item>
+    </string-array>
+    <string name="pref_include_title">Default Handling of New Mistakes</string>
+    <string name="pref_include_message">Should mistakes from new games be automatically included in the mistakes list</string>
+    <string name="pref_include_default">Include</string>
 
 </resources>

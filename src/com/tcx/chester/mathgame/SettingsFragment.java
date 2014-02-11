@@ -26,8 +26,8 @@ public class SettingsFragment extends PreferenceFragment implements
 		OnPreferenceClickListener, OnPreferenceChangeListener {
 
 	private SharedPreferences prefs;
-	private ListPreference mAdd, mSub, mMult, mDiv;
-	private NumberPickerPreference mCorrect, mEarned;
+	private ListPreference mAdd, mSub, mMult, mDiv, mInc;
+	private NumberPickerPreference mCorrect, mEarned, mIncorrect;
 	private TimerPickerPreference mLength;
 	private MultiSelectListPreference mGameType;
 	private Set<String> set = new HashSet<String>();
@@ -47,7 +47,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
 		Preference mEndFree = (Preference) findPreference("pref_key_end_time");
 		mEndFree.setOnPreferenceClickListener(this);
-		
+
 		Preference mDelete = (Preference) findPreference("pref_key_delete");
 		mDelete.setOnPreferenceClickListener(this);
 
@@ -80,6 +80,10 @@ public class SettingsFragment extends PreferenceFragment implements
 		mDiv.setSummary(prefs.getString("pref_key_div_diff", "Easy"));
 		mDiv.setOnPreferenceChangeListener(this);
 
+		mInc = (ListPreference) findPreference("pref_key_include_def");
+		mInc.setSummary(prefs.getString("pref_key_include_def", "Include"));
+		mInc.setOnPreferenceChangeListener(this);
+
 		mLength = (TimerPickerPreference) findPreference("pref_key_game_length");
 		int time = prefs.getInt("pref_key_game_length", 80);
 		setTimeSummary(time);
@@ -88,6 +92,14 @@ public class SettingsFragment extends PreferenceFragment implements
 		mCorrect = (NumberPickerPreference) findPreference("pref_key_correct_needed");
 		mCorrect.setSummary(prefs.getInt("pref_key_correct_needed", 25) + "");
 		mCorrect.setOnPreferenceChangeListener(this);
+
+		mIncorrect = (NumberPickerPreference) findPreference("pref_key_max_errors");
+		if (prefs.getInt("pref_key_max_errors", 6) == 0)
+			mIncorrect.setSummary("Infinite");
+		else
+			mIncorrect.setSummary(prefs.getInt("pref_key_max_errors", 6) - 1
+					+ "");
+		mIncorrect.setOnPreferenceChangeListener(this);
 
 		mEarned = (NumberPickerPreference) findPreference("pref_key_earned_time");
 		mEarned.setSummary(prefs.getInt("pref_key_earned_time", 15) + "");
@@ -145,25 +157,27 @@ public class SettingsFragment extends PreferenceFragment implements
 				}
 			} else if (numberClicks == 1) {
 				Runnable runny = new Runnable() {
-					
+
 					@Override
 					public void run() {
 						numberClicks = 0;
-						
+
 					}
 				};
 				Handler handler = new Handler();
 				handler.postDelayed(runny, 3000);
 			}
 		} else if (preference.getKey().equals("pref_key_delete")) {
-			DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+			DatabaseHandler db = new DatabaseHandler(getActivity()
+					.getApplicationContext());
 			ArrayList<Game> gameList = db.getAllGames();
 			for (Game game : gameList)
 				db.deleteGame(game);
-			
+
 			db.close();
-			Toast.makeText(getActivity(), "History Deleted", Toast.LENGTH_LONG).show();
-			
+			Toast.makeText(getActivity(), "History Deleted", Toast.LENGTH_LONG)
+					.show();
+
 		}
 		return false;
 	}
@@ -207,13 +221,20 @@ public class SettingsFragment extends PreferenceFragment implements
 			mMult.setSummary((String) newValue);
 		} else if (preference.getKey().equals("pref_key_div_diff")) {
 			mDiv.setSummary((String) newValue);
+		} else if (preference.getKey().equals("pref_key_include_def")) {
+			mInc.setSummary((String) newValue);
 		} else if (preference.getKey().equals("pref_key_game_length")) {
 			int time = (Integer) newValue;
 			setTimeSummary(time);
 		} else if (preference.getKey().equals("pref_key_correct_needed")) {
 			mCorrect.setSummary((Integer) newValue + "");
-		} else if (preference.getKey().equals("pref_key_earned_time")) {
-			mEarned.setSummary((Integer) newValue + "");
+		} else if (preference.getKey().equals("pref_key_correct_needed")) {
+			mCorrect.setSummary((Integer) newValue + "");
+		} else if (preference.getKey().equals("pref_key_max_errors")) {
+			if ((Integer) newValue == 0)
+				mIncorrect.setSummary("Infinite");
+			else
+				mIncorrect.setSummary((Integer) newValue - 1 + "");
 		} else if (preference.getKey().equals("pref_key_game_type")) {
 			mGameType.setSummary(fromSet((Set<String>) newValue));
 		}

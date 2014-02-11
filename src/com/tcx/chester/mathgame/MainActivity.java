@@ -50,7 +50,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	private String types, date;
 	private String[] oldMistakes;
 
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -208,7 +207,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		db.close();
 		String mMistakes = "";
 		for (Game game : gameList) {
-			if (!game.getProbsWrong().equals("")) {
+			if (!game.getProbsWrong().equals("")
+					&& game.getInclude().equals("1")) {
 				if (mMistakes.equals(""))
 					mMistakes = game.getProbsWrong();
 				else
@@ -609,6 +609,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			gameOn = false;
 
 			Game game = new Game();
+			if (prefs.getString("pref_key_include_def", "Include").equals(
+					"Include"))
+				game.setInclude("1");
+			else
+				game.setInclude("0");
 			game.setType(types);
 			game.setDate(date);
 			game.setRight(right.getText().toString());
@@ -635,10 +640,14 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 
 			int numNeed = prefs.getInt("pref_key_correct_needed", 25);
+			int maxError = prefs.getInt("pref_key_max_errors", 6);
+			maxError--;
 			String timeE = prefs.getInt("pref_key_earned_time", 15) + "";
 
 			if (Integer.parseInt(right.getText().toString()) >= numNeed
-					&& prefs.getBoolean("pref_key_restricted_mode", false)) {
+					&& prefs.getBoolean("pref_key_restricted_mode", false)
+					&& (maxError == -1 || Integer.parseInt(wrong.getText()
+							.toString()) <= maxError)) {
 				MediaPlayer mp = MediaPlayer.create(getApplicationContext(),
 						R.raw.ronniecall);
 				mp.start();

@@ -12,9 +12,12 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameHistory extends Activity {
 
@@ -41,12 +44,14 @@ public class GameHistory extends Activity {
 		Collections.reverse(gameList);
 		adapter = new GameListAdapter(GameHistory.this, gameList);
 		list.setAdapter(adapter);
+		
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
+		menu.add(0, 0, 0, "Include All Mistakes");
+		menu.add(0, 1, 1, "Exclude All Mistakes");
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -54,27 +59,25 @@ public class GameHistory extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			NavUtils.navigateUpFromSameTask(this);
+		} else if(item.getItemId() == 0) {
+			checkAll("1");
+		} else if(item.getItemId() == 1) {
+			checkAll("0");
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void showWrong(View v) {
-		RelativeLayout historyMain = (RelativeLayout) v
-				.findViewById(R.id.history_main);
-		RelativeLayout historyExtra = (RelativeLayout) v
-				.findViewById(R.id.history_extra);
-		TextView types = (TextView) (historyExtra
-				.findViewById(R.id.history_types_string));
-		if (historyMain.getVisibility() == View.VISIBLE) {
-			historyExtra.setVisibility(View.VISIBLE);
-			historyMain.setVisibility(View.INVISIBLE);
-			types.setSelected(true);
-
-		} else {
-			historyExtra.setVisibility(View.INVISIBLE);
-			historyMain.setVisibility(View.VISIBLE);
+	private void checkAll(String include) {
+		DatabaseHandler db = new DatabaseHandler(this);
+		ArrayList<Game> gameList = db.getAllGames();
+		for (Game game : gameList) {
+			game.setInclude(include);
+			db.updateGame(game);
 		}
-
+		db.close();
+		showList();
+		
 	}
+
 
 }

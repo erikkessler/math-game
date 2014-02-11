@@ -16,6 +16,7 @@ public class NumberPickerPreference extends DialogPreference {
 	private static final String ATTR_TEXT = "text";
 	private final String mText;
 	private final int mDefaultValue;
+	public final Boolean mInfinite;
 
 	public NumberPickerPreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -27,6 +28,7 @@ public class NumberPickerPreference extends DialogPreference {
 		setDialogIcon(null);
 
 		mText = attrs.getAttributeValue(PREFERENCE_NS, ATTR_TEXT);
+		mInfinite = attrs.getAttributeBooleanValue(PREFERENCE_NS, "infinite", false);
 		mDefaultValue = attrs.getAttributeIntValue(ANDROID_NS,
 				ATTR_DEFAULT_VALUE, 0);
 
@@ -43,11 +45,20 @@ public class NumberPickerPreference extends DialogPreference {
 		mTextView.setText(mText);
 		mNumberPicker = (NumberPicker) view.findViewById(R.id.number_picker_np);
 		mNumberPicker.setMinValue(1);
+		
+		if (mInfinite ){
+			mNumberPicker.setMinValue(0);
+			mNumberPicker.setFormatter(new MyTwoDigitFormatter());
+			
+		}
+		
 		mNumberPicker.setMaxValue(9999);
 		mNumberPicker.setWrapSelectorWheel(false);
 		mNumberPicker
 				.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 		mNumberPicker.setValue(getPersistedInt(mDefaultValue));
+		
+		
 	}
 
 	@Override
@@ -57,6 +68,17 @@ public class NumberPickerPreference extends DialogPreference {
 		if (positiveResult) {
 			callChangeListener(mNumberPicker.getValue());
 			persistInt(mNumberPicker.getValue());
+		}
+	}
+	
+	public class MyTwoDigitFormatter implements NumberPicker.Formatter {
+
+		@Override
+		public String format(int value) {
+			if(value == 0)
+				return "Infinite";
+			else
+				return value - 1 + "";
 		}
 	}
 

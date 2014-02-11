@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 public class GameLayout extends FrameLayout {
 
 	private int index;
+	private boolean open = false;
 
 	@SuppressWarnings("unused")
 	public GameLayout(Context context) {
@@ -25,5 +26,6 @@ public class GameLayout extends FrameLayout {
 	public int getIndex() {
 		return index;
 	}
+	
 
 }

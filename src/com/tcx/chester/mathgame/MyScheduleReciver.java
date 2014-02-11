@@ -46,7 +46,7 @@ public class MyScheduleReciver extends BroadcastReceiver {
 			Log.d("YOLO", "Reciever stopping");
 			stopReciver();
 
-		} else if (intent.getAction().equals("tcx.PAUSE") && !Utils.paused) {
+		} else if (intent.getAction().equals("tcx.PAUSE") ) {
 			Log.d("YOLO", "Reciever pausing");
 			Utils.paused = true;
 			pauseReciever(intent.getIntExtra("time", 15));
@@ -61,6 +61,9 @@ public class MyScheduleReciver extends BroadcastReceiver {
 
 		} else if (intent.getAction().equals("tcx.RUN")) {
 			runMinute(intent.getExtras().getInt("minutesLeft"));
+			
+		} else if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED") && go) {
+			startReceiver();
 		}
 	}
 
