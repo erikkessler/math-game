@@ -12,12 +12,14 @@ import com.tcx.chester.mathgame.R;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -29,12 +31,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.neurosky.thinkgear.*;
+
 public class MainActivity extends Activity implements OnClickListener {
 
 	private Button[] buttons = new Button[11];
 	private TextView entry, prob;
 	private TextView right, wrong;
-	private TextView time;
+	private TextView time, eeg;
 	private int answer;
 	private int time_left;
 	private Runnable runnable;
@@ -49,6 +53,51 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int first, second;
 	private String types, date;
 	private String[] oldMistakes;
+	private BluetoothAdapter btAdapter;
+	private TGDevice tgDevice;
+	private final Handler eegHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			
+			switch (msg.what) {
+            case TGDevice.MSG_STATE_CHANGE:
+
+                switch (msg.arg1) {
+	                case TGDevice.STATE_IDLE:
+	                    break;
+	                case TGDevice.STATE_CONNECTING:		                	
+	                	eeg.setText("Connecting...");
+	                	break;		                    
+	                case TGDevice.STATE_CONNECTED:
+	                	eeg.setText("Connected!");
+	                	tgDevice.start();
+	                    break;
+	                case TGDevice.STATE_NOT_FOUND:
+	                	eeg.setText("Can't find");
+	                	break;
+	                case TGDevice.STATE_NOT_PAIRED:
+	                	eeg.setText("not paired");
+	                	break;
+	                case TGDevice.STATE_DISCONNECTED:
+	                	eeg.setText("Disconnected");
+                }
+
+                break;
+            case TGDevice.MSG_POOR_SIGNAL:
+            		//signal = msg.arg1;
+            		eeg.setText("Poor Signal");
+                break;
+            case TGDevice.MSG_ATTENTION:
+            		//att = msg.arg1;
+            		eeg.append("Attention: " + msg.arg1);
+            		//Log.v("HelloA", "Attention: " + att + "\n");
+            	break;
+            case TGDevice.MSG_LOW_BATTERY:
+            	Toast.makeText(getApplicationContext(), "Low battery!", Toast.LENGTH_SHORT).show();
+            	break;
+			}
+		}
+	};
 
 	/** Called when the activity is first created. */
 	@Override
@@ -58,6 +107,18 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		btAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(btAdapter == null) {
+        	// Alert user that Bluetooth is not available
+        	Toast.makeText(this, "Bluetooth not available", Toast.LENGTH_LONG).show();
+        	finish();
+        	return;
+        }else {
+        	/* create the TGDevice */
+        	tgDevice = new TGDevice(btAdapter, eegHandler);
+        	Toast.makeText(this, "Bluetooth available", Toast.LENGTH_LONG).show();
+        }  
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		rn = new Random();
@@ -67,6 +128,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		right = (TextView) findViewById(R.id.right);
 		wrong = (TextView) findViewById(R.id.wrong);
 		time = (TextView) findViewById(R.id.timer);
+		eeg = (TextView) findViewById(R.id.tvEEG);
 
 		for (int i = 0; i < buttons.length; i++) {
 			String a = "b" + i;
@@ -692,5 +754,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 	}
+
+	@Override
+	protected void onDestroy() {
+		tgDevice.close();
+		super.onDestroy();
+	}
+	
+	
 
 }
