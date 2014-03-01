@@ -75,5 +75,6 @@
     <string name="pref_include_title">Default Handling of New Mistakes</string>
     <string name="pref_include_message">Should mistakes from new games be automatically included in the mistakes list</string>
     <string name="pref_include_default">Include</string>
+    <string name="symbol_not_equal">≠</string>
 
 </resources>

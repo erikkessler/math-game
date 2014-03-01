@@ -167,9 +167,13 @@ public class MainActivity extends Activity implements OnClickListener {
 			handler.postDelayed(runable, 400);
 		} else {
 			if (mistakes.equals(""))
-				mistakes = prob.getText() + "";
+				mistakes = prob.getText()
+						+ getResources().getString(R.string.symbol_not_equal)
+						+ entry.getText();
 			else
-				mistakes = mistakes + ", " + prob.getText();
+				mistakes = mistakes + ", " + prob.getText()
+						+ getResources().getString(R.string.symbol_not_equal)
+						+ entry.getText();
 			int incorrect = Integer.parseInt(wrong.getText().toString()) + 1;
 			wrong.setText(incorrect + "");
 			entry.setTextColor(Color.parseColor("#FF1607"));
@@ -484,24 +488,36 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		} else if (gType.equals("Mistakes")) {
 			String mProb = oldMistakes[rn.nextInt(oldMistakes.length)];
-			prob.setText(mProb);
 			setAnswer(mProb);
 		}
 	}
 
 	private void setAnswer(String mProb) {
 		int mFirst = Integer.parseInt(mProb.substring(0, mProb.indexOf(" ")));
-		int mSecond = Integer.parseInt(mProb.substring(mProb.indexOf(" ",
-				mProb.indexOf(" ") + 1) + 1));
+		int mSecond;
+		if (mProb.contains(getResources().getString(R.string.symbol_not_equal))) {
+			mSecond = Integer.parseInt(mProb.substring(
+					mProb.indexOf(" ", mProb.indexOf(" ") + 1) + 1,
+					mProb.indexOf(getResources().getString(
+							R.string.symbol_not_equal))));
+		} else {
+			mSecond = Integer.parseInt(mProb.substring(mProb.indexOf(" ",
+					mProb.indexOf(" ") + 1) + 1));
+		}
 
-		if (mProb.contains("+"))
+		if (mProb.contains("+")) {
 			answer = mFirst + mSecond;
-		else if (mProb.contains("-"))
+			prob.setText(mFirst + " + " + mSecond);
+		} else if (mProb.contains("-")) {
+			prob.setText(mFirst + " - " + mSecond);
 			answer = mFirst - mSecond;
-		else if (mProb.contains("x"))
+		} else if (mProb.contains("x")) {
 			answer = mFirst * mSecond;
-		else if (mProb.contains("÷"))
+			prob.setText(mFirst + " x " + mSecond);
+		} else if (mProb.contains("÷")) {
 			answer = mFirst / mSecond;
+			prob.setText(mFirst + " ÷ " + mSecond);
+		}
 	}
 
 	private void newGame() {
